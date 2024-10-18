@@ -1,0 +1,28 @@
+.rocket-system-product-media-gallery__tag--label {
+  position: static;
+   font-size: 12px;
+   line-height: 14px;
+   font-weight: 350;
+   color: var(--tag-color);
+   background-color: var(--tag-background);
+   padding: 3px 6px;
+   display: inline-block;
+   text-transform: capitalize;
+   height: 2rem;
+
+   &.novedad {
+     color: var(--black);
+     background-color: var(--light-terracota);
+     line-height: 1.4;
+   }
+   &.rebajas {
+     background-color: var(--dark-terracota);
+     color: var(--white);
+     line-height: 1.4;
+   }
+   &.sostenible {
+     background-color: var(--sustainable);
+     color: var(--white);
+     line-height: 1.4;
+   }
+ }

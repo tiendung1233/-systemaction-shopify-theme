@@ -1,0 +1,40 @@
+{% comment %}
+  Renders product size variant-picker
+
+  Accepts:
+  - product: {Object} product object.
+  - block: {Object} passing the block information.
+  - product_form_id: {String} Id of the product form to which the variant picker is associated.
+  - update_url: {Boolean} whether or not to update url when changing variants. If false, the url isn't updated. Default: true (optional).
+    - update_url: {Boolean} whether or not to update url when changing variants. If false, the url isn't updated. Default: true (optional).
+  Usage:
+  {% render 'rocket-product-variant-picker', product: product, block: block, product_form_id: product_form_id, variants: product_variants %}
+{% endcomment %}
+
+<variant-radios
+  id="variant-radios-{{ section.id }}"
+  class="no-js-hidden product-variant-picker__container"
+  data-section="{{ section.id }}"
+  data-url="{{ product.url }}"
+>
+  <label class="form__label" for="Variants-{{ section.id }}">
+    {{- 'products.product.product_variants_color' | t -}}
+  </label>
+  <div class="product-variant-picker">
+    <fieldset class="js product-form__input variant-picker current-pick tooltip">
+      {%- assign product_color = product.metafields.rocket.color -%}
+      <legend class="form__label tooltiptext">{{ product_color }}</legend>
+      {% render 'rocket-product-variant-options', product: product, option: product, block: block %}
+    </fieldset>
+    {%- for product in variants -%}
+      <fieldset class="js product-form__input variant-picker tooltip">
+        {%- assign product_color = product.metafields.rocket.color -%}
+        {%- if product_color != blank -%}
+          <legend class="form__label  tooltiptext">{{ product_color }}</legend>
+        {%- else -%}
+          <legend class="form__label  tooltiptext visually-hidden">{{ product.title }}</legend>
+        {%- endif -%}
+        {% render 'rocket-product-variant-options', product: product, option: product, block: block %}
+      </fieldset>
+    {%- endfor -%}
+  </div> 

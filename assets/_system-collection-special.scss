@@ -1,0 +1,20 @@
+.collection-special-layout {
+	facet-layouts {
+		visibility: hidden;
+        opacity: 0;
+	}
+    .rocket-system-product-card__content {
+        @media (min-width: 375px) and (max-width: 480px) {
+            padding: 0 16px;
+        }
+    }
+    .product-grid {
+        margin-top: 27px;
+        @media (min-width: 768px) {
+            margin-top: 24px;
+            .rocket-system-product-card .card-information {
+                padding-bottom: 51px;
+            }
+        }
+    }
+}

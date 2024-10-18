@@ -1,0 +1,34 @@
+{% comment %}
+  Renders a product card
+
+  Accepts:
+  - card_product: {Object} Product Liquid object (optional)
+  - using_svg: {Boolean} Using the svg for close button. Default: false (optional)
+  - section_id: {String} The ID of the section that contains this card.
+
+  Usage:
+  {% render 'rocket-system-variant-swiper' %}
+{% endcomment %}
+<variant-swiper class="rocket-system-product-card__quick-add no-js-hidden rocket-product-{{ stl }}" id="product-{{ section_id }}-{{ card_product.id }}" data-product-id="{{ card_product.id }}" data-section-id="{{ section_id }}">
+  <div onclick="event.stopPropagation();return false;" class="rocket-system-product-card__size-heading-wrapper">
+    <div class="rocket-system-product-card__size-close-wrapper">
+      <div onclick="event.stopPropagation();return false;" class="rocket-system-product-card__size-close"></div>
+    </div>
+    <div class="rocket-system-product-card__size-heading">
+      {{ 'products.product.size_heading' | t }}
+    </div>
+  </div>
+  {%- assign product_form_id = 'product-form-' | append: section_id | append: '-' | append: card_product.id -%}
+  {% liquid 
+        if vendor
+          assign product_form_id = product_form_id | append: '-' | append: vendor
+        endif
+  %}
+  {% render 'rocket-system-variant-picker',
+        product: card_product,
+        product_form_id: product_form_id,
+        update_url: false,
+        section_id: section_id,
+        vendor: vendor
+  %}
+</variant-swiper>

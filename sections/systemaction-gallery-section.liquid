@@ -1,0 +1,653 @@
+{% liquid
+    assign section_settings = section.settings
+%}
+{% assign number_column = section.settings.number_column %}
+{% assign spacing_item = section.settings.spacing_item %}
+{% assign number_column_mobile = section.settings.number_column_mobile %}
+{% assign spacing_item_mobile = section.settings.spacing_item_mobile %}
+{{ 'component-image-with-text.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+    .sys-gallery-section__wrapper-4 .sys-gallery-section-item--img {
+        aspect-ratio: auto !important;
+    }
+    #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-gallery-section {
+        padding-top: {{ section_settings.padding_top_mb }}px;
+        padding-bottom: {{ section_settings.padding_bottom_mb }}px;
+        padding-left: {{ section_settings.padding_left }}px;
+        padding-right: {{ section_settings.padding_right }}px;
+        max-width: {{ section.settings.width_content }}px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-gallery-section .sys-gallery-section__wrapper-{{ number_column }} {
+        display: grid;
+        grid-template-columns: repeat( {{ number_column_mobile }} , minmax(0, 1fr));
+        gap: {{ spacing_item_mobile }}px
+    }
+
+    @media (min-width: 768px) {
+        #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-gallery-section {
+            padding-top: {{ section_settings.padding_top }}px;
+            padding-bottom: {{ section_settings.padding_bottom }}px;
+        }
+        #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-gallery-section .sys-gallery-section__wrapper-{{ number_column }} {
+            display: grid;
+            grid-template-columns: repeat( {{ number_column }} , minmax(0, 1fr));
+            gap: {{ spacing_item }}px
+        }
+    }
+    @media (max-width: 767px) {
+        #shopify-section-{{ section.id }} .content-container {
+            display: flex;
+            flex-direction: column-reverse;
+        }
+    }
+    
+{% endstyle %}
+  
+
+<div class="section-{{ section.id }}--sys-gallery-section sys-gallery-section swiper" id="section-{{ section.id }}--sys-gallery-section">
+    <div
+    class="{% if section.settings.position_has_decription %} position-has_decription {% endif %} image-with-text__content--desktop-{{ section.settings.desktop_content_alignment }} image-with-text__content--mobile-{{ section.settings.mobile_content_alignment }} content-container "
+  >
+    {% for block in section.blocks %}
+        {%  style  %} 
+            #shopify-section-{{ section.id }} #block-{{ block.id }}.image-with-text__hastag {
+                color: {{ block.settings.color_text_hastag }};
+                font-weight: {{ block.settings.font_weight_hastag }};
+                font-size: {{ block.settings.font_size_hastag_mb }}px;
+                padding-bottom: {{ block.settings.padding_bottom_mb }}px;
+            }
+            #shopify-section-{{ section.id }} #block-{{ block.id }}.image-with-text__text--decription {
+                color: {{ block.settings.color_text_decription }};
+                font-weight: {{ block.settings.font_weight_decription }};
+                font-size: {{ block.settings.font_size_decription_mb }}px;
+                padding-bottom: {{ block.settings.padding_bottom_mb }}px;
+                max-width: 328px;
+            }
+            .image-with-text__content--mobile-center #block-{{ block.id }}.image-with-text__text--decription {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            #shopify-section-{{ section.id }} #block-{{ block.id }}.image-with-text__hastag > * {
+                padding: 0;
+                margin: 0;
+            }
+
+            #shopify-section-{{ section.id }} #block-{{ block.id }}.image-with-text__text--decription  p {
+                margin: 0;
+            }
+           
+            @media (min-width: 768px) {
+                #shopify-section-{{ section.id }} #block-{{ block.id }}.image-with-text__hastag {
+                    font-size: {{ block.settings.font_size_hastag }}px;
+                    line-height: 44px;
+                    padding-bottom: {{ block.settings.padding_bottom }}px;
+                }
+                #shopify-section-{{ section.id }} #block-{{ block.id }}.image-with-text__text--decription {
+                    font-size: {{ block.settings.font_size_decription }}px;
+                    padding-bottom: {{ block.settings.padding_bottom }}px;
+                    max-width: 339px;
+                }
+                .image-with-text__content--desktop-center #block-{{ block.id }}.image-with-text__text--decription {
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+            }
+        {% endstyle %}
+        {% case block.type %}
+            {%- when 'hastag' -%}
+              <div
+                id="block-{{ block.id }}" 
+                style="font-family: Playfair Display; flex:1"
+                class="{% if section.settings.position_has_decription %} {% endif %} image-with-text__hastag image-with-text__text--caption {{ block.settings.hastag_style }} {{ block.settings.hastag_style }}--{{ block.settings.hastag_text_size }} {{ block.settings.hastag_style }} "
+                {{ block.shopify_attributes }}
+              >
+                {{ block.settings.hastag  }}
+              </div>
+              {%- when 'decription' -%}
+                <div
+                id="block-{{ block.id }}" 
+                style="font-family: Avenir, flex:1"
+                 class="{% if section.settings.position_has_decription %}  {% endif %} image-with-text__text image-with-text__text--decription rte {{ block.settings.text_style }} {{ block.shopify_attributes }}">
+                  {{ block.settings.decription }}
+                </div>
+        {%- endcase -%}
+    {% endfor %}
+    </div>
+
+    <div class="swiper-wrapper sys-gallery-section__wrapper-{{ number_column }} {% if number_column == 2 %} sys-gallery-section-item-2 {% endif %} {% if number_column_mobile == 2 %} sys-gallery-section-item-mobile-2 {% endif %}">
+        {% for block in section.blocks %}
+            {%  style  %} 
+                #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-gallery-section .sys-gallery-section-wrapper .sys-gallery-section-item .sys-gallery-section--text-wrapper .block-{{ block.id }}-gallery-section-text {
+                        color: {{ block.settings.color_text }};
+                        font-size: {{ block.settings.font_size_text_mb }}px;
+                    }    
+                @media (min-width: 768px) {
+                    #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-gallery-section .sys-gallery-section-wrapper .sys-gallery-section-item .sys-gallery-section--text-wrapper .block-{{ block.id }}-gallery-section-text {
+                        font-size: {{ block.settings.font_size_text }}px;
+                    }
+
+                }
+            {% endstyle %}
+             {% case block.type %}
+             {%- when 'block' -%}
+                <div class="sys-gallery-section-item ">
+                    {% if block.settings.image != blank or block.settings.image_mb != blank %}
+                        {% if block.settings.image != blank %}
+                            {{ block.settings.image | image_url: width: block.settings.image.width, height: block.settings.image.height| image_tag: 
+                               width: block.settings.image.width, 
+                                height: block.settings.image.height,
+                                loading: 'lazy',
+                                alt: 'image-key-point-item',
+                                class: 'sys-gallery-section-item--img sys-gallery-section-item--img_des'
+                            }}
+                        {% endif %}
+                        {% if block.settings.image_mb != blank %}
+                            {{ block.settings.image_mb | image_url: width: block.settings.image_mb.width, height: block.settings.image_mb.height| image_tag: 
+                               width: block.settings.image_mb.width, 
+                                height: block.settings.image_mb.height, 
+                                loading: 'lazy',
+                                alt: 'image-key-point-item',
+                                class: 'sys-gallery-section-item--img sys-gallery-section-item--img_mb'
+                            }}
+                        {% endif %}
+                    {% endif %}
+                    </div>
+             {%- endcase -%}
+        {% endfor %}
+    </div>
+    <div
+    class="image-with-text__content--desktop-{{ section.settings.desktop_content_alignment }} image-with-text__content--mobile-{{ section.settings.mobile_content_alignment }} content-container"
+  >
+    {% for block in section.blocks %}
+        {%  style  %} 
+            #shopify-section-{{ section.id }} #block-{{ block.id }}.image-with-text__text--decription_footer {
+                    color: {{ block.settings.color_text_decription_footer }};
+                    font-weight: {{ block.settings.font_weight_decription_footer }};
+                    font-size: {{ block.settings.font_size_decription_footer_mb }}px;
+                    padding-top: {{ block.settings.padding_top_mb }}px;
+                }
+            @media (min-width: 768px) {
+                #shopify-section-{{ section.id }} #block-{{ block.id }}.image-with-text__text--decription_footer {
+                    font-size: {{ block.settings.font_size_decription_footer }}px;
+                    padding-top: {{ block.settings.padding_top }}px;
+                }
+            }
+        {% endstyle %}
+        {% case block.type %}
+              {%- when 'decription_footer' -%}
+                <div id="block-{{ block.id }}" class="image-with-text__text image-with-text__text--decription_footer rte {{ block.settings.text_style }}" {{ block.shopify_attributes }}>
+                  {{ block.settings.decription_footer }}
+                </div>
+        {%- endcase -%}
+    {% endfor %}
+    </div>
+    <div class="section-{{section.id}}-swiper-pagination"></div>
+    
+    <!-- If we need navigation buttons -->
+    <div class="section-{{section.id}}-swiper-button-prev"></div>
+    <div class="section-{{section.id}}-swiper-button-next"></div>
+
+    <!-- If we need scrollbar -->
+    <div class="section-{{section.id}}-swiper-scrollbar"></div>
+
+</div>
+<script>
+    var swiper_key_points{{ section.index }} = new Swiper('#section-{{ section.id }}--sys-gallery-section', {
+        navigation: {
+            nextEl: '.section-{{section.id}}-swiper-button-next',
+            prevEl: '.section-{{section.id}}-swiper-button-prev',
+        },
+        slidesPerView: 351/209,
+        breakpoints: {
+            768: {
+                slidesPerView: {{ section.blocks.size  }},
+                spaceBetween: 3,
+            }
+        }
+    });
+</script>
+{% schema %}
+    {
+        "name": "Sys-Gallery section",
+        "tag": "section",
+        "class": "section section-sys-gallery-section",
+        "settings": [
+            {
+                "type": "header",
+                "content":"Layout"
+            },
+            {
+                "type": "range",
+                "id":"number_column",
+                "max": 50,
+                "min": 1,
+                "step": 1,
+                "default": 2,
+                "label": "Item in row"
+            },
+            {
+                "type": "range",
+                "id":"spacing_item",
+                "max": 100,
+                "min": 1,
+                "step": 1,
+                "default": 2,
+                "label": "spacing item"
+            },
+            {
+                "type": "range",
+                "id":"number_column_mobile",
+                "max": 50,
+                "min": 1,
+                "step": 1,
+                "default": 2,
+                "label": "Item in row mobile"
+            },
+            {
+                "type": "range",
+                "id":"spacing_item_mobile",
+                "max": 100,
+                "min": 1,
+                "step": 1,
+                "default": 2,
+                "label": "spacing item mobile"
+            },
+            {
+                "type": "checkbox",
+                "id": "position_has_decription",
+                "label": "Reverse the position between hashtag and description on mobile devices"
+            },
+            {
+                "type": "select",
+                "id": "desktop_content_alignment",
+                "options": [
+                {
+                    "value": "left",
+                    "label": "t:sections.image-with-text.settings.desktop_content_alignment.options__1.label"
+                },
+                {
+                    "value": "center",
+                    "label": "t:sections.image-with-text.settings.desktop_content_alignment.options__2.label"
+                },
+                {
+                    "value": "right",
+                    "label": "t:sections.image-with-text.settings.desktop_content_alignment.options__3.label"
+                }
+                ],
+                "default": "left",
+                "label": "t:sections.image-with-text.settings.desktop_content_alignment.label"
+            },
+            {
+                "type": "select",
+                "id": "mobile_content_alignment",
+                "options": [
+                    {
+                    "value": "left",
+                    "label": "t:sections.multirow.settings.mobile_content_alignment.options__1.label"
+                    },
+                    {
+                    "value": "center",
+                    "label": "t:sections.multirow.settings.mobile_content_alignment.options__2.label"
+                    },
+                    {
+                    "value": "right",
+                    "label": "t:sections.multirow.settings.mobile_content_alignment.options__3.label"
+                    }
+                ],
+                "default": "left",
+                "label": "t:sections.multirow.settings.mobile_content_alignment.label"
+            },
+                {
+                    "type": "header",
+                    "content": "Section padding"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_top",
+                    "label": "Top padding",
+                    "min": 0,
+                    "max": 400,
+                    "step": 4,
+                    "default": 40,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_bottom",
+                    "label": "Bottom padding",
+                    "min": 0,
+                    "max": 400,
+                    "step": 4,
+                    "default": 52,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_top_mb",
+                    "label": "Top padding on Mobile",
+                    "min": 0,
+                    "max": 400,
+                    "step": 4,
+                    "default": 40,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_bottom_mb",
+                    "label": "Bottom padding on Mobile",
+                    "min": 0,
+                    "max": 400,
+                    "step": 4,
+                    "default": 52,
+                    "unit": "px"
+                },
+                {
+                    "type": "number",
+                    "id": "width_content",
+                    "label": "Max width content",
+                    "default": 795,
+                    "info": "Unit: px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_left",
+                    "label": "Left padding",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 20,
+                    "unit": "px"
+                }, 
+                {
+                    "type": "range",
+                    "id": "padding_right",
+                    "label": "Right padding",
+                    "min": 0,
+                    "max": 100,
+                    "step": 4,
+                    "default": 20,
+                    "unit": "px"
+                }     
+        ],
+        "blocks": [
+            {
+                "type": "block",
+                "name": "Key point item",
+                "settings": [
+                    {
+                    "type": "header",
+                    "content": "Media"
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "image",
+                        "label": "Image"
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "image_mb",
+                        "label": "Image on mobile"
+                    }
+                
+                ]
+            },
+            {
+                "type": "hastag",
+                "name": "hastag",
+                "limit": 1,
+                "settings": [
+                    {
+                        "type": "richtext",
+                        "id": "hastag",
+                        "label": "hastag",
+                        "default": "<p>#FeelTheSystem</p>"
+                    },
+                    {
+                        "type": "color",
+                        "id": "color_text_hastag",
+                        "label": "Custom Color Text Content",
+                        "default": "#000000"
+                    },
+                    {
+                        "type": "select",
+                        "id": "font_weight_hastag",
+                        "options": [
+                            {
+                                "value": "250",
+                                "label": "250"
+                            },
+                            {
+                                "value": "350",
+                                "label": "350"
+                            },
+                            {
+                                "value": "400",
+                                "label": "400"  
+                            },
+                            {
+                                "value": "600",
+                                "label": "600"
+                            }
+                            ],
+                        "default": "400",
+                        "label": "Font Weight Content"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_hastag",
+                        "label": "Font size Content",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 20,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_hastag_mb",
+                        "label": "Font size Content on Mobile",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 20,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "range",
+                        "id": "padding_bottom",
+                        "label": "Block padding bottom",
+                        "min": 0,
+                        "max": 100,
+                        "step": 1,
+                        "default": 20,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "range",
+                        "id": "padding_bottom_mb",
+                        "label": "Block padding bottom mobile",
+                        "min": 0,
+                        "max": 100,
+                        "step": 1,
+                        "default": 20,
+                        "unit": "px"
+                    }
+                ]
+            },
+            {
+                "type": "decription",
+                "name": "decription",
+                "limit": 1,
+                "settings": [
+                    {
+                        "type": "richtext",
+                        "id": "decription",
+                        "label": "decription",
+                        "default": "<p>En System Action, estamos conectados con la realidad social y medioambiental. Sabemos que todos tenemos que aportar nuestro granito de arena para mejorar el mundo y, por eso, estamos muy enfocados en producir y fabricar mediante procesos sostenibles y conscientes.</p>"
+                    },
+                    {
+                        "type": "color",
+                        "id": "color_text_decription",
+                        "label": "Custom Color Text Content",
+                        "default": "#000000"
+                    },
+                    {
+                        "type": "select",
+                        "id": "font_weight_decription",
+                        "options": [
+                            {
+                                "value": "250",
+                                "label": "250"
+                            },
+                            {
+                                "value": "350",
+                                "label": "350"
+                            },
+                            {
+                                "value": "400",
+                                "label": "400"  
+                            },
+                            {
+                                "value": "600",
+                                "label": "600"
+                            }
+                            ],
+                        "default": "400",
+                        "label": "Font Weight Content"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_decription",
+                        "label": "Font size Content",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 14,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_decription_mb",
+                        "label": "Font size Content on Mobile",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 14,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "range",
+                        "id": "padding_bottom",
+                        "label": "Block padding bottom",
+                        "min": 0,
+                        "max": 100,
+                        "step": 1,
+                        "default": 20,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "range",
+                        "id": "padding_bottom_mb",
+                        "label": "Block padding bottom mobile",
+                        "min": 0,
+                        "max": 100,
+                        "step": 1,
+                        "default": 20,
+                        "unit": "px"
+                    }
+                ]
+                },
+                {
+                "type": "decription_footer",
+                "name": "decription footer",
+                "limit": 1,
+                "settings": [
+                    {
+                        "type": "richtext",
+                        "id": "decription_footer",
+                        "label": "decription_footer",
+                        "default": "<p>En System Action, estamos conectados con la realidad social y medioambiental. Sabemos que todos tenemos que aportar nuestro granito de arena para mejorar el mundo y, por eso, estamos muy enfocados en producir y fabricar mediante procesos sostenibles y conscientes.</p>"
+                    },
+                    {
+                        "type": "color",
+                        "id": "color_text_decription_footer",
+                        "label": "Custom Color Text Content",
+                        "default": "#000000"
+                    },
+                    {
+                        "type": "select",
+                        "id": "font_weight_decription_footer",
+                        "options": [
+                            {
+                                "value": "250",
+                                "label": "250"
+                            },
+                            {
+                                "value": "350",
+                                "label": "350"
+                            },
+                            {
+                                "value": "400",
+                                "label": "400"  
+                            },
+                            {
+                                "value": "600",
+                                "label": "600"
+                            }
+                            ],
+                        "default": "400",
+                        "label": "Font Weight Content"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_decription_footer",
+                        "label": "Font size Content",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 14,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_decription_footer_mb",
+                        "label": "Font size Content on Mobile",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 14,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "range",
+                        "id": "padding_top",
+                        "label": "Block padding top",
+                        "min": 0,
+                        "max": 100,
+                        "step": 1,
+                        "default": 20,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "range",
+                        "id": "padding_top_mb",
+                        "label": "Block padding top mobile",
+                        "min": 0,
+                        "max": 100,
+                        "step": 1,
+                        "default": 20,
+                        "unit": "px"
+                    }
+                ]
+                }
+        ],
+        "presets": [
+            {
+                "name": "Sys-Gallery section"
+            }
+        ]
+    }
+{% endschema %}

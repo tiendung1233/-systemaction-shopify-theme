@@ -1,0 +1,102 @@
+<modal-opener
+  class="product-popup-modal__opener no-js-hidden quick-add-hidden popup__sizeguide"
+  data-modal="#PopupModal-{{ block.id }}"
+  {{ block.shopify_attributes }}
+>
+  <button
+    id="ProductPopup-{{ block.id }}"
+    class="product-popup-modal__button link rocket-popup-link"
+    type="button"
+    aria-haspopup="dialog"
+  >
+    <div class="rocket-size-variant-picker__sizeguide">
+      <span class="rocket-size-variant-picker__sizeguide__text">
+        {{- 'products.product.sizeguide' | t -}}
+      </span>
+    </div>
+  </button>
+</modal-opener>
+<modal-dialog
+  id="PopupModal-{{ block.id }}"
+  class="product-popup-modal rocket-modal popup__sizechart"
+  {{ block.shopify_attributes }}
+>
+  <div
+    role="dialog"
+    aria-label="{{ block.settings.text }}"
+    aria-modal="true"
+    class="product-popup-modal__content"
+    tabindex="-1"
+  >
+    <button
+      id="ModalClose-{{ block.id }}"
+      type="button"
+      class="product-popup-modal__toggle"
+      aria-label="{{ 'accessibility.close' | t }}"
+    >
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19.3333 2.5465L17.4533 0.666504L10 8.11984L2.54667 0.666504L0.666672 2.5465L8.12 9.99984L0.666672 17.4532L2.54667 19.3332L10 11.8798L17.4533 19.3332L19.3333 17.4532L11.88 9.99984L19.3333 2.5465Z" fill="#2C2A29"/>
+      </svg>
+    </button>
+    <div class="product-popup-modal__content-info">
+      <h3 class="title-h2">{{- 'products.product.sizeguide' | t -}}</h3>
+      <div class="rocket-popup__content">
+        <tabbed-content>
+          <div class="tablist">
+            <div class="tablist__scroller" role="tablist">
+              {%- for m in product.metafields.custom.size_chart.value -%}
+                <button
+                  type="button"
+                  class="tablist__tab"
+                  id="tab-{{ forloop.index }}"
+                  role="tab"
+                  aria-controls="panel-{{ forloop.index }}"
+                  aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                >
+                  {{ m.tab_heading }}
+                </button>
+              {%- endfor -%}
+            </div>
+          </div>
+          {%- for m in product.metafields.custom.size_chart.value -%}
+            <div
+              id="panel-{{ forloop.index }}"
+              role="tabpanel"
+              tabindex="0"
+              aria-labelledby="tab-{{ forloop.index }}"
+              {% unless forloop.first %}
+                hidden
+              {% endunless %}
+            >
+              <div class="sizeguide-description">
+                {{ m.content }}   
+              </div>
+            </div>
+          {%- endfor -%}
+        </tabbed-content>
+      </div>
+    </div>
+  </div>
+</modal-dialog>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const btnPopup = document.querySelector(".popup__sizeguide");
+    const container = document.querySelector('.product__model-infor');
+    if (btnPopup && container) {
+      const containerChart = document.querySelector(".has-sizechart");
+      if (window.innerWidth > 768) {
+        containerChart.append(btnPopup);
+      } else {
+        container.parentNode.insertBefore(btnPopup, container);
+      }
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+          containerChart.append(btnPopup);
+        } else {
+          container.parentNode.insertBefore(btnPopup, container);
+        }
+      });
+    }
+  })
+</script>
+<script src="{{ 'tabs.js' | asset_url }}" defer="defer"></script>

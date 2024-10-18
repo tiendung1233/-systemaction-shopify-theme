@@ -1,0 +1,57 @@
+{% assign logo_collection = collection.metafields.rocket.logo_team_store | image_url: 'master' %}
+
+<div class="container team-store__container">
+  <div class="row">
+    <div class="col-12 center team-store__container--content">
+      {%- if logo_collection -%}
+        <img
+          src="{{ logo_collection | image_url }}"
+          alt="{{ logo_collection.alt | escape }}"
+          class="team-store__container--image"
+        >
+      {%- endif -%}
+      {{ collection.title }} By GOBIK<br>
+      {% assign close_date = collection.metafields.rocket.close_date.value | date: format: 'day_month' %}
+      {% assign shipment_date = collection.metafields.rocket.shipment_date.value | date: format: 'day_month' %}
+      <span>{{ 'teamstore.close_date' | t: dparam: close_date }}</span><br>
+      <span>{{ 'teamstore.shipment_date' | t: dparam: shipment_date }}</span>
+    </div>
+    <div class="col-12 center">
+      <img src="{{ 'lock.png' | asset_img_url }}">
+    </div>
+    <div class="col-12 center">
+      <form id="tsform" class="team-store__form">
+        <input class="team-store__input" type="text" name="tpass" placeholder="{{ 'teamstore.pass' | t }}">
+        <input class="team-store__button" type="submit" value="Enviar">
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById('tsform').addEventListener('submit', function (event) {
+    event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
+    var inputValue = document.querySelector('input[name="tpass"]').value;
+    window.location.href = window.location.href.split('?')[0] + '?tpass=' + inputValue;
+  });
+</script>
+<div class="team-store-script">
+<script type="application/javascript">
+  console.log("pass de la url: {{ collection.metafields.rocket.tpass }}")
+  let tpass = '{{ collection.metafields.rocket.tpass }}'
+  let param = sessionStorage.getItem('tpass');
+  let searchParams = new URLSearchParams(window.location.search);
+  if(searchParams.has('tpass')){
+    param = searchParams.get('tpass');
+  }
+  console.log(param);
+  if (param == tpass) {
+    sessionStorage.setItem('tpass', param);
+    $('.team-store__container').remove();
+    $('.collection-section').show();
+  } else {
+    // console.log('team store sin pass');
+    $('.collection-section').remove();
+    $('.team-store-script').remove();
+  }
+</script>
+</div>

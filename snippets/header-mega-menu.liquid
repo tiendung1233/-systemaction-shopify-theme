@@ -1,0 +1,149 @@
+{% comment %}
+  Renders a megamenu for the header.
+  - blocks:
+
+  Usage:
+  {% render 'header-mega-menu', blocks: blocks %}
+{% endcomment %}
+
+<nav class="header__inline-menu">
+  <ul class="list-menu list-menu--inline" role="list">
+    {%- for link in section.settings.menu.links -%}
+      {% assign counter = forloop.index %}
+      <li>
+        {%- if link.links != blank -%}
+          <header-menu>
+            <details id="Details-HeaderMenu-{{ forloop.index }}" class="mega-menu">
+              <summary
+                id="HeaderMenu-{{ link.handle }}"
+                class="header__menu-item list-menu__item link focus-inset"
+              >
+                <span>
+                  {{- link.title | escape -}}
+                </span>
+              </summary>
+              <div
+                id="MegaMenu-Content-{{ forloop.index }}"
+                class="mega-menu__content gradient motion-reduce global-settings-popup"
+                tabindex="-1"
+              >
+                <div class="mega-menu__content__container">
+                  <ul
+                    class="mega-menu__list{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}"
+                    role="list"
+                  >
+                    {%- for childlink in link.links -%}     
+                      <li class="mega-menu__list__item">
+                        <a
+                          id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}"
+                          href="{{ childlink.url }}"
+                          class="mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}"
+                          {% if childlink.current %}
+                            aria-current="page"
+                          {% endif %}
+                        >
+                          {{ childlink.title | escape }}
+                        </a>
+                        {%- if childlink.links != blank -%}
+                          {% assign countLink = childlink.links | size %}
+                          <ul class="list-unstyled {% if countLink > 8 %} mega-menu__column{% elsif countLink > 16 %} mega-menu__column-two{% endif %}" role="list">
+                            {%- for grandchildlink in childlink.links -%}
+                              <li>
+                                {% if grandchildlink.title contains '~color:' %}
+                                  {% assign parts = grandchildlink.title | split: '~color:' %}
+                                  {% assign split_title = parts[0] %}
+                                  {% assign color = parts[1] %}
+                                {% endif %}
+                                <a
+                                  id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}-{{ grandchildlink.handle }}"
+                                  href="{{ grandchildlink.url }}"
+                                  class="mega-menu__link mega-menu__link--level-3 link{% if grandchildlink.current %} mega-menu__link--active{% endif %}
+                                  "
+                                  {% if color and grandchildlink.title contains '~color:' %}
+                                    style="color: {{ color }};" 
+                                  {% endif %}
+                                  {% if grandchildlink.current %}
+                                    aria-current="page"
+                                  {% endif %}
+                                >
+                                  {% if split_title and grandchildlink.title contains '~color:' %}
+                                    {{ split_title }}
+                                  {% else %}
+                                    {{ grandchildlink.title }}
+                                  {% endif %}
+                                </a>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- endif -%}
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                  <div class="mega-menu__content__container-image">
+                    {% for block in blocks %}
+                      {% assign image_count = block.type | split: '_' | last %}
+                      {% capture featured_image_position %}featured_image_position_{{ image_count }}{% endcapture %}
+                      {% assign style_width = 112 %}
+                      {% assign style_height = 149 %}
+                      {% if image_count == '1' %}
+                        {% assign style_width = 230 %}
+                        {% assign style_height = 338 %}
+                      {% elsif image_count == '2' %}
+                        {% assign style_width = 230 %}
+                      {% endif %}
+
+                      {% if block.settings[featured_image_position] == counter %}
+                        {% for i in (1..image_count) %}
+                          {% capture image_id %}featured_image_{{ i }}{% endcapture %}
+                          {% capture image_link_id %}featured_image_link_{{ i }}{% endcapture %}
+                          {% capture image_text_id %}featured_image_text_{{ i }}{% endcapture %}
+
+                          <div class="featured-image-container banner-x{{image_count}}">
+                            {% if block.settings[image_link_id] != blank %}
+                              <a href="{{ block.settings[image_link_id] }}" class="link">
+                            {% endif %}
+
+                            {% if block.settings[image_id] != blank %}
+                              {% if forloop.index == 1 and image_count == '3' %}
+                                {{ block.settings[image_id] | image_url: width: 230, height: style_height | image_tag: loading: 'lazy', alt: block.settings[image_text_id], class: 'featured-image-container__image'}}
+                              {% else %}
+                                {{ block.settings[image_id] | image_url: width: style_width, height: style_height | image_tag: loading: 'lazy', alt: block.settings[image_text_id], class: 'featured-image-container__image'}}
+                              {% endif %}
+                            {% else %}
+                              {{ 'image' | placeholder_svg_tag: 'featured-image-container__image' }}
+                            {% endif %}
+                            
+                            {% if block.settings[image_text_id] != blank %}
+                              <div class="featured-image-container__text">{{ block.settings[image_text_id] }}</div>
+                            {% endif %}
+
+                            {% if block.settings[image_link_id] != blank %}
+                            </a>
+                          {% endif %}
+                          </div>                          
+                        {% endfor %}
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </details>
+          </header-menu>
+        {%- else -%}
+          <a
+            id="HeaderMenu-{{ link.handle }}"
+            href="{{ link.url }}"
+            class="header__menu-item list-menu__item link link--text focus-inset"
+            {% if link.current %}
+              aria-current="page"
+            {% endif %}
+          >
+            <span>
+              {{- link.title | escape -}}
+            </span>
+          </a>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</nav>

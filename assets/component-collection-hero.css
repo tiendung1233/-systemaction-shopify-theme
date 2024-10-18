@@ -1,0 +1,131 @@
+.collection-hero__inner {
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--container-padding)
+}
+
+@media(max-width:767px) {
+  .collection-hero__inner {
+    --container-padding: 20px;
+  }
+}
+.collection-hero--with-image .collection-hero__inner {
+  margin-bottom: 0;
+  padding-bottom: 2rem;
+}
+
+@media screen and (min-width: 750px) {
+  .collection-hero.collection-hero--with-image {
+    padding: calc(4rem + var(--page-width-margin)) 0 calc(4rem + var(--page-width-margin));
+    overflow: hidden;
+  }
+
+  .collection-hero--with-image .collection-hero__inner {
+    padding-bottom: 0;
+  }
+}
+
+.collection-hero__text-wrapper {
+  flex-basis: 100%;
+}
+@media(max-width:767px) {
+  .collection-hero__text-wrapper {
+    padding-top: 16px;
+  }
+
+}
+@media screen and (min-width: 750px) {
+  .collection-hero {
+    padding: 0;
+  }
+
+  .collection-hero__inner {
+    align-items: center;
+    flex-direction: row;
+    padding-bottom: 0;
+  }
+}
+
+.collection-hero__title {
+  margin: 0 0 8px;
+  letter-spacing: 0.01em;
+}
+@media(max-width: 767px){
+  .collection-hero__title {
+    margin: 0 0 4px;
+  }
+}
+.collection-hero__title + .collection-hero__description {
+  font-family: Avenir;
+font-size: 14px;
+font-weight: 350;
+line-height: 20px;
+letter-spacing: 0.01em;
+text-align: left;
+
+}
+
+@media screen and (min-width: 750px) {
+  .collection-hero__title + .collection-hero__description {
+  }
+
+}
+
+.collection-hero--with-image .collection-hero__title {
+  margin: 0;
+}
+
+.collection-hero--with-image .collection-hero__text-wrapper {
+  padding: 5rem 0 4rem;
+}
+
+.collection-hero__image-container {
+  border: var(--media-border-width) solid rgba(var(--color-foreground), var(--media-border-opacity));
+  border-radius: var(--media-radius);
+  box-shadow: var(--media-shadow-horizontal-offset) var(--media-shadow-vertical-offset) var(--media-shadow-blur-radius)
+    rgba(var(--color-shadow), var(--media-shadow-opacity));
+}
+
+@media screen and (max-width: 749px) {
+  .collection-hero__image-container {
+    height: 20rem;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .collection-hero--with-image .collection-hero__text-wrapper {
+    padding: 4rem 2rem 4rem 0;
+    flex-basis: 50%;
+  }
+
+  .collection-hero__image-container {
+    align-self: stretch;
+    flex: 1 0 50%;
+    margin-left: 3rem;
+    min-height: 20rem;
+  }
+}
+#showMoreBtn {
+	margin-top: 10px;
+	position: relative;
+  font-family: Avenir;
+  font-weight: 350;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  color: var(--black);
+}
+#showMoreBtn:before {
+	content: "";
+	position: absolute;
+	height: 40px;
+	width: 100%;
+	bottom: 100%;
+	background: rgba(255, 255, 255, 0.8);
+	background: -moz-linear-gradient(top, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.91) 53%, white 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255, 255, 255, 0.8)), color-stop(53%, rgba(255, 255, 255, 0.91)), color-stop(100%, white));
+	background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.91) 53%, white 100%);
+	background: -o-linear-gradient(top, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.91) 53%, white 100%);
+	background: -ms-linear-gradient(top, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.91) 53%, white 100%);
+	background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.91) 53%, white 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0 );
+}

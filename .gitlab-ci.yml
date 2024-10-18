@@ -1,0 +1,11 @@
+repo_pull:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $REMOTE_URL && $REMOTE_BRANCH && $ACCESS_TOKEN
+  before_script:
+    - git config user.name "${GITLAB_USER_NAME}"
+    - git config user.email "${GITLAB_USER_EMAIL}"
+  script:
+    - git checkout $REMOTE_BRANCH
+    - git pull "${CI_REPOSITORY_URL}" "${REMOTE_BRANCH}" --no-rebase
+    - git pull "${REMOTE_URL}" "${REMOTE_BRANCH}" --no-rebase
+    - git push "https://${CI_REGISTRY_USER}:${ACCESS_TOKEN}@${CI_REPOSITORY_URL#*@}" "HEAD:${REMOTE_BRANCH}"

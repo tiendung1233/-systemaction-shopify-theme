@@ -1,0 +1,58 @@
+{% comment %}
+  Renders product variant options
+
+  Accepts:
+  - product: {Object} product object.
+  - option: {Object} current product_option object.
+  - block: {Object} block object.
+
+
+  Usage:
+  {% render 'product-variant-options',
+    product: product,
+    option: option,
+  %}
+{% endcomment %}
+{%- liquid
+  assign variants_available_arr = product.variants | map: 'available'
+  assign variants_option1_arr = product.variants | map: 'option1'
+  assign variants_option2_arr = product.variants | map: 'option2'
+  assign variants_option3_arr = product.variants | map: 'option3'
+
+  assign product_form_id = 'product-form-' | append: product.id
+-%}
+
+{%- for variant in product.variants -%}
+  <product-form class="product-form">
+    {%- form 'product',
+      product,
+      id: variant.id,
+      class: 'form',
+      novalidate: 'novalidate',
+      data-type: 'add-to-cart-form'
+    -%}
+      <modal-opener data-modal="#QuickAdd-{{ variant.id }}">
+        <button
+          id="ProductSubmitButton-{{ variant.id }}"
+          type="submit"
+          name="add"
+          class="product-form__submit variant-options-card {% unless variant.available %}disabled{% endunless %}"
+          aria-haspopup="dialog"
+          aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ variant.id }}"
+          aria-live="polite"
+          {% unless variant.available %}
+            aria-disabled="true"
+          {% endunless %}
+        >
+          <input
+            type="hidden"
+            name="id"
+            value="{{ variant.id }}"
+          >
+          {{ variant_titles }}
+          <span class="product-form__submit__title">{{- variant.title -}}</span>
+        </button>
+      </modal-opener>
+    {%- endform -%}
+  </product-form>
+{%- endfor -%}

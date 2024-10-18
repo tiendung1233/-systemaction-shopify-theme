@@ -1,0 +1,50 @@
+{% comment %}
+  Renders product variant options
+
+  Accepts:
+  - product: {Object} product object.
+  - option: {Object} current product_option object.
+  - block: {Object} block object.
+
+
+  Usage:
+  {% render 'product-variant-options',
+    product: product,
+    option: option,
+    block: block
+  %}
+{% endcomment %}
+{%- liquid
+  assign product_form_id = 'product-form-' | append: option.id
+  assign product_variant_media = option.metafields.rocket.variant_image
+-%}
+{%- liquid
+  assign option_disabled = false
+-%}
+<a
+  href="{{- option.url -}}"
+  class="button button--secondary button-variant-picker"
+>
+  <div
+    id="{{ option.id }}"
+    name="{{ option.title }}"
+    value="{{ value | escape }}"
+    {% if option_disabled %}
+      class="disabled"
+    {% endif %}
+  >
+    <label for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}">
+      <img
+        srcset="          {{ product_variant_media | image_url: width: 86 }} 86,"
+        src="{{ product_variant_media | image_url: width: 86 }}"
+        alt="{{ product_variant_media.alt | escape }}"
+        class="motion-reduce"
+        loading="lazy"
+        width="43"
+        height="43"
+      >
+
+      <span class="visually-hidden"> {{ option.title -}}</span>
+    </label>
+  </div>
+</a>

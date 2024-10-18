@@ -1,0 +1,593 @@
+{% liquid
+    assign section_settings = section.settings
+    assign has_description = false
+    for block in section.blocks
+        if block.type == 'description'
+            assign has_description = true
+        endif
+    endfor
+    if section.blocks.size > 0 and has_description
+        assign des_class = 'has-description' 
+    endif
+    assign image_block_count = 0
+    for block in section.blocks
+        if block.type == 'image'
+            assign image_block_count = image_block_count | plus: 1
+        endif
+    endfor
+    if section.blocks.size > 0
+        assign image_type_class = 'has-' | append: image_block_count | append: '-images'
+    endif
+%}
+
+
+{% style %}
+    #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-padding {
+        padding-top: {{ section_settings.padding_top_mb }}px;
+        padding-bottom: {{ section_settings.padding_bottom_mb }}px;
+        padding-left: {{ section_settings.padding_left_mb }}px;
+        padding-right: {{ section_settings.padding_right_mb }}px;
+    }
+
+    @media (min-width: 768px) {
+        #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-padding {
+            padding-top: {{ section_settings.padding_top }}px;
+            padding-bottom: {{ section_settings.padding_bottom }}px;
+            padding-left: {{ section_settings.padding_left }}px;
+            padding-right: {{ section_settings.padding_right }}px;
+        }
+    }
+{% endstyle %}
+
+<div class="section-{{ section.id }}--sys-padding sys-hero_banner">
+    <div class="sys-hero_banner--innner">
+        <div class="sys-hero_banner--media {{ image_type_class }} {{ section.settings.type_of_media }}">
+            {% if image_block_count == 0 %}
+                {%- assign placeholder_slide = forloop.index | modulo: 2 -%}
+                {%- if placeholder_slide == 1 -%}
+                {{ 'hero-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- else -%}
+                {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+            {% endif %}
+            {% comment %} Case Banner Type Image {% endcomment %}
+            {% if section.settings.type_of_media == 'type_image' %}
+                {% for blockBanner in section.blocks %}
+                    {% case blockBanner.type %}
+                        {% when 'image' %}
+                            {% if blockBanner.settings.image != blank or blockBanner.settings.image_mb != blank %}
+                                <div class="{% if forloop.first %}image-first{% endif %} sys-hero_banner--image">
+                                    {% if blockBanner.settings.image != blank %}
+                                        {{ blockBanner.settings.image | image_url: width: blockBanner.settings.image.width, height: blockBanner.settings.image.height| image_tag: 
+                                                width: blockBanner.settings.image.width, 
+                                                height: blockBanner.settings.image.height,
+                                                loading: 'lazy',
+                                                alt: 'image-banner',
+                                                class: 'sys-hero_banner--img sys-hero_banner--img_des'
+                                        }}
+                                    {% endif %}
+                                    {% if blockBanner.settings.image_mb != blank %}
+                                        {{ blockBanner.settings.image_mb | image_url: width: blockBanner.settings.image_mb.width, height: blockBanner.settings.image_mb.height| image_tag: 
+                                                width: blockBanner.settings.image_mb.width, 
+                                                height: blockBanner.settings.image_mb.height,
+                                                loading: 'lazy',
+                                                alt: 'image-banner-mb',
+                                                class: 'sys-hero_banner--img sys-hero_banner--img_mb'
+                                        }}
+                                    {% endif %} 
+                                </div>
+                            {% endif %}
+
+                    {% endcase %}
+                {% endfor %}
+            {% comment %} Case Banner Type Video {% endcomment %}
+            {% else %}
+                {% for blockBanner in section.blocks %}
+                    {% case blockBanner.type %}
+                        {% when 'video' %}
+                            {% if blockBanner.settings.video != blank %}
+                                {{
+                                blockBanner.settings.video
+                                | video_tag: image_size: '1100x', loop: true, muted: true, autoplay: true, playsinline: true, class: 'media-des media-full'
+                                }}
+                            {% endif %}
+                            {% if blockBanner.settings.video_mobile != blank %}
+                                {{
+                                blockBanner.settings.video_mobile
+                                | video_tag: image_size: '1100x', loop: true, muted: true, autoplay: true, playsinline: true, class: 'media-mb media-full'
+                                }}
+                            {% endif %}
+                    {% endcase %}
+                {% endfor %}
+            {% endif %}
+        </div>
+        {% assign button_settings_exist = false %}
+        {% for block in section.blocks %}
+            {% if block.type == 'button' %}
+                {% assign button_settings_exist = true %}
+                {% break %}
+            {% endif %}
+        {% endfor %}
+    <div class="sys-hero_banner--content {{ section_settings.desktop_content_position }} {% unless button_settings_exist %}no-button{% endunless %}">
+        <div class="content-wrapper {{ section_settings.content_alignment }}">    
+            <div class="heading-title__subtitle">
+                {% for block in section.blocks %}
+                    {%  style  %} 
+                        #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-padding .sys-hero_banner--innner .block-{{ block.id }}-sys-hero_banner--heading {
+                            color: {{ block.settings.color_text_title }};
+                            font-weight: {{ block.settings.font_weight_title }};
+                            font-size: {{ block.settings.font_size_title_mb }}px;
+                        }
+                        #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-padding .sys-hero_banner--innner .block-{{ block.id }}-sys-hero_banner--description {
+                            color: {{ block.settings.color_text_content }};
+                            font-weight: {{ block.settings.font_weight_content }};
+                            font-size: {{ block.settings.font_size_content_mb }}px;
+                        }
+
+                        @media (min-width: 768px) {
+                            #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-padding .sys-hero_banner--innner .block-{{ block.id }}-sys-hero_banner--heading {
+                                font-size: {{ block.settings.font_size_title }}px;
+                            }
+                            #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-padding .sys-hero_banner--innner .block-{{ block.id }}-sys-hero_banner--description {
+                                font-size: {{ block.settings.font_size_content }}px;
+                            }
+                        }
+                    {% endstyle %}
+
+                    {% case block.type %}
+                        {% when 'heading' %}
+                            {% if block.settings.heading != blank %}
+                                <{{ block.settings.heading_size }} class="block-{{ block.id }}-sys-hero_banner--heading heading {{ section_settings.content_alignment }}">{{ block.settings.heading }}</{{ block.settings.heading_size }}>
+                            {% endif %}
+                        {% when 'description' %}
+                            {% if block.settings.description %}
+                                <div class="block-{{ block.id }}-sys-hero_banner--description description {{ section_settings.content_alignment }}">
+                                    {{ block.settings.description }}
+                                </div>
+                            {% endif %}
+                    {% endcase %}
+                {% endfor %}
+            </div>
+            {% if button_settings_exist %}
+                <div class="sys-hero_banner--button_wrapper {{ section_settings.content_alignment }} {{ des_class }}">
+                    {% for block in section.blocks %}
+                    {%  style  %} 
+                        #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-padding .sys-hero_banner--innner .sys-hero_banner--button_wrapper .block-{{ block.id }}-button-banner {
+                            color: {{ block.settings.color_text_button }};
+                            font-size: {{ block.settings.font_size_button_mb }}px;
+                        }    
+                        @media (min-width: 768px) {
+                            #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-padding .sys-hero_banner--innner .sys-hero_banner--button_wrapper .block-{{ block.id }}-button-banner {
+                                font-size: {{ block.settings.font_size_button }}px;
+                            }
+                            #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-padding .sys-hero_banner--innner .sys-hero_banner--button_wrapper .block-{{ block.id }}-button-banner:hover {
+                                color: #2C2A29;
+                            }
+                        }
+                    {% endstyle %}
+                        {% case block.type %}
+                            {% when 'button' %}
+                                <a
+                                {% if block.settings.button_url == blank %}
+                                role="link" aria-disabled="true"
+                                {% else %}
+                                href="{{ block.settings.button_url }}"
+                                {% endif %}
+                                class="block-{{ block.id }}-button-banner button button--hollow"
+                            >
+                                {{- block.settings.button_label | escape -}}
+                            </a>
+                        {% endcase %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% schema %}
+    {
+        "name": "Systemaction-Hero Banner",
+        "tag": "section",
+        "class": "section section-sys-hero-banner",
+        "settings": [
+                {
+                    "type": "header",
+                    "content": "Media"
+                },
+                {
+                    "type": "select",
+                    "id": "type_of_media",
+                    "options": [
+                        {
+                            "value": "type_image",
+                            "label": "Image"
+                        },
+                        {
+                            "value": "type_video",
+                            "label": "Video"  
+                        }
+                        ],
+                        "default": "type_image",
+                        "label": "Type of Media"
+                },
+                {
+                    "type": "header",
+                    "content": "Content Position"
+                },
+                {
+                    "type": "select",
+                    "id": "desktop_content_position",
+                    "options": [
+                        {
+                            "value": "left",
+                            "label": "Left"
+                        },
+                        {
+                            "value": "center",
+                            "label": "Center"  
+                        },
+                        {
+                            "value": "right",
+                            "label": "Right"
+                        }
+                        ],
+                    "default": "center",
+                    "label": "Desktop content Position",
+                    "info": "Position is automatically optimized for mobile."
+                },
+                {
+                    "type": "select",
+                    "id": "content_alignment",
+                    "options": [
+                        {
+                            "value": "left",
+                            "label": "Left"
+                        },
+                        {
+                            "value": "center",
+                            "label": "Center"  
+                        },
+                        {
+                            "value": "right",
+                            "label": "Right"
+                        }
+                        ],
+                    "default": "center",
+                    "label": "Content Alignment"
+                },
+                {
+                    "type": "header",
+                    "content": "Section padding"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_top",
+                    "label": "Top padding",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 40,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_bottom",
+                    "label": "Bottom padding",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 52,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_top_mb",
+                    "label": "Top padding on Mobile",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 40,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_bottom_mb",
+                    "label": "Bottom padding on Mobile",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 52,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_left",
+                    "label": "Left padding",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 40,
+                    "unit": "px"
+                }, 
+                {
+                    "type": "range",
+                    "id": "padding_right",
+                    "label": "Right padding",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 52,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_left_mb",
+                    "label": "Left padding on Mobile",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 40,
+                    "unit": "px"
+                }, 
+                {
+                    "type": "range",
+                    "id": "padding_right_mb",
+                    "label": "Right padding on Mobile",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 52,
+                    "unit": "px"
+                }       
+        ],
+        "blocks": [
+            {
+                "type": "image",
+                "name": "Banner Type Image",
+                "limit": 2,
+                "settings": [
+                    {
+                        "type": "image_picker",
+                        "id": "image",
+                        "label": "Image"
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "image_mb",
+                        "label": "Image on mobile"
+                    }
+                ]
+            },
+            {
+                "type": "video",
+                "name": "Banner Type Video",
+                "limit": 1,
+                "settings": [
+                    {
+                        "type": "video",
+                        "id": "video",
+                        "label": "Video desktop"
+                    },
+                    {
+                        "type": "video",
+                        "id": "video_mobile",
+                        "label": "Video mobile"
+                    }
+                ]
+            },
+            {
+                "type": "heading",
+                "name": "Title",
+                "limit": 1,
+                "settings": [
+                    {
+                        "type": "select",
+                        "id": "heading_size",
+                        "label": "Heading size",
+                        "info": "For optimum SEO, a page should only have one h1 and it should be the first heading on the page.",
+                        "options": [
+                            {
+                                "value": "h1",
+                                "label": "h1"
+                            },
+                            {
+                                "value": "h2",
+                                "label": "h2"
+                            },
+                            {
+                                "value": "h3",
+                                "label": "h3"
+                            },
+                            {
+                                "value": "h4",
+                                "label": "h4"
+                            },
+                            {
+                                "value": "h5",
+                                "label": "h5"
+                            },
+                            {
+                                "value": "h6",
+                                "label": "h6"
+                            },
+                            {
+                                "value": "p",
+                                "label": "p"
+                            }
+                        ],
+                        "default": "h2"
+                    },
+                    {
+                        "type": "text",
+                        "id": "heading",
+                        "label": "Heading"
+                    },
+                    {
+                        "type": "color",
+                        "id": "color_text_title",
+                        "label": "Custom Color Text Title",
+                        "default": "#000000"
+                    },
+                    {
+                        "type": "select",
+                        "id": "font_weight_title",
+                        "options": [
+                            {
+                                "value": "250",
+                                    "label": "250"
+                            },
+                            {
+                                "value": "400",
+                                "label": "400"  
+                            },
+                            {
+                                "value": "600",
+                                "label": "600"
+                            }
+                            ],
+                        "default": "400",
+                        "label": "Font Weight Title"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_title",
+                        "label": "Font size Title",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 28,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_title_mb",
+                        "label": "Font size Title on Mobile",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 22,
+                        "unit": "px"
+                    }
+                ]
+            },
+            {
+                "type": "description",
+                "name": "Content",
+                "limit": 1,
+                "settings": [
+                    {
+                        "type": "richtext",
+                        "id": "description",
+                        "label": "Description"
+                    },
+                    {
+                        "type": "color",
+                        "id": "color_text_content",
+                        "label": "Custom Color Text Content",
+                        "default": "#000000"
+                    },
+                    {
+                        "type": "select",
+                        "id": "font_weight_content",
+                        "options": [
+                            {
+                                "value": "250",
+                                "label": "250"
+                            },
+                            {
+                                "value": "350",
+                                "label": "350"
+                            },
+                            {
+                                "value": "400",
+                                "label": "400"  
+                            },
+                            {
+                                "value": "600",
+                                "label": "600"
+                            }
+                            ],
+                        "default": "400",
+                        "label": "Font Weight Content"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_content",
+                        "label": "Font size Content",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 28,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_content_mb",
+                        "label": "Font size Content on Mobile",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 22,
+                        "unit": "px"
+                    }
+
+                ]
+            },
+            {
+                "type": "button",
+                "name": "Button",
+                "limit": 3,
+                "settings": [
+                    {
+                        "type": "url",
+                        "id": "button_url",
+                        "label": "URL"
+                    },
+                    {
+                        "type": "text",
+                        "id": "button_label",
+                        "label": "Label"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_button",
+                        "label": "Font size Button",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 28,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_button_mb",
+                        "label": "Font size Button on Mobile",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 22,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "color",
+                        "id": "color_bg",
+                        "label": "Custom Color Background",
+                        "default": "#ffffff"
+                    },
+                    {
+                        "type": "color",
+                        "id": "color_text_button",
+                        "label": "Custom Color Text Button",
+                        "default": "#000000"
+                    }
+                ]
+            }
+        ],
+        "presets": [
+            {
+                "name": "Systemaction-Hero Banner"
+            }
+        ]
+    }
+{% endschema %}

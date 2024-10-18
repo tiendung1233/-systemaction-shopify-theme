@@ -1,0 +1,125 @@
+.sys-image-with-text {
+  .has-image__mb {
+    @media (max-width: 767px) {
+      padding-bottom: var(--padding-bottom-mb) !important;
+    }
+  }
+
+  &.sys-image-with-text--no-overlap {
+    .image-with-text__media-item {
+      width: 100%;
+      max-width: 100%;
+
+      @media (min-width: 860px) {
+        width: 58%;
+        max-width: 58%;
+      }
+
+      .image-show__pc {
+        display: none;
+
+        @media (min-width: 768px) {
+          display: block;
+        }
+      }
+
+      .image-show__mb {
+        @media (min-width: 768px) {
+          display: none;
+        }
+      }
+
+      img {
+        object-fit: contain;
+      }
+    }
+
+    .image-with-text__text-item {
+      width: 100%;
+      max-width: 100%;
+
+      @media (min-width: 860px) {
+        width: 42%;
+        max-width: 42%;
+      }
+    }
+  }
+
+}
+
+.sys-container_img-text {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  align-self: center;
+  // padding: 4rem calc(4rem / var(--font-body-scale)) 5rem;
+  position: relative;
+  z-index: 1;
+  padding: 32.5px 20px;
+
+  @media (min-width: 750px) {
+    padding: 30px;
+  }
+
+  @media (min-width: 1200px) {
+    padding: 77px 74px;
+  }
+
+  .image-with-text__heading {
+    font-family: Playfair Display;
+    line-height: 42.66px;
+    margin-bottom: 8px;
+
+    @media (min-width: 768px) {
+      line-height: 50px;
+      margin-bottom: 16px;
+    }
+  }
+
+  .image-with-text__hastag {
+    font-family: Avenir;
+    line-height: 32px;
+    margin-bottom: 8px;
+  }
+
+  .image-with-text__text--decription {
+    font-family: Avenir;
+    line-height: 20px;
+    margin-bottom: 8px;
+
+    p {
+      padding-bottom: 16px;
+    }
+
+    @media (min-width: 768px) {
+      margin-bottom: 32px;
+    }
+
+    @media (max-width: 768px) {
+      padding-bottom: 0;
+    }
+  }
+
+  .image-with-text__text.image-with-text__text--caption {
+    line-height: 22px;
+  }
+
+  .image-with-text__text--button {
+    a {
+      display: block;
+      text-decoration: underline;
+      font-weight: 350;
+
+      &.filled_button {
+        width: auto;
+        height: 44px;
+        padding: 0 55px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+      }
+    }
+  }
+}

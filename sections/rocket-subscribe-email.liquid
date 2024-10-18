@@ -1,0 +1,90 @@
+<div class="rocket-subscribe-email">
+  <div class="rocket-subscribe-email__container">
+    <div class="rocket-subscribe-email__content">
+        <div class="">
+      <h2 class="rocket-subscribe-email__title text-black headings-desktop-h2 headings-mobile-h3">{{ section.settings.title }}</h2>
+      <div class="rocket-subscribe-email__text">{{ section.settings.text }}</div>
+      </div>
+      <div class="rocket-subscribe-email__form">
+        {% form 'customer', id: 'rocket_newsletter_signup' %}
+          {% if form.posted_successfully? %}
+            <div class="rocket-subscribe-email__response rocket-subscribe-email__response--success">
+              <div>{{ 'newsletter.success' | t }}</div>
+            </div>
+          {% else %}
+            {% if form.errors %}
+              <div class="rocket-subscribe-email__response rocket-subscribe-email__response--error">
+                {% for field in form.errors %}
+                  <p class="error">{{ field | capitalize }} - {{ form.errors.messages[field] }}</p>
+                {% endfor %}
+              </div>
+            {%- endif -%}
+            <input
+              type="hidden"
+              name="contact[tags]"
+              value="prospect,newsletter"
+            >
+            <div class="rocket-subscribe-email__inline-container">
+              <input
+                type="email"
+                placeholder="{{ 'newsletter.label' | t }}"
+                class="rocket-subscribe-email__email body-s-regular"
+                value=""
+                name="contact[email]"
+                aria-label="{{ 'newsletter.label' | t | escape }}"
+                required
+              >
+              <button class="rocket-subscribe-email__button" type="submit">
+                {% render 'icon-right-arrow' %}
+              </button>
+             
+            </div>
+            <div class="rocket-subscribe-email__terms">
+                <div class="rocket-subscribe-email__checkbox">
+                <input type="checkbox" id="{{section.id}}-terms" name="terms"  required>
+                <label for="{{section.id}}-terms">
+                    {% render 'icon-checkmark'%}
+                </label>
+                </div>
+                <div class="rocket-subscribe-email__terms-text">
+                    {{ section.settings.terms }}
+                </div>
+                </div>
+          {% endif %}
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Subscribe section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Suscríbete y obtén un 10% de descuento"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "en tu primera compra y únete a la comunidad #Rebel"
+    },
+    {
+        "type": "inline_richtext",
+        "id": "terms",
+        "label": "Terms",
+        "default": "He podido leer y entiendo la Política de Privacidad y Cookies y acepto recibir comunicaciones comerciales personalizadas de System Action a través de email."
+      }
+  ],
+  "presets": [
+    {
+      "name": "Rocket newsletter section",
+      "category": "Rocket newsletter section"
+    }
+  ]
+}
+{% endschema %}

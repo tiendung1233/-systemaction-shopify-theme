@@ -1,0 +1,35 @@
+{% comment %}
+  Renders Collection Breadcrumb
+  Accepts:
+  - Collection Grandparent {Collection} grandpa
+  - Collection Parent {Collection} parent
+  - Actual Collection {Collection} current
+
+  Usage:
+  {% render 'rocket-collection-breadcrumb' %}
+{% endcomment %}
+
+<div class="rocket-collection-breadcrumb">
+  <div class="rocket-collection-breadcrumb__home">
+    <p class="rocket-collection-breadcrumb__home__title">
+      <a class="rocket-collection-breadcrumb__home__link" href="{{- shop.url -}}">{{ 'general.home' | t }}</a>
+    </p>
+  </div>
+  {% if grandpa != blank and grandpa != parent %}
+    <div class="rocket-collection-breadcrumb__grandparent">
+      <a href="{{- shop.url -}}">
+        <p>{{- grandpa.title -}}</p>
+      </a>
+    </div>
+  {%- endif -%}
+  {% if parent != blank %}
+    <div class="rocket-collection-breadcrumb__parent">
+      <a href="{{- parent.url -}}">
+        <p>{{- parent.title -}}</p>
+      </a>
+    </div>
+  {%- endif -%}
+  <div class="rocket-collection-breadcrumb__current">
+    <span>{{ current.title }}</span>
+  </div>
+</div>

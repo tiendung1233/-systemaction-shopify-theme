@@ -1,0 +1,122 @@
+.product-grid__image-with-text {
+  order: var(--mobile-position);
+  grid-column: auto / span 2;
+  width: 100%;
+  @media (min-width: 992px) {
+    order: var(--desktop-position);
+    grid-column: auto / span 4;
+  }
+}
+
+.collection-image-with-text {
+  .collection-image-with-text__content {
+    padding: 24px 8px 40px;
+  }
+  .metafield-rich_text_field
+  > *:first-of-type {
+    margin-top: 0;
+  }
+  .metafield-rich_text_field
+  > *:last-of-type {
+    margin-bottom: 0;
+  } 
+  p {
+    margin: 8px 0;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 350;
+  }
+  strong {
+    font-weight: 500;
+    display: block;
+    font-size: 16px;
+    line-height: 22px;
+    margin-top: 16px;
+  }
+  .heading {
+    font-family: "Playfair Display";
+    color: #2c2a29;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 42.66px;
+    margin-bottom: 24px;
+    margin-top: 0;
+  }
+  @media (min-width: 992px) {
+    display: flex;
+    justify-content: space-between;
+    .collection-image-with-text__image {
+      width: 50%;
+    }
+    .collection-image-with-text__content {
+      padding: 50px 32px;
+      width: 50%;
+      max-width: 630px;
+      .heading {
+        font-size: 40px;
+        line-height: 50px;
+        margin-bottom: 60px;
+      }
+      strong {
+        font-weight: 600;
+      }
+    }
+    &.image-position__right {
+      flex-direction: row-reverse;
+    }
+    &.image-position__left {
+      .collection-image-with-text__content {
+        margin: 0 auto;
+      }
+    }
+    &.content-position__middle {
+      align-items: center;
+    }
+    &.content-position__bottom {
+      align-items: end;
+    }
+  }
+  &.style2 {
+		display: block;
+		& > * {
+			width: 100%;
+		}
+		.collection-image-with-text__content {
+			max-width: 100%;
+			padding: 24px 20px 40px;
+			.heading {
+				margin-bottom: 8px;
+			}
+			@media (min-width: 768px) {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 40px;
+        padding: 32px 32px 34px 33px;
+				&.reverse__heading {
+					flex-direction: row-reverse;
+				}
+				.heading {
+					max-width: 575px;
+					width: 50%;
+          margin: 0;
+				}
+				.rte {
+					max-width: 572px;
+					width: 50%;
+				}
+			}
+		}
+	}
+}
+.image-mb__show {
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
+.image-pc__show {
+  display: none;
+  @media (min-width: 768px) {
+    display: block;
+  }
+}

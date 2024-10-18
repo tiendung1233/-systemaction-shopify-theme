@@ -1,0 +1,110 @@
+@import "_system-mixin.scss";
+
+.rocket-subscribe-email{
+    &__container{
+        padding: 0 var(--container-padding);
+    }
+    &__content{
+        background-color: #F7F7F7;
+    padding: 24px 20px;
+        display: flex;
+        flex-direction: column ;
+        gap: 20px;
+        h2{
+            margin: 0;
+            margin-bottom: 8px;
+        }
+        @media(min-width: 768px){
+            padding: 65px 63px 64px;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
+    &__text{
+        @include body-s-regular;
+        @media(min-width: 768px){
+            @include body-l-regular
+        }
+    }
+    &__email{
+        border: none;
+        background: transparent;
+        width: 100%;
+        padding: 0;
+        padding-bottom: 7px;
+        &:-webkit-autofill{
+            background-color: transparent
+        }
+        &::placeholder{
+            color: var(--black);
+        }
+        @media(min-width: 768px){
+            padding-top: 1px;
+        }
+    }
+    &__inline-container{
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid var(--black);
+
+    }
+    &__button{
+        all: unset;
+        display: flex;
+        cursor: pointer;
+        width: 10px;
+        height: 10px;
+        margin-top: -8px;
+        svg{
+            fill: var(--black);
+            transform: rotate(-90deg);
+        }
+    }
+    &__form{
+        max-width: 457px;
+    }
+    &__terms{
+        display: flex;
+        align-items: flex-start;    
+        gap: 6px;
+        margin-top: 16px;
+         @include body-xs-regular;
+    }
+    &__checkbox{
+        margin-top: 2px;
+        position: relative;
+        
+        input{
+            width: 1px;
+            position: absolute;
+            z-index:-1;
+            --webkit-appearance: none;
+            &:user-invalid{
+                & ~ label{
+                    border-color: var(--dark-terracota);
+                }
+            }
+           &:checked ~ label{
+                svg{
+                    opacity: 1;
+                }
+            }
+        }
+        svg{
+            opacity: 0;
+            width: 8px;
+        }
+        label{
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            justify-content: center;
+            width: 10px;
+            height: 10px;
+            border: 1px solid var(--black);
+            position: relative;
+            z-index: 1;
+            
+        }
+    }
+}

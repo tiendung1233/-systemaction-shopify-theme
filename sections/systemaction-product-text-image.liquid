@@ -1,0 +1,136 @@
+{%- assign metafield_key = section.settings.metafields_key -%}
+{%- if product.metafields.custom[metafield_key].value != blank -%}
+{% liquid
+    assign section_settings = section.settings
+%}
+{% if product.metafields.custom.text_image.value != blank %}
+    {% style %}
+        #shopify-section-{{ section.id }} .section-{{ section.id }}--padding {
+            padding-top: {{ section_settings.padding_top_mb }}px;
+            padding-bottom: {{ section_settings.padding_bottom_mb }}px;
+        }
+
+        @media (min-width: 1024px) {
+            #shopify-section-{{ section.id }} .section-{{ section.id }}--padding {
+                padding-top: {{ section_settings.padding_top }}px;
+                padding-bottom: {{ section_settings.padding_bottom }}px;
+            }
+        }
+    {% endstyle %}
+    
+    {%  for textImage in product.metafields.custom[metafield_key].value %}
+     
+        <div class="section-{{ section.id }}--padding">
+            <div class=" image-with-text image-with-text--{{ textImage.image_position | downcase }}">
+                <div class="image-with-text__inner-content">
+                    <div class="image-with-text__header">
+                        <h2 class="image-with-text__heading headings-desktop-h1 headings-mobile-h1">
+                        {{ textImage.banner_title }}</h2>
+                    </div>
+                    <div class="image-with-text__sub-title ">
+                        {{ textImage.banner_sub_title }}
+                    </div>
+                    <div class="image-with-text__content body-m-regular"> {{- textImage.banner_content | metafield_text -}}</div>
+                    <a
+                        href="{{ textImage.button_url }}"
+                        class="image-with-text__button-link body-link-m text-black"
+                    >
+                    {{- textImage.button_label | escape -}}
+                    </a>
+
+                </div>
+                <div class="image-with-text__inner-image ">
+                    <div class="image-with-text__image-desktop">
+                        {%- assign image_desktop = textImage.image_picker -%}
+                        {%- assign image_desktop_url = textImage.image_picker  | file_url -%}
+
+                        {%- if image_desktop_url contains '.mp4' or image_desktop_url contains '.mov'-%}
+                            <video  autoplay loop muted>
+                                <source src="{{ image_desktop_url }}" type="video/mp4">
+                            </video> 
+                        {% else %}
+                         {{ textImage.image_picker |  metafield_tag }}
+                        {%-endif %}
+                    </div>
+                    <div class="image-with-text__image-mobile">
+                        {%- assign image_mobile = textImage.image_picker_mb -%}
+                        {%- assign image_mobile_url = textImage.image_picker  | file_url -%}
+
+                        {%- if image_mobile_url contains '.mp4' or image_mobile_url contains '.mov'-%}
+                            <video  autoplay loop muted>
+                                <source src="{{ image_mobile_url }}" type="video/mp4">
+                            </video> 
+                        {% else %}
+                         {{ image_mobile |  metafield_tag }}
+                        {%-endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
+{%- endif -%}
+{% schema %}
+    {
+        "name": "Systemaction-Text-Image",
+        "tag": "section",
+        "class": "section section-product-text-and-image",
+        "settings": [
+            {
+                "type": "text",
+                "id": "metafields_key",
+                "label": "Metafields Key",
+                "default": "text_image"
+            },
+            {
+                "type": "header",
+                "content": "Padding"
+            },
+                {
+                    "type": "range",
+                    "id": "padding_top",
+                    "label": "Padding Top",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 36,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_bottom",
+                    "label": "Padding Bottom",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 36,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_top_mb",
+                    "label": "Padding Top on Mobile",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 24,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_bottom_mb",
+                    "label": "Padding Bottom on Mobile",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 24,
+                    "unit": "px"
+                } 
+        ],
+        "presets": [
+            {
+                "name": "Product Text And Image"
+            }
+        ]
+    }
+{% endschema %}

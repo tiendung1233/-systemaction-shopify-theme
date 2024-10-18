@@ -1,0 +1,248 @@
+.rocket-stl {
+    overflow: hidden;
+
+    @media (min-width: 1024px) {
+        padding: 0 32px;
+    }
+
+    .rocket-stl__heading {
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 32px;
+        margin: 0 0 16px;
+        margin-left: 20px;
+        color: #2C2A29;
+
+        @media (min-width: 1024px) {
+            font-size: 32x;
+            line-height: 44px;
+            margin: 0 0 24px;
+            margin-left: 0;
+        }
+    }
+    .rocket-stl__wrapper {
+      position: relative;
+      img {
+        max-width: 100%;
+        object-fit: cover;
+        width: 100%;
+        height: auto;
+      }
+      .rocket-stl__wrapper__dot {
+        position: absolute;
+        z-index: 1;
+        display: flex;
+        gap: 6px;
+        .rocket-stl__wrapper__dot__summary {
+            background-color: #ffffff40 !important;
+            width: 32px;
+            height: 32px;
+            border-radius: 100%;
+            flex: none;
+            cursor: pointer;
+            border: 4px solid #ffffff40;
+
+            &::before {
+                content: '';
+                display: block;
+                width: 24px;
+                height: 24px;
+                position: absolute;
+                background: #fff;
+                border-radius: 100%;
+                -webkit-border-radius: 100%;
+                -moz-border-radius: 100%;
+                -ms-border-radius: 100%;
+                -o-border-radius: 100%;
+            }
+        }
+        .rocket-stl__wrapper__dot__details {
+            background-color: #FFF;
+            color: #000;
+            min-width: 232px;
+            max-width: 232px;
+            width: 100%;
+            min-height: 102px;
+            max-height: 102px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+            position: absolute;
+            top: 48px;
+            left: 50%;
+            transform: translateX(-50%);
+            -webkit-transform: translateX(-50%);
+            -moz-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            -o-transform: translateX(-50%);
+            display: flex;
+            gap: 16px;
+
+            @media(min-width: 1024px) {
+                min-width: 400px;
+                max-width: 400px;
+                min-height: 188px;
+                max-height: 188px;
+                top: 40px;
+            } 
+            .rocket-system-product-card__image {
+                width: 77px;
+                height: 102px;
+                object-fit: cover;
+                aspect-ratio: unset;
+        
+                @media (min-width: 1024px) {
+                    width: 139px;
+                    height: 188px;
+                }
+            }
+            .rocket-system-product-card__content {
+                display: flex;
+                flex-direction: column;
+                padding: 9px 16px 9px 0;
+                width: 100%;
+
+                @media(min-width: 1024px) {
+                    padding: 13px 16px 13px 0;
+                } 
+
+                .rocket-system-product-card__quick-add {
+                    .product-form__input {
+                        justify-content: flex-start !important;
+                    }
+                }
+            }
+            .rocket-stl__wrapper__dot__details__title,
+            .rocket-stl__wrapper__dot__details__price {
+                font-size: 12px;
+                font-style: normal;
+                font-weight: 350;
+                line-height: 20px;
+                margin: 0;
+                color: #2C2A29;
+
+                @media (min-width: 1024px) {
+                    font-size: 14px;
+                    line-height: 20px;
+                }
+            }
+            .rocket-stl__wrapper__dot__details__price {
+                margin-top: 4px;
+
+                @media (min-width: 1024px) {
+                    margin-top: 8px;
+                }
+            }
+            .rocket-stl__wrapper__dot__details__title {
+                display: flex;
+                gap: 6px;
+                align-items: start;
+                justify-content: space-between;
+                text-decoration: none;
+
+                &:hover {
+                
+                    opacity: 0.85;
+                }
+                span {
+                    display: -webkit-inline-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 1;
+                    overflow: hidden;
+                    word-break: break-all;
+
+                    @media (min-width: 768px) {
+                        overflow: unset;
+                        word-break: unset;
+                    }
+                }
+                svg {
+                    width: 9px;
+                    height: 9px;
+
+                    @media (min-width: 1024px) {
+                        width: 12px;
+                        height: 12px;
+                    }
+                }
+            }
+            .rocket-stl__add-btn {
+                background-color: #2C2A29;
+                width: 100%;
+                height: 30px;
+                margin-top: auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+
+                span {
+                    font-size: 12px;
+                    line-height: 22px;
+                    font-weight: 350;
+                    color: #fff;
+                }
+            }
+        }
+  
+        &.active {
+          .rocket-stl__wrapper__dot__details {
+            opacity: 1;
+            visibility: visible;
+          }
+        }
+      }
+    }
+
+    .mobile-hidden {
+
+        display: none;
+
+        @media (min-width: 1024px) {
+            display: block;
+        }
+    }
+    .desktop-hidden {
+        display: block;
+
+        @media (min-width: 1024px) {
+            display: none;
+        }
+    }
+
+    variant-swiper {
+        position: unset;
+        opacity: 1;
+        transform: unset;
+        -webkit-transform: unset;
+        -moz-transform: unset;
+        -ms-transform: unset;
+        -o-transform: unset;
+        width: 100%;
+        
+
+        @media (min-width: 1024px) {
+            margin: 16px 0;
+        }
+
+        .rocket-system-product-card__size-heading-wrapper {
+            display: none;
+
+            .product-form__input.fieldset-size {
+                gap: 16px;
+                row-gap: 4px;
+                justify-content: flex-start;
+            }
+
+            .swiper-slide.variant {
+                height: fit-content !important;
+            }
+        }
+    }
+
+    input[type="radio"]:checked ~ .variant-size-label {
+        font-weight: 900 !important;
+        background: transparent !important;
+    }
+}

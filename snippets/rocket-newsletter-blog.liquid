@@ -1,0 +1,85 @@
+<div class="blog-newsletter-father rocket-join-community">
+    <div class="rocket-join-community gradient content-container isolate">
+        <div class=" blog-newsletter">
+                        <div class="rocket-join-community__wrapper-blog">
+                                <h3 class="rocket-join-community__heading-blog">
+                                    {{ title }}
+                                </h3>
+                                <h5 class="rocket-join-community__subheading-blog">
+                                    {{ subheading }}
+                                </h5>
+                        </div>
+                        <div class="rocket-join-community__contact_form">
+                            {% form 'customer', class: 'rocket-join-community-form' %}
+                                {% assign policiesTxt = policies_txt %}
+
+                                <input type="hidden" name="contact[tags]" value="rocket-join-community">
+
+                                <div class="rocket-join-community__contact_form__email_wrapper-blog">
+                                    <div class="field">
+                                        <input
+                                                id="NewsletterFormForm--{{ section.id }}"
+                                                type="email"
+                                                name="contact[email]"
+                                                class="field__input"
+                                                value="{{ form.email }}" aria-required="true"
+                                                autocapitalize="off" autocomplete="email"
+                                                {% if form.errors %}
+                                                    autofocus
+                                                    aria-invalid="true"
+                                                    aria-describedby="NewsletterForm-error--{{ section.id }}"
+                                                {% elsif form.posted_successfully? %}
+                                                    aria-describedby="NewsletterForm-success--{{ section.id }}"
+                                                {% endif %}
+                                                placeholder="{{ 'newsletter.label' | t }}" required>
+                                        <label class="field__label custom" for="NewsletterFormForm--{{ section.id }}">
+                                            {{ email_txt | upcase }}
+                                        </label>
+                                        <button type="submit" class="NewsletterForm-form__button field__button"
+                                                name="commit" id="Subscribe"
+                                                aria-label="{{ 'rocket-join-community.button_label' | t }}">
+                                            <span class="rocket-join-community__contact_form__button_newsletter">
+                                                {%- render 'icon-vector' %}
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <div class="rocket-join-community__contact_form__policy_wrapper-blog">
+                                        <label
+                                                class="rocket-join-community__contact_form__policies "
+                                                for="Newsletter-checkbox-{{ section.id }}"
+                                        >
+                                            <input
+                                                    id="Newsletter-checkbox-{{ section.id }}"
+                                                    class="contact_form_checkbox"
+                                                    type="checkbox"
+                                                    name="{{ policies }}"
+                                                    required
+                                            >
+                                            {% assign terms_and_conditions_link = '<a style="color:black" href="/policies/terms-of-service' | append: terms_and_conditions.url | append: '">' | append: terms_and_conditions | append: '</a>' %}
+                                            {% assign privacy_policy_link = '<a style="color:black" href="/policies/privacy-policy' | append: privacy_policy.url | append: '">' | append: privacy_policy | append: '</a>' %}
+    
+                                            {% assign policies_txt = policies_txt | replace: '{terms_and_conditions}', terms_and_conditions_link | replace: '{privacy_policy}', privacy_policy_link %}
+                                            {{ policies_txt | raw }}
+                                        </label>
+                                    </div>
+                                    {%- if form.errors -%}
+                                        <small class="NewsletterForm-form__message form__message"
+                                               id="NewsletterForm-error--{{ section.id }}">
+                                            {%- render 'icon-error' -%}
+                                            {{- form.errors.translated_fields.email | capitalize }}
+                                            {{ form.errors.messages.email -}}
+                                        </small>
+                                    {%- endif -%}
+                                </div>
+                                {%- if form.posted_successfully? -%}
+                                    <h3 class="NewsletterForm-form__message NewsletterForm-form__message--success form__message"
+                                        id="NewsletterForm-success--{{ section.id }}" tabindex="-1" autofocus>
+                                        {% render 'icon-success' -%}
+                                        {{- 'newsletter.success' | t }}
+                                    </h3>
+                                {%- endif -%}
+                            {% endform %}
+                        </div>
+        </div>
+    </div>
+</div>

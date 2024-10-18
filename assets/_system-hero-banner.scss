@@ -1,0 +1,209 @@
+.sys-hero_banner--img_mb {
+    display: block;
+    @media (min-width: 768px) {
+        display: none;
+    }
+}
+.sys-hero_banner--img_des {
+    display: none;
+    @media (min-width: 768px) {
+        display: block;
+        aspect-ratio: 1440/750;
+        object-fit: cover;
+    }
+}
+.sys-hero_banner--innner {
+    position: relative;
+    .sys-hero_banner--media {
+        .media-des {
+            aspect-ratio: 1440/750;
+        }
+        .media-mb {
+            aspect-ratio: 375/667;
+        }
+        .placeholder-svg {
+            aspect-ratio: 375/667;
+            display: block;
+            @media (min-width: 768px) {
+                aspect-ratio: 1440/750;
+            }
+        }
+        &.type_video {
+            .placeholder-svg {
+                display: none;
+            }
+        }
+    }
+    .sys-hero_banner--media.has-2-images {
+        display: flex;
+        img {
+            aspect-ratio: 375/667;
+            @media (min-width: 768px) {
+                aspect-ratio: 720/750;
+            }
+        }
+        .sys-hero_banner--image:not(.image-first) {
+            display: none;
+            @media (min-width: 768px) {
+                display: block;
+            }
+        }
+    }
+}
+.sys-hero_banner--content {
+    position: absolute;
+    bottom: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
+    width: 100%;
+    &.left {
+        @media (min-width: 768px) {
+            justify-content: flex-start;
+        }
+    }
+    &.center {
+        @media (min-width: 768px) {
+            justify-content: center;
+        }
+    }
+    &.right {
+        @media (min-width: 768px) {
+            justify-content: end;
+        }
+    }
+    .content-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        @media (min-width: 768px) {
+            width: fit-content;
+        }
+    }
+    .heading-title__subtitle {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        @media (min-width: 768px) {
+           width: fit-content;
+        }
+    }
+    @media (min-width: 768px) {
+        bottom: 40px;
+        padding-left: 32px;
+        padding-right: 32px;
+        display: flex;
+    }
+    &.no-button {
+        @media (min-width: 768px) {
+            bottom: 47px;
+        }
+        .heading {
+            @media (min-width: 768px) {
+                line-height: 50px;
+            }
+        }
+    }
+    .heading-title__subtitle {
+        .description {
+            line-height: 20px;
+            p {
+                margin: 0;
+            }
+            @media (min-width: 768px) {
+                max-width: 572px;
+            }
+            &.center {
+                @media (min-width: 768px) {
+                    margin: 0 auto;
+                }
+            }
+            &.right {
+                @media (min-width: 768px) {
+                    margin-right: 0;
+                    margin-left: auto;
+                }
+            }
+            &.left {
+                @media (min-width: 768px) {
+                    margin-left: 0;
+                    margin-right: auto;
+                }
+            }
+        }
+    }
+    .heading {
+        line-height: 32px;
+        margin: 0;
+        letter-spacing: 0;
+        @media (min-width: 768px) {
+            line-height: 44px;
+            width: fit-content;
+        }
+        &.center {
+            @media (min-width: 768px) {
+                margin: 0 auto;
+            }
+        }
+        &.right {
+            @media (min-width: 768px) {
+                margin-right: 0;
+                margin-left: auto;
+            }
+        }
+        &.left {
+            @media (min-width: 768px) {
+                margin-left: 0;
+                margin-right: auto;
+            }
+        }
+    }
+    .sys-hero_banner--button_wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: calc(100% - 2px);
+        &.has-description {
+            gap: 16px;
+        }
+        &.center {
+            @media (min-width: 768px) {
+                margin: 0 auto;
+            }
+        }
+        &.right {
+            @media (min-width: 768px) {
+                margin-right: 0;
+                margin-left: auto;
+            }
+        }
+        &.left {
+            @media (min-width: 768px) {
+                margin-left: 0;
+                margin-right: auto;
+            }
+        }
+        .restock-rocket-button {
+            display: none;
+        }
+        .button {
+            background-color: transparent;
+            width: 100%;
+            &::before {
+                display: none;
+            }
+            &::after {
+                display: none;
+            }
+            @media (min-width: 768px) {
+                width: auto;
+                padding-left: 55px;
+                padding-right: 55px;
+            }
+        }
+        @media (min-width: 768px) {
+            flex-direction: row;
+            gap: 32px;
+            width: fit-content;
+        }
+    }
+}

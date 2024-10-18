@@ -1,0 +1,156 @@
+{% comment %}
+  Renders product variant options
+
+  Accepts:
+  - product: {Object} product object.
+  - option: {Object} current product_option object.
+  - block: {Object} block object.
+
+
+  Usage:
+  {% render 'product-variant-options',
+    product: product,
+    option: option,
+    block: block
+  %}
+{% endcomment %}
+{%- liquid
+  assign variants_available_arr = product.variants | map: 'available'
+  assign variants_option1_arr = product.variants | map: 'option1'
+  assign variants_option2_arr = product.variants | map: 'option2'
+  assign variants_option3_arr = product.variants | map: 'option3'
+
+  assign product_form_id = 'product-form-' | append: section.id
+-%}
+{%- for value in option.values -%}
+  {% comment %}
+    {%- for variant in product.variants -%}
+      {% assign test = variant %}
+      {{ test | json }}
+    {%- endfor -%}
+  {% endcomment %}
+  {%- liquid
+    assign option_disabled = true
+
+    for option1_name in variants_option1_arr
+      case option.position
+        when 1
+          if variants_option1_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+        when 2
+          if option1_name == product.selected_or_first_available_variant.option1 and variants_option2_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+        when 3
+          if option1_name == product.selected_or_first_available_variant.option1 and variants_option2_arr[forloop.index0] == product.selected_or_first_available_variant.option2 and variants_option3_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+      endcase
+    endfor
+  -%}
+
+  {%- if block.settings.picker_type == 'button' -%}
+    <input
+      type="radio"
+      id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+      name="{{ option.name }}"
+      value="{{ value | escape }}"
+      form="{{ product_form_id }}"
+      onclick="changeQuantityValue()" 
+      {% if option.selected_value == value %}
+        checked
+      {% endif %}
+      {% if option_disabled %}
+        class="disabled"
+      {% endif %}
+    >
+    <label for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}">
+      {{ value -}}
+      <span class="visually-hidden">{{ 'products.product.variant_sold_out_or_unavailable' | t }}</span>
+    </label>
+  {%- elsif block.settings.picker_type == 'dropdown' -%}
+    <option
+      value="{{ value | escape }}"
+      {% if option.selected_value == value %}
+        selected="selected"
+      {% endif %}
+    >
+      {% if option_disabled -%}
+        {{- 'products.product.value_unavailable' | t: option_value: value -}}
+      {%- else -%}
+        {{- value -}}
+      {%- endif %}
+    </option>
+  {%- endif -%}
+{%- endfor -%}
+
+
+<script>    
+  function changeQuantityValue(){
+    setTimeout(function () {
+      const id = document.querySelector("#quantity-stock_inventory")?.getAttribute("product-id");
+      let variantId = "gid://shopify/ProductVariant/" + document.querySelector("#quantity-stock_inventory").getAttribute("value");
+      let myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("X-Shopify-Storefront-Access-Token", "65302ec703cac627b630bab92f5d9b54");
+      myHeaders.append("Cookie", "cart_sig=3e1e0b57bc74f5a639477919e0e006ba; localization=ES; secure_customer_sig=");
+  
+      let graphql = JSON.stringify({
+        query: "query getProductVariant($id: ID!) {\n  product(id: $id) {\n    variants(first : 10) {\n      edges {\n        node {\n          id\n          title\n          quantityAvailable\n        }\n      }\n    }\n  }\n}\n\n",
+        variables: {"id":`gid://shopify/Product/${id}`}
+      })
+      let requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: graphql,
+        redirect: 'follow'
+      };
+  
+      fetch("https://gobikdemo.myshopify.com/api/2023-10/graphql.json", requestOptions)
+      .then(response => response.json()) 
+      .then(data => {
+        const variants = data.data.product.variants.edges;
+        const desiredVariant = variants.find(variant => variant.node.id === variantId);
+        
+        if (desiredVariant) {
+          const quantityAvailable = desiredVariant.node.quantityAvailable;
+          if (quantityAvailable < 10 && quantityAvailable > 0) {
+            const quantity_stockDiv = document.querySelector("#quantity_stock");
+            if (quantity_stockDiv) {
+              quantity_stockDiv.innerHTML = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_1734_3798)">
+                <circle cx="9" cy="9.75012" r="7" stroke="#F59E0B"/>
+                <path d="M9.375 10.1251L12.75 6.75012M5.625 0.750122H12.75" stroke="#F59E0B"/>
+                </g>
+                <defs>
+                <clipPath id="clip0_1734_3798">
+                <rect width="18" height="18" fill="white"/>
+                </clipPath>
+                </defs>
+              </svg>
+              <span>
+                ${quantityAvailable}              
+                {{ 'products.product.inventory_in_stock' | t -}}
+              </span>`;
+            }
+          } else {
+            const quantity_stockDiv = document.querySelector("#quantity_stock");
+            if (quantity_stockDiv) {
+              quantity_stockDiv.innerHTML = "";
+            }
+          }
+        } else {
+        }
+      })
+      .catch(error => console.log('error', error));
+  
+    }, 200);
+  }
+  
+  </script>
+
+
+
+
+

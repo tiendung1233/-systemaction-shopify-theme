@@ -1,0 +1,26 @@
+.rocket-icon-text{
+    &__container{
+        padding: 0 var(--container-padding);
+        display: flex;
+        flex-direction: column;
+        gap: 23px;
+        @media(min-width: 1024px){
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+
+        }
+    }
+    &__item{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    &__icon{
+        width: 28px;
+        flex: 0 0 28px
+    }
+    h3{
+        margin: 0
+    }
+}

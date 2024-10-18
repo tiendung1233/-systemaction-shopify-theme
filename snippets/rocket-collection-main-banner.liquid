@@ -1,0 +1,47 @@
+{% comment %}
+  Renders Collection Banner
+  Accepts:
+  - Background Image {Image} image
+  - Title {String} title
+  - Content {String} content
+  - Button Label {String} button_label
+  - Button URL (String) button_url
+  - Dark Mode: {True/False} Placeholder image when collection is empty (optional) dark_mode
+  - Content Aligment {String} aligned = 'top', 'center', 'bottom'.
+
+  Usage:
+  {% render 'rocket-collection-main-banner' %}
+{% endcomment %}
+
+<div class="rocket-collection-banner" style="background-image: url('{{ image | img_url: 'master'}}');">
+  <div class="rocket-collection-banner__content  content-align-{{ aligned }}">
+    <div class="rocket-collection-banner__content__container ">
+      {% if title != blank %}
+        <h1
+          class="rocket-collection-banner__content__title title-h2 {% if dark_mode %} dark-mode{% endif %}"
+        >
+          {{ title | escape }}
+        </h1>
+      {% endif %}
+      {% if content != blank %}
+        <p
+          class="rocket-collection-banner__content__content {% if dark_mode %} dark-mode{% endif %} body-md"
+        >
+          {{ content | escape }}
+        </p>
+      {% endif %}
+      <div class="rocket-collection-banner__content__links">
+        <div class="rocket-collection-banner__content__link__container">
+          {% if button_label != blank %}
+            {%
+              render 'rocket-main-button',
+              button_label: button_label,
+              button_url: button_url,
+              dark_mode: dark_mode,
+            %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

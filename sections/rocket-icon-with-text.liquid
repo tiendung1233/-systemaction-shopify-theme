@@ -1,0 +1,118 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top_mb}}px;
+    padding-bottom: {{ section.settings.padding_bottom_mb}}px;
+    color: rgb(var(--color-foreground))
+  }
+
+
+  @media screen and (min-width: 768px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="section-{{ section.id }}-padding ">
+  <div class="rocket-icon-text__container">
+    {%- for block in section.blocks -%}
+      {%- if block.settings.icon != blank or block.settings.title != blank -%}
+        <div class="rocket-icon-text__item">
+          {%- if block.settings.image != blank -%}
+            <div class="rocket-icon-text__icon">
+              {{ block.settings.image | image_url: width: 56 | image_tag: loading: 'lazy' }}
+            </div>
+          {%- endif -%}
+          <div class="icon-text__text">
+            <h3 class="body-m-regular">{{ block.settings.title }}</h3>
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Icon with text",
+  "class": "section rocket-icon-text",
+
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mb",
+      "label": "Padding Top on Mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mb",
+      "label": "Padding Bottom on Mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 40,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "icon_text",
+      "name": "Icon with text",
+      "settings": [
+        {
+          "type": "text",
+          "label": "Title",
+          "id": "title",
+          "default": "1 A 3 DÍAS DE ENVÍO"
+        },
+
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icon"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Rocket icon with text",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

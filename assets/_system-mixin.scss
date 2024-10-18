@@ -1,0 +1,151 @@
+/* Text Styles  */
+@mixin headings-desktop-h1 {
+  font-family: "Playfair Display";
+  font-size: 40px;
+  line-height: 44px;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
+@mixin headings-desktop-h2 {
+  font-family: "Playfair Display";
+  font-size: 32px;
+  line-height: 44px;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
+@mixin headings-desktop-h3 {
+  font-family: "Playfair Display";
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
+@mixin headings-desktop-h4 {
+  font-family: "Playfair Display";
+  font-size: 20px;
+  line-height: 32px;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
+@mixin headings-desktop-h5 {
+  font-family: "Avenir";
+  font-size: 18px;
+  line-height: 38px;
+  letter-spacing: 0;
+  font-weight: 500;
+}
+@mixin headings-mobile-h1 {
+    font-family: "Playfair Display";
+    font-size: 32px;
+    line-height: normal;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+
+  @mixin headings-mobile-h2 {
+    font-family: "Playfair Display";
+    font-size: 24px;
+    line-height: normal;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+
+  @mixin headings-mobile-h3 {
+    font-family: "Playfair Display";
+    font-size: 22px;
+    line-height: 30px;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+
+  @mixin headings-mobile-h4 {
+    font-family: "Playfair Display";
+    font-size: 20px;
+    line-height: 26px;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+
+  @mixin headings-mobile-h5 {
+    font-family: "Avenir";
+    font-size: 18px;
+    line-height: 28px;
+    letter-spacing: 0;
+    font-weight: 500;
+  }
+/* Text Styles  */
+@mixin body-l-medium {
+  font-family: "Avenir";
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: 0;
+  font-weight: 500;
+}
+@mixin body-l-regular {
+    font-family: 'Avenir';
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0;
+    font-weight: 350;
+}
+
+@mixin body-m-medium {
+    font-family: 'Avenir';
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0;
+    font-weight: 500;
+}
+
+@mixin body-m-regular {
+    font-family: 'Avenir';
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+    font-weight: 350;
+}
+
+@mixin body-s-medium {
+    font-family: 'Avenir';
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0;
+    font-weight: 500;
+}
+
+@mixin body-s-regular {
+    font-family: 'Avenir';
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: 0;
+    font-weight: 350;
+}
+
+@mixin body-caption {
+    font-family: 'Avenir';
+    font-size: 12px;
+    line-height: 14px;
+    letter-spacing: 0;
+    font-weight: 350;
+}
+
+@mixin body-link-m {
+    font-family: 'Avenir';
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0;
+    font-weight: 350;
+}
+
+@mixin body-xs-regular {
+    font-family: 'Avenir';
+    font-size: 9px;
+    line-height: 12px;
+    letter-spacing: 0;
+    font-weight: 350;
+}
+  

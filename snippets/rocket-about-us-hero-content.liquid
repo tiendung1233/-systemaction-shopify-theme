@@ -1,0 +1,14 @@
+<div class="swiper-slide about-hero-item-container minh-{{ height }}" style="background-color:{{ background }}; ">
+    <div class="about-hero-item-content">
+        {%- if title != blank -%}
+            <div class="about-hero-item-title">
+                <h2 class="title-{{ heading_size }}">{{ title }}</h2>
+            </div>
+        {%- endif -%}
+        {%- if description != blank -%}
+            <div class="about-hero-item-subtitle">
+                <p class="body-{{ description_size }}">{{ description }}</p>
+            </div>
+        {%- endif -%}
+    </div>
+</div>

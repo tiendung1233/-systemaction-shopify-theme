@@ -1,0 +1,101 @@
+.timeline-title {
+    font-size: 14px;
+    font-weight: 350;
+    line-height: 20px;
+    text-align: center;
+    color: var(--black);
+}
+.timeline-container .heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 39px;
+}
+.timeline-container .timeline-image img {
+    max-width: 195px;
+}
+.timeline-event__line {
+    display: flex;
+    padding: 3px 0;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 17px;
+}
+.timeline-event:not(:first-child) .timeline-event__line .rectangle {
+    margin-left: 4px;
+}
+.timeline-event__line .rectangle {
+    width: 10px;
+    height: 10px;
+    background-color: var(--black);
+}
+.timeline-event__line .line {
+    width: calc(100% - 14px);
+    height: 1px;
+    background-color: var(--light-grey);
+}
+.event-content {
+    display: flex;
+    flex-direction: column;
+    width: calc(192/218*100%);
+}
+.event-content .timeline-event__time {
+    font-size: 16px;
+    font-weight: 350;
+    line-height: 22px;
+    text-align: left;
+    color: var(--black);
+    margin-bottom: 10px;
+}
+.event-content .timeline-event__title {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 22px;
+    text-align: left;
+    color: var(--dark-black);
+    margin-bottom: 4px;
+}
+.event-content .timeline-event__content {
+    font-size: 12px;
+    font-weight: 350;
+    line-height: 20px;
+    text-align: left;
+    color: var(--dark-black);
+}
+.timeline-container .swiper-button {
+    display: none;
+}
+@media (min-width: 768px) {
+    .timeline-container .swiper-button {
+        display: block;
+        position: absolute;
+        top: 0;
+        cursor: pointer;
+    }
+    .timeline-container .swiper-button.button-prev {
+        left: 0;
+    }
+    .timeline-container .swiper-button.button-next {
+        right: 0;
+    }
+    .timeline-container .timeline-list {
+        padding: 0 24px;
+        position: relative;
+    }
+    .timeline-container .timeline-list .timeline {
+        position: static;
+    }
+    .timeline-event:not(:first-child) .timeline-event__line .rectangle {
+        margin-left: 0;
+    }
+}
+@media (min-width: 1200px) {
+    .timeline-container {
+        .slider-no__nav {
+            .swiper-button {
+                display: none;
+            }
+        }
+    }
+}

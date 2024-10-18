@@ -1,0 +1,109 @@
+.announcement-bar-section {
+    .announcement-bar {
+        background-color: #2C2A29;
+        height: 38px;
+        padding: 0 20px;
+        @media (min-width: 768px) {
+            height: 48px;
+            padding: 0 32px;
+        }
+    }
+    .page-width {
+        padding: 0;
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        &.left {
+            justify-content: space-between;
+        }
+        &.center {
+            justify-content: center;
+            gap: 16px;
+            @media (min-width: 768px) {
+                gap: 32px;
+            }
+        }
+    }
+    .announcement-bar__message {
+        font-size: 9px;
+        line-height: 12px;
+        font-weight: 350;
+        color: #F2F2F2;
+        text-align: left;
+        letter-spacing: 0;
+        padding: 0;
+        @media (min-width: 768px) {
+            font-size: 12px;
+            line-height: 20px;
+        }
+        &.no-countdown {
+            display: flex;
+            gap: 2px;
+        }
+        p {
+            margin: 0;
+        }
+        @media (min-width: 768px) {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        a {
+            color: #F2F2F2;
+        }
+        * {
+            font-family: 'Avenir';
+        }
+    }
+    .countdown {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        @media (min-width: 768px) {
+            gap: 8px;
+            position: relative;
+            top: -3px;
+        }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            span {
+                font-size: 12px;
+                line-height: 18px;
+                font-weight: 500;
+                color: #FFFFFF;
+                display: block;
+                height: 14px;
+                @media (min-width: 768px) {
+                    font-size: 14px;
+                    line-height: 22px;
+                }
+                &.name-space {
+                    font-size: 9px;
+                    line-height: 12px;
+                    font-weight: 350;
+                    height: 14px;
+                    @media (min-width: 768px) {
+                        font-size: 12px;
+                        line-height: 20px;
+                    }
+                }
+            }
+        }
+        .space {
+            font-size: 10px;
+            line-height: 10px;
+            font-weight: 400;
+            color: #FFFFFF;
+            position: relative;
+            top: -1px;
+            left: -1px;
+            @media (min-width: 768px) {
+                left: 2px;
+                top: 4px;
+            }
+        }
+    }
+}

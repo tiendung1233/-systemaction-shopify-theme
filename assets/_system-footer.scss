@@ -1,0 +1,182 @@
+.page-container-width {
+    width: calc(100% - var(--container-padding) * 2 );
+    margin: 0 auto;
+}
+.rocket-footer{
+    &__line{
+        width: calc(100% - var(--container-padding) * 2 );
+        height: 1px;
+        background-color: var(--black);
+        margin: 0 auto;
+        &:empty{
+            display: block;
+        }
+    }
+    &__brand-image{
+        max-width: 192px;
+        margin-bottom: 16px;
+        @media(min-width: 768px){
+            margin-bottom: 40px;
+            max-width: 288px;
+        }
+    }
+    &__top{
+        padding-top: 40px;
+        @media(min-width: 768px){
+            padding-top: 32px;
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+    &__bottom{
+        padding: 0 var(--container-padding);
+
+    }
+    &__brand-description{
+        display: none;
+        @media(min-width: 768px){
+            display: block;
+            margin-top: 24px;
+        }
+    }
+    &__footer-left{
+        padding: 0 var(--container-padding);
+        @media(min-width: 768px){
+            min-width: 343px;
+            padding-right: 0;;
+        }
+    }
+    &__footer-right{
+        padding: 0 var(--container-padding);
+        margin-top: 40px;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: flex-start;
+        gap: 40px;
+        
+        @media(min-width: 768px){
+            padding-right: 33px;
+            padding-left: 22px;
+            margin-top: 0;
+            column-gap: clamp(15px,1.5vw, 80px);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        @media(min-width: 1440px){
+            column-gap: 80px
+        }
+    }
+    &__heading{
+        font-family: 'Avenir';
+        font-size: 12px;
+        line-height: 18px;
+        letter-spacing: 0;
+        font-weight: 500;
+        margin-bottom: 16px;
+        text-transform: uppercase;
+        @media(min-width: 768px) {
+            line-height: 14px;
+            font-weight: 350;
+        }
+      
+    }
+    &__column{
+        order: var(--mobile-order);
+        @media(min-width: 1024px){
+            order: 0;
+        }
+      
+    }
+    &__copyright{
+        
+        margin-top: 40px;
+        padding-bottom: 22px;
+        @media(min-width: 768px){
+            padding-bottom: 40px;
+            margin-top: 23px;
+        }
+        ul{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            @media(min-width: 768px){
+                gap: 16px;
+            }
+        }
+        a {
+            text-decoration: none;
+        }
+    }
+    .footer-block__details-content{
+        a{
+            text-decoration: none;
+        }
+        li + li{
+            margin-top: 16px;
+        }
+    }
+    .list-social{
+        justify-content: flex-start;
+        gap: 9.29px;
+        margin-bottom: 16px;
+        @media(min-width: 768px){
+            margin-bottom: 24px;
+        }
+        &__link{
+            display: flex;
+            padding: 0;
+            color: var(--black);
+            width: 30.97px;
+            height: 30.97px;
+            justify-content: center;
+            align-items: center;
+            padding: 7.74px;
+        }
+    }
+    .localization-form:only-child{
+        margin: 0
+    }
+    .localization-form:only-child .button, .localization-form:only-child .localization-form__select{
+        padding:0;
+        margin: 0;
+    }
+    .localization-form{
+        padding: 0;
+        svg{
+            display: none;
+        }
+    }
+    .localization-form:only-child{
+        padding: 0;
+    }
+    .footer__localization-icon{
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .footer__localization{
+        --color-background: 255,255,255;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        .disclosure__list{
+            min-height: auto;
+        }
+        .text_underline{
+            text-underline-offset: 1px;
+        }
+    }
+    .localization-form__select,
+    .disclosure__button{
+        height:auto;
+        font-family: 'Avenir';
+        font-size: 14px;
+        line-height: 22px;
+        letter-spacing: 0;
+        font-weight: 350;
+        min-height: auto;
+    }
+}

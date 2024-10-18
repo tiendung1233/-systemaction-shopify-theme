@@ -1,0 +1,158 @@
+{% comment %}
+  Renders a collection card
+
+  Accepts:
+  - card_collection: {Object} Collection Liquid object
+  - media_aspect_ratio: {String} Size of the product image card. Values are "square" and "portrait". Default is "square" (optional)
+  - Main Button Label (String):  main_button_label
+  - Custom button Label (String): custom_button_label
+  - Custom button URL (String): custom_button_url
+  - Dark Mode (Boolean) dark_mode
+
+  Usage:
+  {% render 'rocket-card-custom' %}
+{% endcomment %}
+
+{%- liquid
+  assign ratio = 1
+  if block.settings.block_image and media_aspect_ratio == 'portrait'
+    assign ratio = 0.8
+  elsif block.settings.block_image and media_aspect_ratio == 'adapt'
+    assign ratio = block.settings.block_image.aspect_ratio
+  endif
+  if ratio == 0 or ratio == null
+    assign ratio = 1
+  endif
+  assign card_color_scheme = settings.card_color_scheme
+  assign card_style = settings.card_style
+  if wrapper_class == null or wrapper_class == 'none'
+    assign card_color_scheme = settings.collection_card_color_scheme
+    assign card_style = settings.collection_card_style
+  endif
+
+  assign block_image = block.settings.block_image
+  assign title = block.settings.block_title
+  assign button_title = block.settings.custom_button_label
+  assign button_link = block.settings.custom_button_url
+-%}
+
+<div class="card-wrapper animate-arrow collection-card-wrapper">
+  <div
+    class="
+        card
+      rocket-card-collection
+        card--{{ card_style }}
+        {% if block_image %} card--media{% else %} card--text{% endif %}
+        {% if card_style == 'card' %} color-{{ card_color_scheme }} gradient{% endif %}
+        {% if extend_height %} card--extend-height{% endif %}
+        {% if block_image == nil and card_style == 'card' %} ratio{% endif %}
+    "
+    style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;"
+  >
+    <div
+      class="card__inner  ratio minh-{{- media_aspect_ratio -}}"
+      style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;"
+    >
+      {%- if block_image -%}
+        <div class="card__media">
+          <div class="media media--transparent media--hover-effect">
+            <img
+              srcset="
+                {%- if block_image.width >= 165 -%}{{ block_image | image_url: width: 165 }} 165w,{%- endif -%}
+                {%- if block_image.width >= 330 -%}{{ block_image | image_url: width: 330 }} 330w,{%- endif -%}
+                {%- if block_image.width >= 535 -%}{{ block_image | image_url: width: 535 }} 535w,{%- endif -%}
+                {%- if block_image.width >= 750 -%}{{ block_image | image_url: width: 750 }} 750w,{%- endif -%}
+                {%- if block_image.width >= 1000 -%}{{ block_image | image_url: width: 1000 }} 1000w,{%- endif -%}
+                {%- if block_image.width >= 1500 -%}{{ block_image | image_url: width: 1500 }} 1500w,{%- endif -%}
+                {%- if block_image.width >= 3000 -%}{{ block_image | image_url: width: 3000 }} 3000w,{%- endif -%}
+                {{ block_image | image_url }} {{ block_image.width }}w
+              "
+              src="{{ block_image | image_url: width: 3000 }}"
+              sizes="
+                (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: columns }}px,
+                (min-width: 750px) {% if columns > 1 %}calc((100vw - 10rem) / 2){% else %}calc(100vw - 10rem){% endif %},
+                calc(100vw - 3rem)
+              "
+              alt=""
+              height="{{ block_image.height }}"
+              width="{{ block_image.width }}"
+              loading="lazy"
+              class="motion-reduce"
+            >
+          </div>
+        </div>
+      {%- endif -%}
+      {%- if block == blank -%}
+        <div class="card__media">
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      {%- else -%}
+        <div class="card__content collection-card__content">
+          <div class="card__information">
+            <h3 class="card__heading">
+              <a
+                {% if block == blank %}
+                  role="link" aria-disabled="true"
+                {% else %}
+                  href="{{ block.settings.block_url }}"
+                {% endif %}
+                class="full-unstyled-link {% if dark_mode %} dark-mode{% endif %}"
+              >
+                {%- if title != blank -%}
+                  {{- title | escape -}}
+                {%- else -%}
+                  {{ 'onboarding.collection_title' | t }}
+                {%- endif -%}
+              </a>
+            </h3>
+            {% comment %}
+              {%- if card_collection.description != blank -%}
+                <p class="card__caption">
+                  {{- card_collection.description | strip_html | truncatewords: 12 -}}
+                  <span class="icon-wrap">&nbsp;{% render 'icon-arrow' %}</span>
+                </p>
+              {%- endif -%}
+            {% endcomment %}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+    {%- if block != blank and card_style == 'card' or block_image -%}
+      <div class="card__content collection-card__content">
+        <div class="collection-card__information">
+          {%- if title != blank -%}
+            <h3 class="collection-card__heading title-h3 {% if dark_mode %} dark-mode{% endif %}">
+              {{ title | escape }}
+            </h3>
+          {%- else -%}
+            <h3 class="card__heading title-h3 {% if dark_mode %} dark-mode{% endif %}">
+              {{ 'onboarding.collection_title' | t }}
+            </h3>
+          {%- endif %}
+          {% if button_link != blank %}
+            <div class="collection-card__links__container">
+              {%
+                render 'rocket-main-button',
+                button_label: button_title,
+                button_url: button_link,
+                dark_mode: dark_mode,
+              %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {%- endif -%}
+    {%- if block == blank -%}
+      <div class="card__content collection-card__content">
+        <div class="card__information">
+          <h3 class="card__heading card__heading--placeholder {% if dark_mode %} dark-mode{% endif %}">
+            <a role="link" aria-disabled="true" class="full-unstyled-link">
+              {{ 'onboarding.collection_title' | t }}
+              <span class="icon-wrap">{% render 'icon-arrow' %}</span>
+            </a>
+          </h3>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>

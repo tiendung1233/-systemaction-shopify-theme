@@ -1,0 +1,169 @@
+{% comment %}
+  Renders a header drawer menu for mobile and desktop.
+  - blocks:
+
+  Usage:
+  {% render 'header-drawer', blocks: blocks %}
+{% endcomment %}
+
+<header-drawer data-breakpoint="{% if section.settings.menu_type_desktop == 'drawer' %}desktop{% else %}tablet{% endif %}">
+  <details id="Details-menu-drawer-container" class="menu-drawer-container">
+    <summary
+      class="header__icon header__icon--menu header__icon--summary link"
+      aria-label="{{ 'sections.header.menu' | t }}"
+    >
+      <span>
+        {% render 'icon-hamburger' %}
+        {% render 'icon-close' %}
+      </span>
+    </summary>
+    <div id="menu-drawer" class="gradient menu-drawer motion-reduce{% if shop.customer_accounts_enabled and customer %} change-text-login{% endif %}">
+      <div class="menu-drawer__inner-container">
+        <div class="menu-drawer__navigation-container">
+          <nav class="menu-drawer__navigation">
+            <form action="{{ routes.search_url }}" method="get" role="search" class=" search-modal__drawer-form">
+              {% render 'icon-search' %}
+              <input class="search__input-drawer-form"
+                id="search__input-drawer"
+                type="text"
+                name="q"
+                value="{{ search.terms | escape }}"
+                placeholder="Buscar"
+              >
+              <input type="hidden" name="options[prefix]" value="last">
+            </form>
+            <ul class="menu-drawer__navigation-level-1 list-menu" role="list">
+              {%- for link in section.settings.menu.links -%}
+                <li>
+                  <span
+                    class="list-menu__drawer-item {% if forloop.index == 1%} active{% endif %}"
+                    >
+                    {{ link.title | escape }}
+                  </span>
+                </li>
+              {%- endfor -%}
+            </ul>
+            {%- for link in section.settings.menu.links -%}
+              {% assign counter = forloop.index %}
+              <div class="menu-drawer__navigation-level-2 {% if forloop.index == 1%} active{% endif %}">
+                <ul class="list-menu" role="list" tabindex="-1">
+                  {%- for childlink in link.links -%}
+                    <li>
+                      {%- if childlink.links != blank -%}
+                        <span
+                          class="list-menu__drawer-item has-sub-menu"
+                        >
+                          <a
+                            href="{{ childlink.url }}"
+                            class="list-menu__drawer-item-link"
+                          >
+                            {{ childlink.title | escape }}
+                          </a>
+                          {% render 'icon-vector-dropdown' %}
+                        </span>
+                      {%- else -%}
+                        <a
+                          href="{{ childlink.url }}"
+                          class="list-menu__drawer-item not-child"
+                        >
+                          {{ childlink.title | escape }}
+                        </a>
+                      {%- endif -%}
+                      <div
+                        class="menu-drawer__navigation-level-3"
+                      >
+                        <ul
+                          class="list-menu"
+                          role="list"
+                          tabindex="-1"
+                        >
+                          {%- for grandchildlink in childlink.links -%}
+                            {% if grandchildlink.title contains '~color:' %}
+                              {% assign parts = grandchildlink.title | split: '~color:' %}
+                              {% assign split_title = parts[0] %}
+                              {% assign color = parts[1] %}
+                            {% endif %}
+                            {%- if grandchildTitle contains 'view-all' -%}
+                            {%- else -%}
+                              <li>
+                                <a
+                                  href="{{ grandchildlink.url }}"
+                                  class="menu-drawer__menu-item-level-3 list-menu__drawer-item"
+                                  {% if color and grandchildlink.title contains '~color:' %}
+                                    style="color: {{ color }};" 
+                                  {% endif %}
+                                >
+                                  {% if split_title and grandchildlink.title contains '~color:' %}
+                                    {{ split_title }}
+                                  {% else %}
+                                    {{ grandchildlink.title }}
+                                  {% endif %}
+                                </a>
+                              </li>
+                            {%- endif -%}
+                          {%- endfor -%}
+                        </ul>
+                      </div>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+                <div class="drawer__content__container-image">
+                  {% for block in blocks %}
+                    {% assign image_count = block.type | split: '_' | last %}
+                      {% capture featured_image_position %}featured_image_position_{{ image_count }}{% endcapture %}
+                      {% assign style_width = 112 %}
+                      {% assign style_height = 149 %}
+                      {% if image_count == '1' %}
+                        {% assign style_width = 343 %}
+                        {% assign style_height = 338 %}
+                      {% elsif image_count == '2' %}
+                        {% assign style_width = 230 %}
+                      {% endif %}
+
+                      {% if block.settings[featured_image_position] == counter %}
+                        <slider-component class="slider-mobile-gutter">
+                          <ul
+                            class="mobile-image-container banner-x{{image_count}} list-unstyled slider slider--tablet"
+                            role="list"
+                          >
+                            {% for i in (1..image_count) %}
+                              {% capture image_id %}featured_image_{{ i }}{% endcapture %}
+                              {% capture image_link_id %}featured_image_link_{{ i }}{% endcapture %}
+                              {% capture image_text_id %}featured_image_text_{{ i }}{% endcapture %}
+                              <li
+                                class="swiper-slide"
+                                data-cascade
+                                style="--animation-order: {{ forloop.index }};"
+                               >
+                                {% if block.settings[image_link_id] != blank %}
+                                  <a href="{{ block.settings[image_link_id] }}" class="link">
+                                {% endif %}
+
+                                {% if block.settings[image_id] != blank %}
+                                  {{ block.settings[image_id] | image_url: width: style_width, height: style_height | image_tag: loading: 'lazy', alt: block.settings[image_text_id], class: 'mobile-image-container__image'}}
+                                {% else %}
+                                  {{ 'image' | placeholder_svg_tag: 'mobile-image-container__image' }}
+                                {% endif %}
+                                
+                                {% if block.settings[image_text_id] != blank %}
+                                  <span class="mobile-image-container__text">{{ block.settings[image_text_id] }}</span>
+                                {% endif %}
+
+                                {% if block.settings[image_link_id] != blank %}
+                                </a>
+                              {% endif %}
+                              </li>                          
+                            {% endfor %}
+                          </ul>
+                        </slider-component>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+              </div>
+            {%- endfor -%}
+          </nav>
+        </div>
+      </div>
+    </div>
+  </details>
+</header-drawer>

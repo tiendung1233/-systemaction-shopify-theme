@@ -1,0 +1,9 @@
+{{ 'system-product-tags.css' | asset_url | stylesheet_tag }}
+<div class="rocket-system-product-card__tag product__tags">
+  {%- if card_product.metafields.custom.label_tag.value != blank -%}
+    {% for tag in card_product.metafields.custom.label_tag.value %}
+      {% assign tagClass = tag | handleize %}
+      <span class="rocket-system-product-media-gallery__tag--label tag-label {{ tagClass }}">{{ tagClass }}</span>
+    {% endfor %}
+  {%- endif -%}
+</div>

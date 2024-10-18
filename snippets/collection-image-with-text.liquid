@@ -1,0 +1,43 @@
+
+{%- if style2 -%}
+    {%- assign position_heading = banner.position_heading | handleize -%}
+    <div class="collection-image-with-text style2">
+        <div class="collection-image-with-text__image{% if banner.image_mb != blank %} image-pc__show{% endif %}">
+            {{ banner.image | metafield_tag }}
+        </div>
+        {% if banner.image_mb != blank %}
+            <div class="collection-image-with-text__image image-mb__show">
+                {{ banner.image_mb | metafield_tag }}
+            </div>
+        {% endif %}
+        <div class="collection-image-with-text__content{% if position_heading == 'right' %} reverse__heading{% endif %}">
+            <div class="heading">
+                {{ banner.heading }}
+            </div>
+            <div class="rte">
+                {{ banner.content | metafield_tag }}
+            </div>
+        </div>
+    </div>
+{%- else -%}
+    {%- assign position_image = banner.position_image | handleize -%}
+    {%- assign position_content = banner.position_content | handleize -%}
+    <div class="collection-image-with-text image-position__{{ position_image }} content-position__{{ position_content }}">
+        <div class="collection-image-with-text__image{% if banner.image_mobile != blank %} image-pc__show{% endif %}">
+            {{ banner.image | metafield_tag }}
+        </div>
+        {% if banner.image_mobile != blank %}
+            <div class="collection-image-with-text__image image-mb__show">
+                {{ banner.image_mobile | metafield_tag }}
+            </div>
+        {% endif %}
+        <div class="collection-image-with-text__content">
+            <div class="heading">
+                {{ banner.heading }}
+            </div>
+            <div class="rte">
+            {{ banner.content | metafield_tag }}
+            </div>
+        </div>
+    </div>
+{%- endif -%}

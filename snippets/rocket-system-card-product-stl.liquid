@@ -1,0 +1,284 @@
+{% comment %}
+  Renders a product card
+
+  Accepts:
+  - card_product: {Object} Product Liquid object (optional)
+  - show_secondary_image: {Boolean} Show the secondary image on hover. Default: false (optional)
+  - section_id: {String} The ID of the section that contains this card.
+
+  Usage:
+  {% render 'rocket-system-product-card' %}
+{% endcomment %}
+
+{%- if card_product and card_product != empty -%}
+    {%- if primary_image == null -%}
+      {%- assign primary_image = card_product.featured_media -%}
+    {%- endif -%}
+    {%- if second_image == null -%}
+      {%- assign second_image = card_product.media[1]  -%}
+    {%- endif -%}
+      <product-card class="rocket-system-product-card {{ type_section }} {% if collection_page %}{{ image_type }}{% endif %} {% if video != null %}rocket-system-product-card__video{% endif %}">
+        <a href="{{ card_product.url }}" style="text-decoration: none;" class="rocket-system-product-card__wrapper {% if card_product.metafields.rocket.badge and collection_page %}rocket-system-product-card__wrapper--badge{% endif %}">
+            {%- if primary_image or video -%}
+              <div class="rocket-system-product-card__inner">
+                {% if video != null %}
+                  {{ video | video_tag: autoplay: true, loop: true, muted: true, controls: false,class: 'rocket-system-product-card__video' }}
+                {% else %}
+                {% if second_image != null and show_secondary_image %}
+                  {% if primary_image_mobile %}
+                    {{ primary_image
+                        | image_url: width: primary_image.width 
+                        | image_tag: 
+                            loading: 'lazy',
+                            alt: card_product.title,
+                            width: primary_image.width,
+                            height: primary_image.height,
+                            class: 'rocket-system-product-card__image mobile-hidden rocket-system-product-card__image--first motion-reduce'
+                    }}
+                    {{ primary_image_mobile
+                      | image_url: width: primary_image_mobile.width 
+                      | image_tag: 
+                          loading: 'lazy',
+                          alt: card_product.title,
+                          width: primary_image_mobile.width,
+                          height: primary_image_mobile.height,
+                          class: 'rocket-system-product-card__image desktop-hidden rocket-system-product-card__image--first motion-reduce'
+                    }}
+                  {% else %}
+                    {{ primary_image
+                        | image_url: width: primary_image.width 
+                        | image_tag: 
+                            loading: 'lazy',
+                            alt: card_product.title,
+                            width: primary_image.width,
+                            height: primary_image.height,
+                            class: 'rocket-system-product-card__image rocket-system-product-card__image--first motion-reduce'
+                    }}
+                  {% endif %}
+                  {% if second_image_mobile %}
+                    {{ second_image
+                        | image_url: width: second_image.width 
+                        | image_tag: 
+                            loading: 'lazy',
+                            alt: card_product.title,
+                            width: second_image.width,
+                            height: second_image.height,
+                            class: 'rocket-system-product-card__image mobile-hidden rocket-system-product-card__image--hover motion-reduce'
+                    }}
+                    {{ second_image_mobile
+                      | image_url: width: second_image_mobile.width 
+                      | image_tag: 
+                          loading: 'lazy',
+                          alt: card_product.title,
+                          width: second_image_mobile.width,
+                          height: second_image_mobile.height,
+                          class: 'rocket-system-product-card__image desktop-hidden rocket-system-product-card__image--hover motion-reduce'
+                    }}
+                  {% else %}
+                    {{ second_image
+                        | image_url: width: second_image.width 
+                        | image_tag: 
+                            loading: 'lazy',
+                            alt: card_product.title,
+                            width: second_image.width,
+                            height: second_image.height,
+                            class: 'rocket-system-product-card__image rocket-system-product-card__image--hover motion-reduce'
+                    }}
+                  {% endif %}
+
+              {% else %}
+                {% if primary_image_mobile %}
+                  {{ primary_image
+                      | image_url: width: primary_image.width 
+                      | image_tag: 
+                          loading: 'lazy',
+                          alt: card_product.title,
+                          width: primary_image.width,
+                          height: primary_image.height,
+                          class: 'rocket-system-product-card__image mobile-hidden motion-reduce'
+                  }}
+                  {{ primary_image_mobile
+                    | image_url: width: primary_image_mobile.width 
+                    | image_tag: 
+                        loading: 'lazy',
+                        alt: card_product.title,
+                        width: primary_image_mobile.width,
+                        height: primary_image_mobile.height,
+                        class: 'rocket-system-product-card__image desktop-hidden motion-reduce'
+                  }}
+                {% else %}
+                  {{ primary_image
+                      | image_url: width: primary_image.width 
+                      | image_tag: 
+                          loading: 'lazy',
+                          alt: card_product.title,
+                          width: primary_image.width,
+                          height: primary_image.height,
+                          class: 'rocket-system-product-card__image motion-reduce'
+                  }}
+                {% endif %}
+              {% endif %}
+                {% endif %}
+                <div class="rocket-system-product-card__tag">
+                    {%- if card_product.metafields.custom.label_tag.value != blank -%}
+                      {% for tag in card_product.metafields.custom.label_tag.value %}
+                        {% assign tagClass = tag | handleize %}
+                        <span class="rocket-system-product-media-gallery__tag--label tag-label {{ tagClass }}">{{ tagClass }}</span>
+                      {% endfor %}
+                    {%- endif -%}
+                </div>
+                <div class="rocket-system-product-card__save">
+                    {% render 'wishlisthero-collection-product' with product: card_product %}
+
+                    {% comment %} <div class="add"
+                         data-product-id="{{ card_product.id }}"
+                         data-product-url="{{ request.host | append: card_product.url }}"
+                         data-variant-id="{{ card_product.selected_or_first_available_variant.id }}"
+                         onclick="event.preventDefault();addOrDeleteProductToWishList(this, 'add');"
+                         data-price="{{ card_product.price | money_without_currency }}"
+                         data-currency="{{ cart.currency.symbol }}"
+                    >
+                        {% render 'icon-wishlist' %}
+                        <script type="application/json" product-variant-data>{{ card_product.variants | json }}</script>
+                    </div>
+                    <div class="remove hidden"
+                         data-product-id="{{ card_product.id }}"
+                         data-product-url="{{ request.host | append: card_product.url }}"
+                         data-variant-id="{{ card_product.selected_or_first_available_variant.id }}"
+                         onclick="event.preventDefault();addOrDeleteProductToWishList(this, 'remove');"
+                    >
+                        <svg class="icon-saved" width="9" height="10" viewBox="0 0 9 10" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M0.5 0H4.40557V0.482063V7.51464L0.5 10V0Z"
+                                  fill="black"/>
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                  d="M8.31113 0H4.40557V0.482063V7.51464L8.31113 10V0Z" fill="black"/>
+                        </svg>
+                    </div> {% endcomment %}
+                </div>
+                {% if collection_page %}
+                  <div class="rocket-product-changeImage">
+                    {% if card_product.metafields.rocket.image_type_product != blank %}
+                      {{ 
+                        card_product.metafields.rocket.image_type_product | image_url: width: card_product.metafields.rocket.image_type_product.width | image_tag: class: 'image_product'
+                      }}
+                    {% else %}
+                      {{ card_product.featured_media 
+                        | image_url: width: card_product.featured_media.width 
+                        | image_tag: 
+                            loading: 'lazy',
+                            alt: card_product.title,
+                            width: card_product.featured_media.width,
+                            height: card_product.featured_media.height,
+                            class: 'rocket-system-product-card__image motion-reduce image_product'
+                      }}
+                    {% endif %}
+                    {% if card_product.metafields.rocket.image_type_model != blank %}
+                      {{ 
+                        card_product.metafields.rocket.image_type_model | image_url: width: card_product.metafields.rocket.image_type_model.width | image_tag: class: 'image_model'
+                      }}
+                    {% else %}
+                      {{ card_product.featured_media 
+                        | image_url: width: card_product.featured_media.width 
+                        | image_tag: 
+                            loading: 'lazy',
+                            alt: card_product.title,
+                            width: card_product.featured_media.width,
+                            height: card_product.featured_media.height,
+                            class: 'rocket-system-product-card__image motion-reduce image_model'
+                      }}
+                    {% endif %}
+                  </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </a>
+        <div class="rocket-system-product-card__content">
+            <div class="rocket-system-product-card__information {% if card_product.metafields.rocket.badge %}rocket-system-product-card__information--badge{% endif %}">
+                <div class="rocket-system-product-card__information-heading">
+                <h3 class="card__heading">
+                    <div
+                    id="CardLink-{{ section_id }}-{{ card_product.id }}"
+                    class="full-unstyled-link {{ text_font_class }}"
+                    aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }} Badge-{{ section_id }}-{{ card_product.id }}"
+                    >
+                    {{ card_product.title | escape }}
+                    </div>
+                </h3>
+                </div>
+            <div class="card-information">
+                <span class="caption-large light">{{ block.settings.description | escape }}</span>
+                <div class="wrapper-price__color">
+                    {% render 'rocket-system-price', 
+                    product: card_product, 
+                    price_class: '', 
+                    show_compare_at_price: true, 
+                    text_font_class: text_font_class,
+                    use_variant: true
+                    %}
+                    {%- if card_product.quantity_price_breaks_configured? -%}
+                    <div class="card__information-volume-pricing-note">
+                        <span class="caption">{{ 'products.product.volume_pricing.note' | t }}</span>
+                    </div>
+                    {%- endif -%}
+                </div>
+                {% render 'rocket-system-variant-stl',
+                    card_product: card_product,
+                    section_id: section_id,
+                    using_svg: false,
+                    vendor: vendor
+                %}     
+            </div>
+            </div>
+            <div class="action-add-to-cart">
+                <a href="{{ card_product.url }}" class="quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add{% endif %}">
+                    <span class="desktop-text">{{ 'products.product.add_to_cart' | t }}</span>
+                    <span class="mobile-text">{{ 'products.product.add_to_cart_mb' | t }}</span>
+                </a>
+            </div>
+        </div>
+      </product-card>
+    {%- else -%}
+      <product-card class="card-wrapper product-card-wrapper underline-links-hover">
+        <div
+          class="
+            card card--{{ settings.card_style }}
+            {% if extend_height %} card--extend-height{% endif %}
+            {% if settings.card_style == 'card' %} color-{{ settings.card_color_scheme }} gradient{% endif %}
+          "
+          style="--ratio-percent: 100%;"
+        >
+          <div
+            class="card__inner{% if settings.card_style == 'standard' %} color-{{ settings.card_color_scheme }} gradient{% endif %} ratio"
+            style="--ratio-percent: 100%;"
+          >
+            <div class="card__media">
+              <div class="media media--transparent">
+                {%- if placeholder_image -%}
+                  {{ placeholder_image | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- else -%}
+                  {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="card__content">
+            <div class="card__information">
+              <h3 class="card__heading card__heading--placeholder{% if settings.card_style == 'standard' %} h5{% endif %}">
+                <a role="link" aria-disabled="true" class="full-unstyled-link">
+                  {{ 'onboarding.product_title' | t }}
+                </a>
+              </h3>
+              <div class="card-information">
+                {%- if show_vendor -%}
+                  <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
+                  <div class="caption-with-letter-spacing light">{{ 'products.product.vendor' | t }}</div>
+                {%- endif -%}
+                {% render 'price', show_compare_at_price: true, text_font_class: text_font_class %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </product-card>
+    {%- endif -%}
+    

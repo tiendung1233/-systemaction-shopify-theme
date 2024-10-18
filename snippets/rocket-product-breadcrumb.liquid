@@ -1,0 +1,85 @@
+{%- liquid
+  assign show_crumbs = true
+  assign show_structured_data = true
+  assign show_collection_listing_link = false
+  assign breadcrumbs_title = 'layout.breadcrumbs.title' | t
+  assign home_title = 'layout.breadcrumbs.home' | t
+  assign collection_breadcrumb_url = parent.url
+  assign collection_breadcrumb_title = parent.title
+  assign product_model = product.metafields.rocket.model
+  assign product_color = product.metafields.rocket.color
+-%}
+
+{%- capture divider -%}<span class="icon">{% render 'svg-chevron-right' %}</span>{%- endcapture -%}
+
+{%- capture crumbs_structured_data -%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": {{ home_title | json }},
+        "item": {{ shop.url | append: routes.root_url | json }}
+      },
+      {%- if template.name == 'product' -%}
+      {%- assign product_position = 2 -%}
+      {%- if collection -%}
+        {%- if show_collection_listing_link -%}
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": {{ collections_title | json }},
+            "item": {{ shop.url | append: routes.collections_url | json }}
+          },
+          {%- assign product_position = 3 -%}
+        {%- endif -%}
+        {
+          "@type": "ListItem",
+          "position": {{ product_position }},
+          "name": {{ collection.title | json }},
+          "item": {{ shop.url | append: collection.url | json }}
+        },
+        {%- assign product_position = product_position | plus: 1 -%}
+      {%- endif -%}
+      {
+        "@type": "ListItem",
+        "position": {{ product_position }},
+        "name": {{ product.title | json }},
+        "item": {{ shop.url | append: product.url | json }}
+      }
+      {%- endif -%}
+    ]
+  }
+</script>
+
+  {%- endcapture -%}
+{%- capture crumbs_html -%}
+  <div class="breadcrumbs" aria-label="{{ breadcrumbs_title }}">
+    <ol class="breadcrumbs-list">
+      <li class="breadcrumbs-list__item">
+        <a class="text02" href="{{ routes.root_url }}">{{ home_title | escape }}</a> 
+      </li>
+
+      {%- if parent != blank -%}
+      <span class="margin-5"> / </span>
+          <li class="breadcrumbs-list__item">
+            <a class="text02" href="{{ collection_breadcrumb_url }}" aria-current="page">{{ collection_breadcrumb_title }}</a>
+          </li>
+        {%- endif -%}
+      <span class="margin-5"> / </span>
+      <li class="breadcrumbs-list__item">
+        <a href="{{ product.url }}" aria-current="page">{{ product_model | escape }} {{ product_color | escape }} </a>
+      </li>
+    </ol>
+  </div>
+  {%- endcapture -%}
+
+{%- if show_crumbs -%}
+  {%- if show_structured_data -%}
+    {{ crumbs_structured_data }}
+  {%- endif -%}
+  {{ crumbs_html }}
+{%- endif -%}

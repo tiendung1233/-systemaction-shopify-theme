@@ -1,0 +1,78 @@
+.section-collection-accordian {
+    .collection-accordian--container {
+        padding: 0 25px;
+
+        @media (min-width: 1024px) {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        .collection-accordian--innner {
+            .accordion-item {
+                margin-bottom: 24px;
+
+                .accordion-heading {
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin: 0;
+                    border-bottom: 1px solid #BABABA;
+                    padding-bottom: 16px;
+
+                    @media (min-width: 768px) {
+                        padding-bottom: 13px;
+                    }
+
+                    &.active ~ .accordion-item-body {
+                        display: block;
+                        height: 100%;
+                        opacity: 1;
+                        pointer-events: unset;
+                    }
+
+                    &.active {
+                        .systemaction-icon-minus {
+                            display: block;
+                        }
+                        .systemaction-icon-plus {
+                            display: none;
+                        }
+                    }
+
+                    span {
+                        padding-right: 26px;
+                    }
+
+                    .systemaction-icon-minus {
+                        display: none;
+                        min-width: 24px;
+                        min-height: 24px;
+                    }
+                    .systemaction-icon-plus {
+                        display: block;
+                        min-width: 24px;
+                        min-height: 24px;
+                    }
+                }
+                .accordion-item-body {
+                    display: none;
+                    width: 100%;
+                    height: 0;
+                    opacity: 0;
+                    pointer-events: none;
+                    
+                    .accordion-item-body-content {
+                        font-weight: 350;
+
+                        & * {
+                            margin-top: 16px;
+                            margin-bottom: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

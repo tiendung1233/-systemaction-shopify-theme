@@ -1,0 +1,60 @@
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'section-related-products.css' | asset_url | stylesheet_tag }}
+
+{%- assign porduct_id = cart.items.first.product_id -%}
+{%- if cart == empty -%}
+{%- assign porduct_id = collection.products.first.id -%}
+
+{% endif %}
+<div class=" no-js-hidden">
+  <product-recommendations
+    data-column-mobile="1.85"
+    data-column-desktop="3"
+    class="related-products  isolate"
+    data-url="{{ routes.product_recommendations_url }}?section_id={{ section_id }}&product_id={{ porduct_id}}&limit={{ products_to_show }}"
+  >
+    {%- if cart == empty  -%}
+        {%- assign collection = collection -%}
+        {% else %}
+         {%- assign collection = recommendations -%}
+    {%- endif -%}
+    {% if recommendations.performed and collection.products_count > 0 %}
+        {%- if cart == empty -%}
+        {%- assign heading = 'sections.cart.recommended_products' | t -%}
+        {%- endif -%}
+        
+    <div class="related-products__heading {% if cart == empty %} related-products__heading--cart-empty {% endif %}">
+
+      <div class="">
+        {{ heading }}
+      </div>
+      </div>
+      <div class="product-slider swiper">
+        <div class="swiper-wrapper">
+        
+          {% for recommendation in collection.products %}
+            <div class="swiper-slide">
+              {% render 'rocket-system-card-product',
+                card_product: recommendation,
+                show_secondary_image: true,
+                show_quick_add: true,
+                section_id: section_id
+                product_slider: true
+              %}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="related-products-button-prev swiper-button-prev ">
+          {% render 'icon-chervon-left' %}
+            
+        </div>
+        <div class=" related-products-button-next swiper-button-next ">
+          {% render 'icon-chervon-right' %}
+
+        </div>
+      </div>
+    {% endif %}
+  </product-recommendations>
+</div>
+ 

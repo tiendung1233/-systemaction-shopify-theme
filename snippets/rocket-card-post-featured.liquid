@@ -1,0 +1,61 @@
+{% comment %}
+  Renders an article card for a given blog with settings to either show the image or not.
+
+  Accepts:
+  - blog: {Object} Blog object
+  - article: {Object} Article object
+  - media_aspect_ratio: {String} The setting changes the aspect ratio of the article image, if shown
+  - media_height: {String} The setting changes the height of the article image. Overrides media_aspect_ratio.
+  - show_image: {String} The setting either show the article image or not. If it's not included it will show the image by default
+  - show_date: {String} The setting either show the article date or not. If it's not included it will not show the image by default
+  - show_author: {String} The setting either show the article author or not. If it's not included it will not show the author by default
+  - show_badge: {String} The setting either show the blog badge or not.
+  - lazy_load: {Boolean} Image should be lazy loaded. Default: true (optional)
+
+  Usage:
+  {% render 'rocket-card-post-featured' blog: blog, article: article, show_image: section.settings.show_image %}
+{% endcomment %}
+
+<div class="rocket-card-post-featured" style="background-image: url('{{ article.image | img_url: 'master'}}');">
+  <div class="rocket-card-post-featured__content  content-align-{{ aligned }}">
+    <div class="rocket-card-post-featured__content__container ">
+      {% if article.tags != blank %}
+        <div class="rocket-card-post-featured__content__container__categories">
+          {%- for category in article.tags -%}
+            <h6 class="rocket-card-post-featured__content__container__category">{{ category }}</h6>
+          {%- endfor -%}
+        </div>
+      {% endif %}
+      {% if article.title != blank %}
+        <h3
+          class="rocket-card-post-featured__content__title title-h3 {% if dark_mode %} dark-mode{% endif %}"
+        >
+          {{ article.title | truncate: 50 | escape }}
+        </h3>
+      {% endif %}
+      {% if article.excerpt != blank %}
+        <p
+          class="rocket-card-post-featured__content__content {% if dark_mode %} dark-mode{% endif %} body-md"
+        >
+          {%- if article.excerpt.size != blank -%}
+            {{ article.excerpt | strip_html | truncatewords: 30 }}
+          {%- else -%}
+            {{ article.content | strip_html | truncatewords: 30 }}
+          {%- endif -%}
+        </p>
+      {% endif %}
+      <div class="rocket-card-post-featured__content__links">
+        <div class="rocket-card-post-featured__content__link__container">
+          {% if article.url != blank %}
+            {%
+              render 'rocket-main-button',
+              button_label: "Read more",
+              button_url: article.url,
+              dark_mode: false,
+            %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

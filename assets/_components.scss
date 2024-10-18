@@ -1,0 +1,46 @@
+
+rocket-newsletter .newsletter-content {
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  @media(min-width: 576px) {
+    rocket-newsletter .newsletter-content {
+      padding: 64px;
+    }
+  }
+  
+  
+  rocket-newsletter .container {
+    margin-block: 40px;
+  }
+  
+  rocket-newsletter .hometitle {
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 40px;
+    display: flex;
+    align-items: center;
+  
+    /* Text/01 */
+  
+    color: #000000;
+  }
+  
+  rocket-newsletter button {
+    padding: 13px 48px;
+    gap: 10px;
+  
+    width: 155px;
+    height: 52px;
+  
+    /* UI/01 */
+  
+    background: #111111;
+    border-radius: 100px;
+  }

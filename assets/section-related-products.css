@@ -1,0 +1,86 @@
+.related-products__heading {
+  display: block;
+  padding: 0 23px;
+  margin-bottom: 16px;
+}
+product-recommendations{
+  display: block;
+}
+@media(min-width:768px){
+  .related-products__heading {
+    padding: 0 32.5px;
+    margin-bottom: 24px;
+  }
+}
+
+.related-products__heading h2 {
+    margin: 0;
+}
+.related-products [class*="related-products-button"]::after{
+    content: none
+}
+.related-products [class*="related-products-button"] svg{
+  width:6px;
+  height: 10px;
+}
+.related-products .product-slider .related-products-button-next {
+  right: 31px;
+}
+.related-products .product-slider .related-products-button-prev {
+  left: 31px;
+}
+.related-products .product-slider [class*="related-products-button"]{
+  top: calc(44% - 3px);
+}
+
+@media(max-width:767px){
+  .related-products .product-slider [class*="related-products-button"] {
+    top: calc(33% - 5px);
+}
+.related-products .product-slider [class*="related-products-button"] svg{
+  width:8px;
+  height: 12px;
+}
+.related-products .product-slider .related-products-button-next{
+  right: 3px
+}
+.related-products .product-slider .related-products-button-prev{
+  left: 2px
+}
+  .section-related-product .wrapper-price__color {
+    align-items: center;
+  }
+  .section-related-product .wrapper-price__color .mobile-color__custom {
+    gap: 4px;
+  }
+  
+}
+
+
+body .section-related-product .rocket-system-product-card .card-information .rocket-system-product-media-gallery__tag--text.tag-text {
+  margin-top: 4px;
+}
+@media screen and (min-width: 768px) {
+  body .section-related-product .rocket-system-product-card .card-information .rocket-system-product-media-gallery__tag--text.tag-text {
+    margin-top: 2px;
+  }
+  .section-related-product .card-information {
+    padding-top: 2px;
+  }
+}
+@media (min-width: 375px) and (max-width: 480px) {
+  .section-related-product .rocket-system-product-card__content {
+    padding: 0 16px;
+  }
+}
+
+.related-products .rocket-system-product-card__save {
+    right: 12px;
+    top: 12px;
+}
+@media (min-width: 768px) {
+    .related-products .rocket-system-product-card__save {
+        right: 20px;
+        top: 20px;
+    }
+}

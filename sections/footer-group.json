@@ -1,0 +1,135 @@
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "rocket_subscribe_email_Y6tD9i": {
+      "type": "rocket-subscribe-email",
+      "settings": {
+        "title": "Suscríbete y obtén un 10% de descuento",
+        "text": "en tu primera compra y únete a la comunidad #Rebel",
+        "terms": "He podido leer y entiendo la Política de Privacidad y Cookies y acepto recibir comunicaciones comerciales personalizadas de System Action a través de email."
+      }
+    },
+    "rocket_icon_with_text_KYgjTB": {
+      "type": "rocket-icon-with-text",
+      "blocks": {
+        "icon_text_tNdbyJ": {
+          "type": "icon_text",
+          "settings": {
+            "title": "1 A 3 DÍAS DE ENVÍO",
+            "image": "shopify:\/\/shop_images\/icons_benefits.png"
+          }
+        },
+        "icon_text_p3wn4L": {
+          "type": "icon_text",
+          "settings": {
+            "title": "ENVÍO GRATIS PARA COMPRAS (+55€)",
+            "image": "shopify:\/\/shop_images\/icons_benefits.png"
+          }
+        },
+        "icon_text_izmtgf": {
+          "type": "icon_text",
+          "settings": {
+            "title": "POLÍTICA DE DEVOLUCION DE 14 DÍAS",
+            "image": "shopify:\/\/shop_images\/icons_benefits.png"
+          }
+        },
+        "icon_text_pypfFp": {
+          "type": "icon_text",
+          "settings": {
+            "title": "PAGO 100% SEGURO",
+            "image": "shopify:\/\/shop_images\/icons_benefits.png"
+          }
+        },
+        "icon_text_YM9NVH": {
+          "type": "icon_text",
+          "settings": {
+            "title": "2 AÑOS DE GARANTÍA",
+            "image": "shopify:\/\/shop_images\/icons_benefits.png"
+          }
+        }
+      },
+      "block_order": [
+        "icon_text_tNdbyJ",
+        "icon_text_p3wn4L",
+        "icon_text_izmtgf",
+        "icon_text_pypfFp",
+        "icon_text_YM9NVH"
+      ],
+      "settings": {
+        "padding_top": 40,
+        "padding_bottom": 31,
+        "padding_top_mb": 40,
+        "padding_bottom_mb": 38
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "brand_information_byMwR9": {
+          "type": "brand_information",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Layer_1.png",
+            "image_width": 288,
+            "show_social": true,
+            "subtext": "<p>Proyecto impulsado con el Programa e-Trade d’ACCIÓ<\/p>"
+          }
+        },
+        "link_list_7n4gjW": {
+          "type": "link_list",
+          "settings": {
+            "heading": "TOP CATEGORÍAS",
+            "menu": "top-categor-as",
+            "mobile_order": "2"
+          }
+        },
+        "link_list_REMUYX": {
+          "type": "link_list",
+          "settings": {
+            "heading": "System Action",
+            "menu": "system-action",
+            "mobile_order": "4"
+          }
+        },
+        "link_list_MB6jkb": {
+          "type": "link_list",
+          "settings": {
+            "heading": "CONTACTO",
+            "menu": "contacto",
+            "mobile_order": "1"
+          }
+        },
+        "link_list_mAWTxC": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Ayuda y compra segura",
+            "menu": "ayuda-y-compra-segura",
+            "mobile_order": "3"
+          }
+        }
+      },
+      "block_order": [
+        "brand_information_byMwR9",
+        "link_list_7n4gjW",
+        "link_list_REMUYX",
+        "link_list_MB6jkb",
+        "link_list_mAWTxC"
+      ],
+      "settings": {
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "copyright": "© SYSTEMACTION",
+        "copyright_link": "",
+        "footer_menu": "footer",
+        "margin_top": 0,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "rocket_subscribe_email_Y6tD9i",
+    "rocket_icon_with_text_KYgjTB",
+    "footer"
+  ]
+}

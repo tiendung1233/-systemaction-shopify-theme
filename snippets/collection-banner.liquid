@@ -1,0 +1,16 @@
+<a href="{{ banner.banner_url }}" class="text-white">
+
+<div class="collection-banner  collection-banner--gradient-{{ banner.gradient_position | handleize }}">
+    <div class="collection-banner__img collection-banner__img--desktop">
+      {{ banner.image_picker | metafield_tag }}
+    </div>
+    <div class="collection-banner__img collection-banner__img--mobile">
+      {{ banner.image_picker_mobile | metafield_tag }}
+    </div>
+    <div class="collection-banner__content collection-banner__content-align-{{ banner.text_align | handleize }} collection-banner__content--{{ banner.text_position | handleize }}">
+      <h2 class="collection-banner__title text-white headings-desktop-h3">{{ banner.banner_title }}</h2>
+      <p class="collection-banner__text">{{ banner.banner_subtitle }}</p>
+      <span class="collection-banner__btn">{{ banner.banner_button_label }}</span>
+    </div>
+</div>
+</a>

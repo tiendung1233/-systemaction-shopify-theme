@@ -1,0 +1,307 @@
+{% liquid
+    assign section_settings = section.settings
+%}
+
+{% style %}
+    #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-key-points {
+        padding-top: {{ section_settings.padding_top_mb }}px;
+        padding-bottom: {{ section_settings.padding_bottom_mb }}px;
+        padding-left: {{ section_settings.padding_left_mb }}px;
+        padding-right: {{ section_settings.padding_right_mb }}px;
+    }
+
+    @media (min-width: 768px) {
+        #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-key-points {
+            padding-top: {{ section_settings.padding_top }}px;
+            padding-bottom: {{ section_settings.padding_bottom }}px;
+            padding-left: {{ section_settings.padding_left }}px;
+            padding-right: {{ section_settings.padding_right }}px;
+        }
+    }
+{% endstyle %}
+  
+
+<div class="section-{{ section.id }}--sys-key-points swiper" id="section-{{ section.id }}--sys-key-points">
+    <div class="sys-key-points-wrapper swiper-wrapper wrapper-{{ section.blocks.size }}-items">
+        {% for block in section.blocks %}
+            {%  style  %} 
+                #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-key-points .sys-key-points-wrapper .sys-key-points-item .sys-key-points--text-wrapper .block-{{ block.id }}-key-points-text {
+                        color: {{ block.settings.color_text }};
+                        font-size: {{ block.settings.font_size_text_mb }}px;
+                    }    
+                @media (min-width: 768px) {
+                    #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-key-points .sys-key-points-wrapper .sys-key-points-item .sys-key-points--text-wrapper .block-{{ block.id }}-key-points-text {
+                        font-size: {{ block.settings.font_size_text }}px;
+                    }
+
+                }
+            {% endstyle %}
+
+        <div class="sys-key-points-item swiper-slide">
+            <div class="sys-key-points-item--media">
+                {% if block.settings.image != blank or block.settings.image_mb != blank %}
+                    <div class="{% if forloop.first %}image-first{% endif %} sys-key-points-item--image">
+                        <a {% if block.settings.link_url == blank %}
+                            role="link" aria-disabled="true"
+                        {% else %}
+                            href="{{ block.settings.link_url }}"
+                        {% endif %} >
+                            {% if block.settings.image != blank %}
+                                {{ block.settings.image | image_url: width: block.settings.image.width, height: block.settings.image.height| image_tag: 
+                                    width: block.settings.image.width, 
+                                    height: block.settings.image.height,
+                                    loading: 'lazy',
+                                    alt: 'image-key-point-item',
+                                    class: 'sys-key-points-item--img sys-key-points-item--img_des'
+                                }}
+                            {% endif %}
+                            {% if block.settings.image_mb != blank %}
+                                {{ block.settings.image_mb | image_url: width: block.settings.image_mb.width, height: block.settings.image_mb.height| image_tag: 
+                                    width: block.settings.image_mb.width, 
+                                    height: block.settings.image_mb.height,
+                                    loading: 'lazy',
+                                    alt: 'image-key-point-item',
+                                    class: 'sys-key-points-item--img sys-key-points-item--img_mb'
+                                }}
+                            {% endif %}
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="sys-key-points--text-wrapper">
+                <a
+                {% if block.settings.link_url == blank %}
+                    role="link" aria-disabled="true"
+                {% else %}
+                    href="{{ block.settings.link_url }}"
+                {% endif %}
+                    class="block-{{ block.id }}-key-points-text text-title"
+                >
+                    {{- block.settings.link_label | escape -}}
+                </a>
+            </div>
+            <div class="sys-key-points--text-wrapper-description">
+                {% if block.settings.lable_decription %}
+                    {{ block.settings.lable_decription }}
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="section-{{section.id}}-swiper-pagination"></div>
+    
+    <!-- If we need navigation buttons -->
+    <div class="section-{{section.id}}-swiper-button-prev"></div>
+    <div class="section-{{section.id}}-swiper-button-next"></div>
+
+    <!-- If we need scrollbar -->
+    <div class="section-{{section.id}}-swiper-scrollbar"></div>
+
+</div>
+<script>
+    var swiper_key_points{{ section.index }} = new Swiper('#section-{{ section.id }}--sys-key-points', {
+        navigation: {
+            nextEl: '.section-{{section.id}}-swiper-button-next',
+            prevEl: '.section-{{section.id}}-swiper-button-prev',
+        },
+        slidesPerView: 351/209,
+        breakpoints: {
+            768: {
+                slidesPerView: {{ section.blocks.size  }},
+                spaceBetween: 3,
+            }
+        }
+    });
+</script>
+{% schema %}
+    {
+        "name": "Systemaction-Key Points",
+        "tag": "section",
+        "class": "section section-sys-key-points",
+        "settings": [
+                {
+                    "type": "header",
+                    "content": "Section padding"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_top",
+                    "label": "Top padding",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 40,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_bottom",
+                    "label": "Bottom padding",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 52,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_top_mb",
+                    "label": "Top padding on Mobile",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 40,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_bottom_mb",
+                    "label": "Bottom padding on Mobile",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 52,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_left",
+                    "label": "Left padding",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 40,
+                    "unit": "px"
+                }, 
+                {
+                    "type": "range",
+                    "id": "padding_right",
+                    "label": "Right padding",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 52,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_left_mb",
+                    "label": "Left padding on Mobile",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 40,
+                    "unit": "px"
+                }, 
+                {
+                    "type": "range",
+                    "id": "padding_right_mb",
+                    "label": "Right padding on Mobile",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 52,
+                    "unit": "px"
+                }       
+        ],
+        "blocks": [
+            {
+                "type": "block",
+                "name": "Key point item",
+                "limit": 4,
+                "settings": [
+                    {
+                    "type": "header",
+                    "content": "Media"
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "image",
+                        "label": "Image"
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "image_mb",
+                        "label": "Image on mobile"
+                    },
+                    {
+                    "type": "header",
+                    "content": "Text"
+                    },
+                    {
+                        "type": "url",
+                        "id": "link_url",
+                        "label": "URL"
+                    },
+                    {
+                        "type": "text",
+                        "id": "link_label",
+                        "label": "Label"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_text",
+                        "label": "Font size Desktop",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 28,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_text_mb",
+                        "label": "Font size text on Mobile",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 22,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "color",
+                        "id": "color_text",
+                        "label": "Custom Color Text",
+                        "default": "#000000"
+                    },
+                    {
+                        "type": "richtext",
+                        "id":"lable_decription",
+                        "label": "lable decription"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_text_decription",
+                        "label": "Font size Desktop",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 28,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_text_decription_mb",
+                        "label": "Font size text on Mobile",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 22,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "color",
+                        "id": "color_decription_text",
+                        "label": "Custom Color Text",
+                        "default": "#000000"
+                    }
+                ]
+            }
+        ],
+        "presets": [
+            {
+                "name": "Systemaction-Key Points"
+            }
+        ]
+    }
+{% endschema %}

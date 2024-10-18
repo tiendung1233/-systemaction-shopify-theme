@@ -1,0 +1,245 @@
+html {
+    font-family: sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    scroll-behavior: smooth;
+    scroll-padding-top: 65px;
+  }  
+
+/*
+=======================
+  THEME CUSTOM STYLES 
+=======================
+*/
+
+/* Font Families */
+body{
+    letter-spacing: 0;
+    line-height: normal;
+}
+main{
+    display: flex;
+    flex-direction: column;
+}
+
+/* IMPORT HERE FONT FAMILIES */
+
+/*  Heading Styles */
+
+.title-h1{
+font-weight: 400;
+font-size: 32px;
+line-height: 42px;
+}
+
+.title-h2{
+    font-weight: 400;
+    font-size:28px;
+    line-height: 36px;
+}
+
+.title-h3{
+    font-weight: 400;
+    font-size:22px;
+    line-height: 28px;
+}
+
+.title-h4{
+    font-weight: 400;
+    font-size:20px;
+    line-height: 26px;
+}
+
+.title-h5{
+    font-weight: 400;
+    font-size:18px;
+    line-height: 26px;
+}
+
+@media (min-width: 768px) { 
+    .title-h1{
+        font-size: 48px;
+        line-height: 60px;
+        }
+        
+    .title-h2{
+            font-size:32px;
+            line-height: 44px;
+        }
+        
+    .title-h3{
+            font-size:28px;
+            line-height: 38px;
+        }
+        
+    .title-h4{
+            font-size:24px;
+            line-height: 38px;
+        }
+        
+    .title-h5{
+            font-size:18px;
+            line-height: 22px;
+        }
+}
+
+/*  Body Styles */
+
+.body-lg{
+    font-size: 14px;
+    line-height: 22px;
+}
+
+.body-md{
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.body-sm{
+    font-size: 12px;
+    line-height: 18px;
+}
+
+/*  Font Weights */
+
+.fw-400{
+    font-weight: 400;
+}
+.fw-500{
+    font-weight: 500;
+}
+.fw-600{
+    font-weight: 600;
+}
+
+/* Buttons */
+
+.btn-main{
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 18px;
+}
+
+.btn-caption{
+    font-size: 14px;
+    line-height: 22px;
+    text-transform: uppercase;
+}
+
+.btn-caption{
+    font-size: 14px;
+    line-height: 22px;
+    text-transform: uppercase;
+}
+
+.btn-lg-link{
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 22px;
+    text-decoration-line: none;
+    color:white;
+    border: solid 1px white;
+/*     padding: 10px; */
+    transition: ease-in-out 400ms all;
+}
+.btn-lg-link.dark-mode{
+    color:black;
+    border-color:black;
+}
+
+@media (min-width: 768px) { 
+    .btn-lg-link{
+    font-weight: 400;
+    }
+}
+
+.btn-sm-link{
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    text-decoration-line: underline;
+    font-weight: 500;
+}
+
+
+
+/* Containers */
+
+.container{
+width:100%;
+max-width: 1288px;
+padding: 0 var(--desktop-container-gutter);
+margin-left:auto;
+margin-right:auto;
+padding-left:24px;
+padding-right:24px;
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;   
+box-sizing: border-box; 
+}
+
+.container-fluid-lg{
+    width:100%;
+    padding-left:24px;
+    padding-right:24px;
+}
+
+.container-fluid{
+    width:100%;
+}
+
+@media (min-width: 768px) { 
+    .container-fluid-lg{
+        padding-left:0;
+        padding-right:0;
+    }
+}
+
+/* Min Heights  */
+
+.minh-large{
+    min-height: 700px;
+}
+@media (min-width: 768px) { 
+    .minh-large{
+        min-height: 880px;
+    }
+}
+
+.minh-small{
+  min-height: 500px;
+}
+@media (min-width: 768px) {
+  .minh-small{
+      min-height: 660px;
+  }
+}
+
+.minh-xs{
+  min-height: 400px;
+}
+@media (min-width: 768px) {
+  .minh-xs{
+      min-height: 560px;
+  }
+}
+
+.minh-xxs{
+  min-height: 300px;
+}
+@media (min-width: 768px) {
+  .minh-xxs{
+      min-height: 460px;
+  }
+}
+
+.minh-full{
+    min-height: calc(100vh - 88px)
+}
+@media (min-width: 768px) {
+    .minh-full{
+        min-height: calc(100vh - 111px)
+    }
+}

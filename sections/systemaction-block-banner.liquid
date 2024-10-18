@@ -1,0 +1,632 @@
+{% liquid
+    assign section_settings = section.settings
+    if section.blocks.size > 3
+        assign content_class = 'slider'
+    endif
+%}
+
+{% style %}
+    #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-padding {
+        padding-top: {{ section_settings.padding_top_mb }}px;
+        padding-bottom: {{ section_settings.padding_bottom_mb }}px;
+        padding-left: {{ section_settings.padding_left_mb }}px;
+        padding-right: {{ section_settings.padding_right_mb }}px;
+    }
+
+    @media (min-width: 768px) {
+        #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-padding {
+            padding-top: {{ section_settings.padding_top }}px;
+            padding-bottom: {{ section_settings.padding_bottom }}px;
+            padding-left: {{ section_settings.padding_left }}px;
+            padding-right: {{ section_settings.padding_right }}px;
+        }
+    }
+{% endstyle %}
+{% comment %} Style block banner if it has less 3  {% endcomment %}
+{% if section.blocks.size <= 3 %}
+    <style>
+
+    </style>
+{% endif %}    
+
+<div class="section-{{ section.id }}--sys-padding sys-block_banner">
+    <!-- Slider main container -->
+<div class="section-{{section.id}}-block-swiper swiper wrapper-{{ section.blocks.size }}-items" id="swiper-banner-{{ section.id }}">
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper content-grid wrapper-{{ section.blocks.size }}-items {{ content_class }}">
+      <!-- Slides -->
+        {% for block in section.blocks %}
+            {% if block.settings.font_size_button_mb > 14 or block.settings.font_size_button > 14 %}
+                {%  style  %}
+                    #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-padding .sys-block_banner--innner .sys-block_banner--button_wrapper .block-{{ block.id }}-button-banner {
+                        line-height: normal;
+                    }    
+                {% endstyle %}
+            {% endif %}
+            {%  style  %} 
+                #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-padding .sys-block_banner--innner .block-{{ block.id }}-sys-block_banner--heading {
+                    color: {{ block.settings.color_text_title }};
+                    font-weight: {{ block.settings.font_weight_title }};
+                    font-size: {{ block.settings.font_size_title_mb }}px;
+                }
+                #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-padding .sys-block_banner--innner .block-{{ block.id }}-sys-block_banner--description {
+                    color: {{ block.settings.color_text_content }};
+                    font-weight: {{ block.settings.font_weight_content }};
+                    font-size: {{ block.settings.font_size_content_mb }}px;
+                }
+
+                #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-padding .content-grid:not(.slider) {
+                    gap: {{ section.settings.col_gap_btn_mb}}px;
+                }
+
+                @media (min-width: 768px) {
+                    #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-padding .content-grid:not(.slider) {
+                        gap: {{ section.settings.col_gap_btn}}px;
+                    }
+                }
+                @media (min-width: 768px) {
+                    #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-padding .sys-block_banner--innner .block-{{ block.id }}-sys-block_banner--heading {
+                        font-size: {{ block.settings.font_size_title }}px;
+                    }
+                    #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-padding .sys-block_banner--innner .block-{{ block.id }}-sys-block_banner--description {
+                        font-size: {{ block.settings.font_size_content }}px;
+                    }
+                }
+                #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-padding .sys-block_banner--innner .sys-block_banner--button_wrapper .block-{{ block.id }}-button-banner {
+                    color: {{ block.settings.color_text_button }};
+                    font-size: {{ block.settings.font_size_button_mb }}px;
+                }    
+                @media (min-width: 1024px) {
+                    #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-padding .sys-block_banner--innner .sys-block_banner--button_wrapper .block-{{ block.id }}-button-banner {
+                        font-size: {{ block.settings.font_size_button }}px;
+                    }
+                }
+                #shopify-section-{{ section.id }} .section-{{ section.id }}--sys-padding .sys-block_banner--innner .banner__content-{{ block.id }}.sys-block_banner--content {
+                    background-color: {{ block.settings.color_bg }};
+                }
+            {% endstyle %}
+
+        <div class="swiper-slide sys-block_banner--innner">
+            <div class="sys-block_banner--media">
+                {% if block.settings.type_of_media == 'type_image' %}
+                    {% if block.settings.image != blank or block.settings.image_mb != blank %}
+                        <div class="{% if forloop.first %}image-first{% endif %} sys-block_banner--image">
+                            {% if block.settings.image != blank %}
+                                {{ block.settings.image | image_url: width: block.settings.image.width, height: block.settings.image.height| image_tag: 
+                                                    width: block.settings.image.width, 
+                                                    height: block.settings.image.height,
+                                                    loading: 'lazy',
+                                                    alt: 'image-banner',
+                                                    class: 'sys-block_banner--img sys-block_banner--img_des'
+                                            }}
+                            {% endif %}
+                            {% if block.settings.image_mb != blank %}
+                                {{ block.settings.image_mb | image_url: width: block.settings.image_mb.width, height: block.settings.image_mb.height| image_tag: 
+                                                    width: block.settings.image_mb.width, 
+                                                    height: block.settings.image_mb.height,
+                                                    loading: 'lazy',
+                                                    alt: 'image-banner-mb',
+                                                    class: 'sys-block_banner--img sys-block_banner--img_mb'
+                                }}
+                            {% endif %} 
+                        </div>
+                    {% endif %}
+                {% else %}
+                    {% if block.settings.video != blank %}
+                        {{
+                        block.settings.video
+                        | video_tag: image_size: '1100x', loop: true, muted: true, autoplay: true, playsinline: true, class: 'media-des media-full'
+                        }}
+                    {% endif %}
+                    {% if block.settings.video_mobile != blank %}
+                        {{
+                        block.settings.video_mobile
+                        | video_tag: image_size: '1100x', loop: true, muted: true, autoplay: true, playsinline: true, class: 'media-mb media-full'
+                        }}
+                    {% endif %}
+                {% endif %}
+            </div>
+            <div class="banner__content-{{ block.id }} sys-block_banner--content {{ block.settings.desktop_content_position }}">
+                <div class="content-wrapper {{ block.settings.content_alignment }}">
+                    {% if block.settings.heading != blank %}
+                        <{{ block.settings.heading_size }} class="block-{{ block.id }}-sys-block_banner--heading banner-title">{{ block.settings.heading }}</{{ block.settings.heading_size }}>
+                    {% endif %}
+                    {% if block.settings.description != blank %}
+                        <div class="block-{{ block.id }}-sys-block_banner--description">
+                            {{ block.settings.description }}
+                        </div>
+                    {% endif %}
+                    <div class="sys-block_banner--button_wrapper">
+                        <a
+                        {% if block.settings.button_url == blank %}
+                            role="link" aria-disabled="true"
+                        {% else %}
+                            href="{{ block.settings.button_url }}"
+                        {% endif %}
+                            class="block-{{ block.id }}-button-banner {{ block.settings.button_type }}"
+                        >
+                            {{- block.settings.button_label | escape -}}
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% if section.blocks.size >= 3 %}
+        <!-- If we need pagination -->
+        <div class="section-{{section.id}}-swiper-pagination"></div>
+    
+        <!-- If we need navigation buttons -->
+        <div class="section-{{section.id}}-swiper-button-prev swiper-button button-prev">
+            {% render 'icon-slider-banner' %}
+        </div>
+        <div class="section-{{section.id}}-swiper-button-next swiper-button button-next">
+            {% render 'icon-slider-banner' %}
+        </div>
+    
+        <!-- If we need scrollbar -->
+        <div class="section-{{section.id}}-swiper-scrollbar"></div>
+    {% endif %}
+  </div>
+</div>
+{% comment %} Will show like slider if it has more than 3  {% endcomment %}
+{% if section.blocks.size > 3 %}
+    <script>
+        var swiper_hero_{{ section.index }} = new Swiper('#swiper-banner-{{ section.id }}', {
+            navigation: {
+                nextEl: '.section-{{section.id}}-swiper-button-next',
+                prevEl: '.section-{{section.id}}-swiper-button-prev',
+            },
+            mousewheel: {
+                forceToAxis: true
+            },
+            slidesPerView: 375/249,
+            breakpoints: {
+                768: {
+                    slidesPerView: 1440/598
+                }
+            }
+        });
+    </script>
+{% endif %}
+
+<script>
+    var swiper_items_{{ section.index }} = new Swiper('#swiper-banner-{{ section.id }}.wrapper-3-items', {
+        navigation: {
+            nextEl: '.section-{{section.id}}-swiper-button-next',
+            prevEl: '.section-{{section.id}}-swiper-button-prev',
+        },
+        slidesPerView: 375/325,
+        spaceBetween: {{ section.settings.col_gap_btn_mb }},
+        breakpoints: {
+                768: {
+                    slidesPerView: 3,
+                }
+            }
+    });
+</script>
+
+{% schema %}
+    {
+        "name": "Systemaction-Block Banner",
+        "tag": "section",
+        "class": "section section-sys-block-banner",
+        "settings": [
+                {
+                    "type": "header",
+                    "content": "Section padding"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_top",
+                    "label": "Top padding",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 40,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_bottom",
+                    "label": "Bottom padding",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 52,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_top_mb",
+                    "label": "Top padding on Mobile",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 40,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_bottom_mb",
+                    "label": "Bottom padding on Mobile",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 52,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_left",
+                    "label": "Left padding",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 40,
+                    "unit": "px"
+                }, 
+                {
+                    "type": "range",
+                    "id": "padding_right",
+                    "label": "Right padding",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 52,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_left_mb",
+                    "label": "Left padding on Mobile",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 40,
+                    "unit": "px"
+                }, 
+                {
+                    "type": "range",
+                    "id": "padding_right_mb",
+                    "label": "Right padding on Mobile",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 52,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "col_gap_btn",
+                    "label": "Spacing between banner on Desktop",
+                    "info": "Apply for section has less than 4 blocks",
+                    "min": 0,
+                    "max": 50,
+                    "step": 1,
+                    "default": 12
+                },  
+                {
+                    "type": "range",
+                    "id": "col_gap_btn_mb",
+                    "label": "Spacing between Banner on Mobile",
+                    "info": "Apply for section has less than 4 blocks",
+                    "min": 0,
+                    "max": 50,
+                    "step": 1,
+                    "default": 12
+                }   
+        ],
+        "blocks": [
+            {
+                "type": "block",
+                "name": "Block banner item",
+                "settings": [
+                    {
+                    "type": "header",
+                    "content": "Media"
+                    },
+                    {
+                    "type": "select",
+                    "id": "type_of_media",
+                    "options": [
+                        {
+                            "value": "type_image",
+                            "label": "Image"
+                        },
+                        {
+                            "value": "type_video",
+                            "label": "Video"  
+                        }
+                        ],
+                        "default": "type_image",
+                        "label": "Type of Media"
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "image",
+                        "label": "Image"
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "image_mb",
+                        "label": "Image on mobile"
+                    },
+                    {
+                        "type": "video",
+                        "id": "video",
+                        "label": "Video desktop"
+                    },
+                    {
+                        "type": "video",
+                        "id": "video_mobile",
+                        "label": "Video mobile"
+                    },
+                    {
+                    "type": "header",
+                    "content": "Content Position"
+                    },
+                    {
+                    "type": "select",
+                    "id": "desktop_content_position",
+                    "options": [
+                        {
+                            "value": "left",
+                            "label": "Left"
+                        },
+                        {
+                            "value": "center",
+                            "label": "Center"  
+                        },
+                        {
+                            "value": "right",
+                            "label": "Right"
+                        }
+                        ],
+                    "default": "left",
+                    "label": "Desktop content Position",
+                    "info": "Position is automatically optimized for mobile."
+                    },
+                    {
+                        "type": "select",
+                        "id": "content_alignment",
+                        "options": [
+                            {
+                                "value": "left",
+                                "label": "Left"
+                            },
+                            {
+                                "value": "center",
+                                "label": "Center"  
+                            },
+                            {
+                                "value": "right",
+                                "label": "Right"
+                            }
+                            ],
+                        "default": "left",
+                        "label": "Content Alignment"
+                    },
+                    {
+                    "type": "header",
+                    "content": "Title"
+                    },
+                    {
+                        "type": "select",
+                        "id": "heading_size",
+                        "label": "Heading size",
+                        "info": "For optimum SEO, a page should only have one h1 and it should be the first heading on the page.",
+                        "options": [
+                            {
+                                "value": "h1",
+                                "label": "h1"
+                            },
+                            {
+                                "value": "h2",
+                                "label": "h2"
+                            },
+                            {
+                                "value": "h3",
+                                "label": "h3"
+                            },
+                            {
+                                "value": "h4",
+                                "label": "h4"
+                            },
+                            {
+                                "value": "h5",
+                                "label": "h5"
+                            },
+                            {
+                                "value": "h6",
+                                "label": "h6"
+                            },
+                            {
+                                "value": "p",
+                                "label": "p"
+                            }
+                        ],
+                        "default": "h2"
+                    },
+                    {
+                        "type": "text",
+                        "id": "heading",
+                        "label": "Heading"
+                    },
+                    {
+                        "type": "color",
+                        "id": "color_text_title",
+                        "label": "Custom Color Text Title",
+                        "default": "#000000"
+                    },
+                    {
+                        "type": "select",
+                        "id": "font_weight_title",
+                        "options": [
+                            {
+                                "value": "250",
+                                    "label": "250"
+                            },
+                            {
+                                "value": "400",
+                                "label": "400"  
+                            },
+                            {
+                                "value": "600",
+                                "label": "600"
+                            }
+                            ],
+                        "default": "400",
+                        "label": "Font Weight Title"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_title",
+                        "label": "Font size Title",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 28,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_title_mb",
+                        "label": "Font size Title on Mobile",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 22,
+                        "unit": "px"
+                    },
+                    {
+                    "type": "header",
+                    "content": "Content"
+                    },
+                    {
+                        "type": "richtext",
+                        "id": "description",
+                        "label": "Description"
+                    },
+                    {
+                        "type": "color",
+                        "id": "color_text_content",
+                        "label": "Custom Color Text Content",
+                        "default": "#000000"
+                    },
+                    {
+                        "type": "select",
+                        "id": "font_weight_content",
+                        "options": [
+                            {
+                                "value": "250",
+                                "label": "250"
+                            },
+                            {
+                                "value": "400",
+                                "label": "400"  
+                            },
+                            {
+                                "value": "600",
+                                "label": "600"
+                            }
+                            ],
+                        "default": "400",
+                        "label": "Font Weight Content"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_content",
+                        "label": "Font size Content",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 28,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_content_mb",
+                        "label": "Font size Content on Mobile",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 22,
+                        "unit": "px"
+                    },
+                    {
+                    "type": "header",
+                    "content": "Button"
+                    },
+                    {
+                        "type": "url",
+                        "id": "button_url",
+                        "label": "URL"
+                    },
+                    {
+                        "type": "text",
+                        "id": "button_label",
+                        "label": "Label"
+                    },
+                    {
+                        "type": "select",
+                        "id": "button_type",
+                        "options": [
+                            {
+                                "value": "filled_button",
+                                "label": "Filled Button"
+                            },
+                            {
+                                "value": "link_button",
+                                "label": "Link Button"  
+                            }
+                            ],
+                        "default": "link_button",
+                        "label": "Button Type"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_button",
+                        "label": "Font size Button",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 28,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "range",
+                        "id": "font_size_button_mb",
+                        "label": "Font size Button on Mobile",
+                        "min": 0,
+                        "max": 50,
+                        "step": 1,
+                        "default": 22,
+                        "unit": "px"
+                    },
+                    {
+                        "type": "color",
+                        "id": "color_bg",
+                        "label": "Custom Color Background",
+                        "default": "rgba(0,0,0,0)"
+                    },
+                    {
+                        "type": "color",
+                        "id": "color_text_button",
+                        "label": "Custom Color Text Button",
+                        "default": "#000000"
+                    }
+
+
+                ]
+            }
+        ],
+        "presets": [
+            {
+                "name": "Systemaction-Block Banner"
+            }
+        ]
+    }
+{% endschema %}

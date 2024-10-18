@@ -1,0 +1,246 @@
+{% liquid
+  assign section_settings = section.settings
+  if section.blocks.size < 7
+    assign slider_class = 'slider-no__nav'
+  endif
+%}
+
+{% style %}
+  .timeline-section.{{ section.id }}--padding {
+    padding-top: {{ section_settings.padding_top_mb }}px;
+    padding-bottom: {{ section_settings.padding_bottom_mb }}px;
+    padding-left: {{ section_settings.padding_left_mb }}px;
+    padding-right: {{ section_settings.padding_right_mb }}px;
+  }
+  .timeline-section.{{ section.id }}--padding .timeline-container .heading {
+    margin-left: -{{ section_settings.padding_left_mb }}px;
+    margin-right: -{{ section_settings.padding_right_mb }}px;
+  }
+
+  @media (min-width: 768px) {
+    .timeline-section.{{ section.id }}--padding {
+      padding-top: {{ section_settings.padding_top }}px;
+      padding-bottom: {{ section_settings.padding_bottom }}px;
+      padding-left: {{ section_settings.padding_left }}px;
+      padding-right: {{ section_settings.padding_right }}px;
+    }
+    .timeline-section.{{ section.id }}--padding .timeline-container .heading {
+      margin-left: -{{ section_settings.padding_left }}px;
+      margin-right: -{{ section_settings.padding_right }}px;
+    }
+  }
+{% endstyle %}
+<div class="timeline-section {{ section.id }}--padding">
+    <div class="timeline-container">
+      <div class="heading">
+        {% if section.settings.title != blank %}
+            <div class="timeline-title">{{ section.settings.title }}</div>
+        {% endif %}
+        <div class="timeline-image">
+          {% if section.settings.image != blank %}
+            {{ section.settings.image | image_url: width: section.settings.image.width, height: section.settings.image.height| image_tag: 
+                width: section.settings.image.width, 
+                height: section.settings.image.height,
+                loading: 'lazy',
+                alt: 'image-timeline-item',
+                class: 'sys-timeline-item--img sys-timeline-item--img'
+            }}
+          {% endif %}
+        </div>
+        {% if section.settings.description != blank %}
+            <div class="timeline-description">{{ section.settings.description }}</div>
+        {% endif %}
+      </div>
+      <div class="timeline-list">
+        <div class="timeline swiper {{ slider_class }}">
+          <div class="timeline-wrapper swiper-wrapper">
+              {% for block in section.blocks %}
+                  {% if block.settings.time != blank %}
+                      <div class="timeline-event swiper-slide">
+                          <div class="timeline-event__line">
+                              <span class="rectangle"></span>
+                              <span class="line"></span>
+                          </div>
+                          <div class="event-content">
+                            <div class="timeline-event__time">{{ block.settings.time }}</div>
+                            {% if block.settings.title != blank %}
+                                <div class="timeline-event__title">{{ block.settings.title }}</div>
+                            {% endif %}
+                            {% if block.settings.content != blank %}
+                                <div class="timeline-event__content">{{ block.settings.content }}</div>
+                            {% endif %}
+                          </div>
+                      </div>
+                  {% endif %}
+              {% endfor %}
+          </div>
+          <div class="section-{{section.id}}-swiper-pagination"></div>
+          <div class="section-{{section.id}}-swiper-button-prev swiper-button button-prev">
+            {% render 'icon-arrow-left' %}
+          </div>
+          <div class="section-{{section.id}}-swiper-button-next swiper-button button-next">
+            {% render 'icon-arrow-right' %}
+          </div>
+
+          <div class="section-{{section.id}}-swiper-scrollbar"></div>
+        </div>
+      </div>
+    </div>
+<div>
+<script>
+    window.addEventListener('DOMContentLoaded',() => {
+      var swiper = new Swiper(".{{ section.id }}--padding .timeline", {
+        navigation: {
+          nextEl: '.section-{{section.id}}-swiper-button-next',
+          prevEl: '.section-{{section.id}}-swiper-button-prev',
+        },
+        slidesPerView: 343/218,
+        breakpoints: {
+          768: {
+            slidesPerView: 4,
+          },
+          1200: {
+            slidesPerView: 6,
+            spaceBetween: 4,
+          }
+        }
+      });
+    })
+</script>
+{% schema %}
+{
+  "name": "Timeline",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 52,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mb",
+      "label": "Top padding on Mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mb",
+      "label": "Bottom padding on Mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 52,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "label": "Left padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 40,
+      "unit": "px"
+    }, 
+    {
+    "type": "range",
+    "id": "padding_right",
+    "label": "Right padding",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "default": 52,
+    "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mb",
+      "label": "Left padding on Mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 40,
+      "unit": "px"
+    }, 
+    {
+      "type": "range",
+      "id": "padding_right_mb",
+      "label": "Right padding on Mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 52,
+      "unit": "px"
+    }       
+  ],
+  "blocks": [
+     {
+       "name": "Event",
+       "type": "event",
+       "settings": [
+         {
+           "type": "text",
+           "id": "time",
+           "label": "Time"
+         },
+         {
+           "type": "text",
+           "id": "title",
+           "label": "Title"
+         },
+         {
+           "type": "textarea",
+           "id": "content",
+           "label": "Content"
+         }
+       ]
+     }
+  ],
+  "presets": [
+    {
+      "name": "Timeline",
+      "settings": {
+      }
+    }
+  ]
+}
+{% endschema %}

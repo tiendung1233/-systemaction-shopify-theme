@@ -1,0 +1,107 @@
+.sys-simple__text {
+    padding-left: 24px;
+    padding-right: 24px;
+    @media (min-width: 768px) {
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+    .heading-title {
+        font-weight: 350;
+        line-height: 20px;
+        margin: 0;
+        @media (min-width: 768px) {
+            max-width: 339px;
+        }
+    }
+    .sys-simple-text--content {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        &.left {
+            @media (min-width: 768px) {
+                align-items: flex-start;
+            }
+        }
+        &.center {
+            @media (min-width: 768px) {
+                align-items: center;
+            }
+        }
+        &.right {
+            @media (min-width: 768px) {
+                align-items: flex-end;
+            }
+        }
+        &.collection {
+            padding: 0 2px;
+            @media (min-width: 768px) {
+                padding: 0;
+            }
+            .heading-title {
+                max-width: 100%;
+            }
+            .sys-simple_text--description-wrapper {
+                max-width: 100%;
+            }
+            .title-seo {
+                .metafield-rich_text_field * {
+                    margin: 0;
+                    line-height: 43px;
+                    letter-spacing: 0;
+                    @media (min-width: 768px) {
+                        line-height: 50px;
+                    }
+                }
+            }
+            .subtitle-seo {
+                .metafield-rich_text_field * {
+                    margin: 0;
+                    line-height: 32px;
+                    padding-bottom: 8px;
+                    font-weight: 400;
+                }
+            }
+            .description-seo {
+                .metafield-rich_text_field {
+                   display: flex;
+                   flex-direction: column;
+                   gap: 16px;
+                   & * {
+                    line-height: 20px;
+                    font-weight: 350;
+                    font-family: 'Avenir';
+                   }
+                }
+            }
+        }
+    }
+    .sys-content__wrapper {
+        @media (min-width: 768px) {
+            max-width: 1215px;
+        }
+    }
+    .sys-simple_text--description-wrapper {
+        @media (min-width: 768px) {
+            max-width: 1215px;
+        }
+        .description {
+            font-weight: 400;
+            line-height: 32px;
+            font-family: var(--font-heading-family);
+            p {
+                margin: 0;
+            }
+            @media (min-width: 768px) {
+                line-height: 44px;
+            }
+        }
+    }
+    .sys-simple_text--button-wrapper {
+        padding-top: 8px;
+        a {
+            line-height: 22px;
+            font-weight: 350;
+            display: block;
+        }
+    }
+}

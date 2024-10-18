@@ -1,0 +1,371 @@
+{% comment %}
+  Renders a product card
+
+  Accepts:
+  - card_product: {Object} Product Liquid object (optional)
+  - show_secondary_image: {Boolean} Show the secondary image on hover. Default: false (optional)
+  - section_id: {String} The ID of the section that contains this card.
+
+  Usage:
+  {% render 'rocket-system-product-card' %}
+{% endcomment %}
+
+{%- if card_product and card_product != empty -%}
+  {%- if primary_image == null -%}
+    {%- assign primary_image = card_product.featured_media -%}
+  {%- endif -%}
+  {%- if second_image == null -%}
+    {%- assign second_image = card_product.media[1] -%}
+  {%- endif -%}
+  <product-card class="rocket-system-product-card {{ type }} {{ type_section }} {% if collection_page %}{{ image_type }}{% endif %} {% if video != null %}rocket-system-product-card__video{% endif %}">
+    <div class="rocket-system-product-card__overlay"></div>
+    <a
+      href="{{ card_product.url | within: collection }}"
+      style="text-decoration: none;"
+      class="rocket-system-product-card__wrapper {% if card_product.metafields.rocket.badge and collection_page %}rocket-system-product-card__wrapper--badge{% endif %}"
+    >
+      {%- if primary_image -%}
+        <div class="rocket-system-product-card__inner">
+          {%- unless product_slider -%}
+            <div class="rocket-system-product-card__media-wrapper {% if card_product.media.size > 1 %} product-card__swiper {% endif %} swiper">
+              <div class="swiper-wrapper">
+                {%- for media in card_product.media -%}
+                  <div class="swiper-slide">
+                    {%- assign width = 1024 %}
+                    {{
+                      media
+                      | image_url: width: width
+                      | image_tag:
+                        loading: 'lazy',
+                        alt: card_product.title,
+                        width: width,
+                        height: media.height,
+                        sizes:"(min-width:1440px) 1024px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), 100vw ",
+                        class: 'rocket-system-product-card__image motion-reduce'
+                    }}
+                  </div>
+                {%- endfor -%}
+               
+              </div>
+              {% if card_product.media.size > 1 %}
+                <div class="product-card__swiper-button-prev swiper-button-prev ">
+                  <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.75 0.5L1.25 6L6.75 11.5" stroke="black"/>
+                  </svg>
+                </div>
+                <div class=" product-card__swiper-button-next swiper-button-next ">
+                  <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.25 0.5L6.75 6L1.25 11.5" stroke="black"/>
+                  </svg>
+                </div>
+              {% endif %}
+            </div>
+          {% else -%}
+          <div class="rocket-system-product-card__image-wrapper   {% if second_image %} rocket-system-product-card__image--hover {% endif %} ">
+            {{
+              primary_image
+              | image_url: width: primary_image.width
+              | image_tag:
+                loading: 'lazy',
+                alt: card_product.title,
+                width: primary_image.width,
+                height: primary_image.height,
+                class: 'rocket-system-product-card__image motion-reduce'
+            }}
+            {% if second_image %}
+              {{
+                second_image
+                | image_url: width: second_image.width
+                | image_tag:
+                  loading: 'eager',
+                  alt: card_product.title,
+                  width: second_image.width,
+                  height: second_image.height,
+                  class: 'rocket-system-product-card__image motion-reduce'
+              }}
+            {% endif %}
+          </div>
+
+          {%- endunless -%}
+          <div class="rocket-system-product-card__tag">
+            {%- assign tag_count = 0 -%}
+            {% for i in (1..3) %}
+              {%- capture tag_name -%}product_tag_{{i}}{% endcapture %}
+              {%- capture tag_color -%}product_tag_{{i}}_color{% endcapture %}
+              {%- capture tag_background -%}product_tag_{{i}}_bg{% endcapture %}
+              {%- if card_product.metafields.custom.label_tag.value != blank -%}
+                {% for tag in card_product.metafields.custom.label_tag.value %}
+                  {%- if tag == settings[tag_name]  -%}
+                    {%- assign tag_count = tag_count | plus: 1 -%}
+                    {%- assign tag_color = settings[tag_color] -%}
+                    {%- assign tag_background = settings[tag_background] -%}
+                    <span
+                      class="rocket-system-product-media-gallery__tag--label tag-label with-metafield"
+                      style="--tag-color: {{ tag_color }}; --tag-background: {{ tag_background }};"
+                    >
+                      {{- tag -}}
+                    </span>
+                    {%- if tag_count == 2 -%}{%- break -%}{%- endif -%}
+                  {%- endif -%}
+                {% endfor %}
+              {%- endif -%}
+              {%- if tag_count == 2 -%}{%- break -%}{%- endif -%}
+            {% endfor %}
+            {% comment %}
+              {% for tag in card_product.tags %}
+                {% if tag contains 'label:' %}
+                  {% assign tagLabel = tag | split: ":" %}
+                  {% assign tagClass = tagLabel[1] | downcase %}
+                    <span class="rocket-system-product-media-gallery__tag--label tag-label {{ tagClass }}">{{ tagClass }}</span>
+                  {% endif %}
+              {% endfor %}
+            {% endcomment %}
+          </div>
+          <div class="rocket-system-product-card__save">
+            {% render 'wishlisthero-collection-product' with product: card_product %}
+
+            {% comment %}
+              <div class="add"
+                   data-product-id="{{ card_product.id }}"
+                   data-product-url="{{ request.host | append: card_product.url }}"
+                   data-variant-id="{{ card_product.selected_or_first_available_variant.id }}"
+                   onclick="event.preventDefault();addOrDeleteProductToWishList(this, 'add');"
+                   data-price="{{ card_product.price | money_without_currency }}"
+                   data-currency="{{ cart.currency.symbol }}"
+              >
+                  {% render 'icon-wishlist' %}
+                  <script type="application/json" product-variant-data>{{ card_product.variants | json }}</script>
+              </div>
+              <div class="remove hidden"
+                   data-product-id="{{ card_product.id }}"
+                   data-product-url="{{ request.host | append: card_product.url }}"
+                   data-variant-id="{{ card_product.selected_or_first_available_variant.id }}"
+                   onclick="event.preventDefault();addOrDeleteProductToWishList(this, 'remove');"
+              >
+                  <svg class="icon-saved" width="9" height="10" viewBox="0 0 9 10" fill="none"
+                       xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M0.5 0H4.40557V0.482063V7.51464L0.5 10V0Z"
+                            fill="black"/>
+                      <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M8.31113 0H4.40557V0.482063V7.51464L8.31113 10V0Z" fill="black"/>
+                  </svg>
+              </div>
+            {% endcomment %}
+          </div>
+          {% if collection_page %}
+            <div class="rocket-product-changeImage">
+              {% if card_product.metafields.rocket.image_type_product != blank %}
+                {{
+                  card_product.metafields.rocket.image_type_product
+                  | image_url: width: card_product.metafields.rocket.image_type_product.width
+                  | image_tag: class: 'image_product'
+                }}
+              {% else %}
+                {{
+                  card_product.featured_media
+                  | image_url: width: card_product.featured_media.width
+                  | image_tag:
+                    loading: 'lazy',
+                    alt: card_product.title,
+                    width: card_product.featured_media.width,
+                    height: card_product.featured_media.height,
+                    class: 'rocket-system-product-card__image motion-reduce image_product'
+                }}
+              {% endif %}
+              {% if card_product.metafields.rocket.image_type_model != blank %}
+                {{
+                  card_product.metafields.rocket.image_type_model
+                  | image_url: width: card_product.metafields.rocket.image_type_model.width
+                  | image_tag: class: 'image_model'
+                }}
+              {% else %}
+                {{
+                  card_product.featured_media
+                  | image_url: width: card_product.featured_media.width
+                  | image_tag:
+                    loading: 'lazy',
+                    alt: card_product.title,
+                    width: card_product.featured_media.width,
+                    height: card_product.featured_media.height,
+                    class: 'rocket-system-product-card__image motion-reduce image_model'
+                }}
+              {% endif %}
+            </div>
+          {% endif %}
+          <div
+            onclick="event.stopPropagation();return false;"
+            class="rocket-system-product-card__btn-cart {% if card_product.has_only_default_variant %}visually-hidden{% endif %}"
+            data-product-id="{{ card_product.id }}"
+            data-section-id="{{ section_id }}"
+          >
+            <svg
+              class="rocket-system-product-card__btn-cart--icon"
+              width="10"
+              height="10"
+              viewBox="0 0 10 10"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M4.4077 9.5V5.33395H0.25V4.64935H4.4077V0.5H5.0756V4.64935H9.25V5.33395H5.0756V9.5H4.4077Z" fill="#191919"/>
+            </svg>
+          </div>
+          {% render 'rocket-system-variant-swiper',
+            card_product: card_product,
+            section_id: section_id,
+            using_svg: false,
+            vendor: vendor
+          %}
+        </div>
+      {% endif %}
+      <div class="rocket-system-product-card__content">
+        <div class="rocket-system-product-card__information {% if card_product.metafields.rocket.badge %}rocket-system-product-card__information--badge{% endif %}">
+          <div class="rocket-system-product-card__information-heading">
+            <h3 class="card__heading body-s-regular">
+              <div
+                id="CardLink-{{ section_id }}-{{ card_product.id }}"
+                class="full-unstyled-link {{ text_font_class }}"
+                aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }} Badge-{{ section_id }}-{{ card_product.id }}"
+              >
+                {{ card_product.title | escape }}
+              </div>
+            </h3>
+            <div class="rocket-system-product-card__information-color">
+              {% assign option_count = 0 %}
+              {% assign max_options = 4 %}
+
+              <div class="options-color">
+                {%- assign color_option_name = settings.color_option_name | downcase -%}
+                {% for option in card_product.options_with_values %}
+                  {% assign option_name = option.name | downcase %}
+                  {% if color_option_name contains option_name %}
+                    <ul class="values">
+                      {% for value in option.values limit: max_options %}
+                        {% assign value_custom = value | escape | downcase | replace_first: ' ', '-' %}
+                        <li>
+                          <div
+                            class="rocket-system-product-card__color-cube rocket-system-product-card__swatch--{{ value_custom }}"
+                            data-swatch="{{ value |handleize }}"
+                          ></div>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                    {% assign option_count = option_count | plus: 1 %}
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="card-information">
+            {% comment %} <span class="caption-large light">{{ block.settings.description | escape }}</span> {% endcomment %}
+            <div class="wrapper-price__color">
+              {% render 'rocket-system-price',
+                product: card_product,
+                price_class: '',
+                show_compare_at_price: true,
+                text_font_class: text_font_class,
+                use_variant: true
+              %}
+              {%- if card_product.quantity_price_breaks_configured? -%}
+                <div class="card__information-volume-pricing-note">
+                  <span class="caption">{{ 'products.product.volume_pricing.note' | t }}</span>
+                </div>
+              {%- endif -%}
+              <div class="mobile-color__custom">
+                {% liquid
+                  assign color_count = 0
+                  assign first_color = null
+                  for option in card_product.options_with_values
+                    assign option_downcase = option.name | downcase
+                    if color_option_name contains option_downcase
+                      for value in option.values
+                        if forloop.index == 1
+                          assign first_color = value | escape | downcase | replace_first: ' ', '-'
+                        endif
+                        assign color_count = color_count | plus: 1
+                      endfor
+                    endif
+                  endfor
+                %}
+
+                {% if color_count > 2 %}
+                  <div
+                    class="rocket-system-product-card__color-cube rocket-system-product-card__swatch--{{ first_color }}"
+                    data-swatch="{{ first_color | handle }}"
+                  ></div>
+                  <span class="rocket-system-product-card__color-number {{ text_font_class }}"
+                    >+{{ color_count | minus: 1 -}}
+                  </span>
+                {% else %}
+                  <div
+                    class="rocket-system-product-card__color-cube rocket-system-product-card__swatch--{{ first_color }}"
+                    data-swatch="{{  first_color | handle }}"
+                  ></div>
+                {% endif %}
+              </div>
+            </div>
+            {%- if section.settings.show_vendor -%}
+              <div class="caption-with-letter-spacing light rocket-system-product-card__vendor">
+                {{ card_product.vendor }}
+              </div>
+            {%- endif -%}
+            {% for tag in card_product.tags %}
+              {%- if tag == settings.product_tag_outside -%}
+                {%- assign tag_color = settings.product_tag_outside_color -%}
+                <span
+                  class="rocket-system-product-media-gallery__tag--text tag-text body-caption"
+                  style="--tag-color: {{ tag_color }};"
+                >
+                  {{- tag -}}
+                </span>
+                {%- break -%}
+              {%- endif -%}
+            {% endfor %}
+            <div class="product-card-notification"></div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </product-card>
+{%- else -%}
+  <product-card class="card-wrapper product-card-wrapper underline-links-hover">
+    <div
+      class="
+        card card--{{ settings.card_style }}
+        {% if extend_height %} card--extend-height{% endif %}
+        {% if settings.card_style == 'card' %} color-{{ settings.card_color_scheme }} gradient{% endif %}
+      "
+      style="--ratio-percent: 100%;"
+    >
+      <div
+        class="card__inner{% if settings.card_style == 'standard' %} color-{{ settings.card_color_scheme }} gradient{% endif %} ratio"
+        style="--ratio-percent: 100%;"
+      >
+        <div class="card__media">
+          <div class="media media--transparent">
+            {%- if placeholder_image -%}
+              {{ placeholder_image | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- else -%}
+              {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="card__content">
+        <div class="card__information">
+          <h3 class="card__heading  body-s-regular card__heading--placeholder{% if settings.card_style == 'standard' %} h5{% endif %}">
+            <a role="link" aria-disabled="true" class="full-unstyled-link">
+              {{ 'onboarding.product_title' | t }}
+            </a>
+          </h3>
+          <div class="card-information">
+            {%- if show_vendor -%}
+              <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
+              <div class="caption-with-letter-spacing light">{{ 'products.product.vendor' | t }}</div>
+            {%- endif -%}
+            {% render 'price', show_compare_at_price: true, text_font_class: text_font_class %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </product-card>
+{%- endif -%}

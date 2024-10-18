@@ -1,0 +1,31 @@
+{% comment %}
+  Renders the main button
+
+  Accepts:
+  -  Button Label {String} button_label
+  - Button URL (String) button_url
+  - Dark Mode: {True/False} Placeholder image when collection is empty (optional) dark_mode
+
+  Usage:
+  {% render 'rocket-post-button' %}
+{% endcomment %}
+
+<div class="rocket-post-button__container">
+  {%- if button_label != blank -%}
+    <a
+      class="rocket-post-button__link btn-lg-link {% if dark_mode %} dark-mode{% endif %}"
+      {% if button_url == blank %}
+        role="link" aria-disabled="true"
+      {% else %}
+        href="{{ button_url }}"
+      {% endif %}
+    >
+      <div class="rocket-post-button__label">
+        {{- button_label | escape -}}
+      </div>
+      <div class="rocket-post-button__icon">
+        {%- render 'icon-button' -%}
+      </div>
+    </a>
+  {%- endif -%}
+</div>

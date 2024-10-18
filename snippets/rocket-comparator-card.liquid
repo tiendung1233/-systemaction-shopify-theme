@@ -1,0 +1,271 @@
+{% comment %}
+  Renders a product card
+
+  Accepts:
+  - product: {Object} Product Liquid object
+
+  Usage:
+    {% render 'rocket-comparator-card', product: product %}
+{% endcomment %}
+
+<div class="{% unless current %} swiper-slide {% endunless %} rocket-comparator-card">
+  <div class="rocket-comparator-card__container">
+    {%- if product.featured_media != blank -%}
+      <div class="rocket-comparator-card__container__image">
+        {{
+          product.featured_media
+          | image_url: width: 1000, height: 1500
+          | image_tag:
+            loading: lazy,
+            sizes: sizes,
+            widths: '246, 493, 600, 713, 823, 990, 1100, 1206, 1346, 1426, 1646, 1946'
+        }}
+      </div>
+    {%- endif -%}
+    {%- unless product.metafields.rocket.product_isolation == blank
+      and product.metafields.rocket.product_breathability == blank
+      and product.metafields.rocket.product_protection_water == blank
+      and product.metafields.rocket.product_protection_wind == blank
+      and product.metafields.rocket.product_weight == blank
+      and product.metafields.rocket.product_upf == blank
+      and product.metafields.rocket.product_temperature_from == blank
+      and product.metafields.rocket.product_temperature_to == blank
+      and product.metafields.rocket.product_fitting == blank
+    -%}
+      {%- assign product_model = product.metafields.rocket.model -%}
+      {%- assign product_color = product.metafields.rocket.color -%}
+      {%- if current == true -%}
+        <div class="product__accordion">
+          <div class="summary__title">
+            <select
+              name="products"
+              id="products_current"
+            >
+              <option>
+                <h4 class="body-md accordion__title inline-richtext">
+                  {{ product_model }}
+                  {{ product_color }}
+                </h4>
+              </option>
+            </select>
+          </div>
+          <div
+            class="rocket-accordion accordion__content accordion__tech__container rte"
+            id="ProductAccordion-{{ block.id }}-{{ section.id }}"
+          >
+            {%- if product.metafields.rocket.product_isolation != blank -%}
+              <div class="accordion__tech__column column-5-{{- product.metafields.rocket.product_isolation -}}">
+                <p class="accordion__tech__column__title">{{ 'products.product.isolation' | t }}</p>
+                <div class="accordion__tech__column__container">
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                </div>
+              </div>
+            {%- endif -%}
+            {%- if product.metafields.rocket.product_breathability != blank -%}
+              <div class="accordion__tech__column column-5-{{- product.metafields.rocket.product_breathability -}}">
+                <p class="accordion__tech__column__title">{{ 'products.product.breathability' | t }}</p>
+                <div class="accordion__tech__column__container">
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                </div>
+              </div>
+            {%- endif -%}
+            {%- if product.metafields.rocket.product_protection_water != blank -%}
+              <div class="accordion__tech__column column-5-{{- product.metafields.rocket.product_protection_water -}}">
+                <p class="accordion__tech__column__title">{{ 'products.product.water_protection' | t }}</p>
+                <div class="accordion__tech__column__container">
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                </div>
+              </div>
+            {%- endif -%}
+            {%- if product.metafields.rocket.product_protection_wind != blank -%}
+              <div class="accordion__tech__column column-5-{{- product.metafields.product_protection_wind -}}">
+                <p class="accordion__tech__column__title">{{ 'products.product.wind_protection' | t }}</p>
+                <div class="accordion__tech__column__container">
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                </div>
+              </div>
+            {%- endif -%}
+            <div class="accordion__tech__column__content">
+              <ul>
+                {%- if product.metafields.rocket.product_weight != blank -%}
+                  <li>
+                    <div>
+                      <p>{{ 'products.product.weight' | t }}: {{ product.metafields.rocket.product_weight }} g (M)</p>
+                    </div>
+                  </li>
+                {%- endif -%}
+                {%- if product.metafields.rocket.product_upf != blank -%}
+                  <li>
+                    <div>
+                      <p>{{ 'products.product.upf' | t }}: {{ product.metafields.rocket.product_upf }}</p>
+                    </div>
+                  </li>
+                {%- endif -%}
+                {%- if product.metafields.rocket.product_temperature_from != blank -%}
+                  <li>
+                    <div>
+                      <p>
+                        {{ 'products.product.temperature' | t }}:
+                        {{ product.metafields.rocket.product_temperature_from }}-
+                        {{ product.metafields.rocket.product_temperature_to }} ºC
+                      </p>
+                    </div>
+                  </li>
+                {%- endif -%}
+                {%- if product.metafields.rocket.product_fitting != blank -%}
+                  <li>
+                    <div>
+                      <p>{{ 'products.product.fitting' | t }}: {{ product.metafields.rocket.product_fitting }}</p>
+                    </div>
+                  </li>
+                {%- endif -%}
+                {%- if product.metafields.rocket.product_extra_bullet != blank
+                  and product.metafields.rocket.product_extra_bullet_title != blank
+                -%}
+                  <li>
+                    <div>
+                      <p>
+                        <span>{{ product.metafields.rocket.product_extra_bullet_title }}</span>:
+                        {{ product.metafields.rocket.product_extra_bullet }}
+                      </p>
+                    </div>
+                  </li>
+                {%- endif -%}
+              </ul>
+            </div>
+          </div>
+        </div>
+      {%- else -%}
+        <div class="">
+          <div
+            class="rocket-accordion accordion__content accordion__tech__container rte product__accordion"
+            id="ProductAccordion-{{ block.id }}-{{ section.id }}"
+          >
+            {%- if product.metafields.rocket.product_isolation != blank -%}
+              <div class="accordion__tech__column column-5-{{- product.metafields.rocket.product_isolation -}}">
+                <p class="accordion__tech__column__title">{{ 'products.product.isolation' | t }}</p>
+                <div class="accordion__tech__column__container">
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                </div>
+              </div>
+            {%- endif -%}
+            {%- if product.metafields.rocket.product_breathability != blank -%}
+              <div class="accordion__tech__column column-5-{{- product.metafields.rocket.product_breathability -}}">
+                <p class="accordion__tech__column__title">{{ 'products.product.breathability' | t }}</p>
+                <div class="accordion__tech__column__container">
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                </div>
+              </div>
+            {%- endif -%}
+            {%- if product.metafields.rocket.product_protection_water != blank -%}
+              <div class="accordion__tech__column column-5-{{- product.metafields.rocket.product_protection_water -}}">
+                <p class="accordion__tech__column__title">{{ 'products.product.water_protection' | t }}</p>
+                <div class="accordion__tech__column__container">
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                </div>
+              </div>
+            {%- endif -%}
+            {%- if product.metafields.rocket.product_protection_wind != blank -%}
+              <div class="accordion__tech__column column-5-{{- product.metafields.product_protection_wind -}}">
+                <p class="accordion__tech__column__title">{{ 'products.product.wind_protection' | t }}</p>
+                <div class="accordion__tech__column__container">
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                  <div><span></span></div>
+                </div>
+              </div>
+            {%- endif -%}
+            <div class="accordion__tech__column__content">
+              <ul>
+                {%- if product.metafields.rocket.product_weight != blank -%}
+                  <li>
+                    <div>
+                      <p>{{ 'products.product.weight' | t }}: {{ product.metafields.rocket.product_weight }} g (M)</p>
+                    </div>
+                  </li>
+                {%- endif -%}
+                {%- if product.metafields.rocket.product_upf != blank -%}
+                  <li>
+                    <div>
+                      <p>{{ 'products.product.upf' | t }}: {{ product.metafields.rocket.product_upf }}</p>
+                    </div>
+                  </li>
+                {%- endif -%}
+                {%- if product.metafields.rocket.product_temperature_from != blank -%}
+                  <li>
+                    <div>
+                      <p>
+                        {{ 'products.product.temperature' | t }}:
+                        {{ product.metafields.rocket.product_temperature_from }}-
+                        {{ product.metafields.rocket.product_temperature_to }} ºC
+                      </p>
+                    </div>
+                  </li>
+                {%- endif -%}
+                {%- if product.metafields.rocket.product_fitting != blank -%}
+                  <li>
+                    <div>
+                      <p>{{ 'products.product.fitting' | t }}: {{ product.metafields.rocket.product_fitting }}</p>
+                    </div>
+                  </li>
+                {%- endif -%}
+                {%- if product.metafields.rocket.product_extra_bullet != blank
+                  and product.metafields.rocket.product_extra_bullet_title != blank
+                -%}
+                  <li>
+                    <div>
+                      <p>
+                        <span>{{ product.metafields.rocket.product_extra_bullet_title }}</span>:
+                        {{ product.metafields.rocket.product_extra_bullet }}
+                      </p>
+                    </div>
+                  </li>
+                {%- endif -%}
+              </ul>
+            </div>
+          </div>
+          <a href="{{- product.url -}}" class="product-form__submit button button--full-width button--primary">
+            {{- 'products.product.view_product' | t -}}
+          </a>
+        </div>
+      {%- endif -%}
+    {%- endunless -%}
+    {%- if current == true -%}
+      <div class="rocket-comparator-card__container__button">
+        <a href="#size-picker" class="product-form__submit button button--full-width button--primary">
+          {{- 'sections.cart.mobile_choose_size' | t -}}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>

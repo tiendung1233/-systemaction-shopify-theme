@@ -1,0 +1,22 @@
+{% comment %}
+  Renders a product card
+
+  Accepts:
+  - Image: {Object} Object Image
+
+  Usage:
+    {% render 'rocket-comparator-placeholder-card', img: img %}
+{% endcomment %}
+
+<div class="swiper-slide rocket-comparator-placeholder-card">
+  <div class="rocket-comparator-card__container__current">
+    {{
+      img
+      | image_url: width: 1000, height: 1500
+      | image_tag:
+        loading: lazy,
+        sizes: sizes,
+        widths: '246, 493, 600, 713, 823, 990, 1100, 1206, 1346, 1426, 1646, 1946'
+    }}
+  </div>
+</div>

@@ -1,0 +1,10 @@
+.gitignore
+.git/*
+.idea
+
+package.json
+package-lock.json
+webpack.config.js
+
+/assets/*.scss
+/assets/rocket-*.js

@@ -1,0 +1,278 @@
+{% comment %}
+  Renders cart drawer
+
+  Usage:
+  {% render 'cart-drawer' %}
+{% endcomment %}
+
+<script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
+{{ 'swatches.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .drawer {
+    visibility: hidden;
+  }
+</style>
+
+<cart-drawer class="drawer rocket-cart-drawer {% if cart == empty %} is-empty{% endif %}">
+  <div id="CartDrawer" class="cart-drawer rocket-card-drawer">
+    <div id="CartDrawer-Overlay" class="cart-drawer__overlay"></div>
+    <div
+      class="drawer__inner {% if cart == empty %} is-empty{% endif %}"
+      role="dialog"
+      aria-modal="true"
+      aria-label="{{ 'sections.cart.title' | t }}"
+      tabindex="-1"
+    >
+      <div class="cart-drawer__inner-wrapper">
+        <div class="drawer__header">
+          <h2 class="drawer__heading body-l-medium">
+            {{ 'sections.cart.title' | t }}
+            {%- if cart.item_count > 0 -%}
+              <span id="drawer__heading-count">({{ cart.item_count }})</span>
+            {%- endif -%}
+          </h2>
+          <button
+            class="drawer__close"
+            type="button"
+            onclick="this.closest('cart-drawer').close()"
+            aria-label="{{ 'accessibility.close' | t }}"
+          >
+            {% render 'icon-close' %}
+          </button>
+        </div>
+        {%- if cart == empty -%}
+          <div class="drawer__inner-empty">
+            <div class="cart-drawer__warnings center{% if settings.cart_drawer_collection != blank %} cart-drawer__warnings--has-collection{% endif %}">
+              <div class="cart-drawer__empty-content">
+                <div class="cart__empty-text">{{ 'sections.cart.empty' | t }}</div>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+        <cart-drawer-items
+          {% if cart == empty %}
+            class=" is-empty"
+          {% endif %}
+        >
+          <form
+            action="{{ routes.cart_url }}"
+            id="CartDrawer-Form"
+            class="cart__contents cart-drawer__form"
+            method="post"
+          >
+            <div id="CartDrawer-CartItems" class="drawer__contents js-contents">
+              {%- if cart != empty -%}
+                {%- if localization.language.iso_code contains 'es' -%}
+                  {%- assign baseurl = '' -%}
+                {%- else -%}
+                  {%- assign baseurl = localization.language.iso_code | append: '/' -%}
+                {%- endif -%}
+
+                <div class="drawer__cart-items-wrapper">
+                  <table class="cart-items" role="table">
+                    {% comment %} <thead role="rowgroup">
+                      <tr role="row" class="hidden">
+                        <th id="CartDrawer-ColumnProductImage" role="columnheader">
+                          <span class="visually-hidden">{{ 'sections.cart.headings.image' | t }}</span>
+                        </th>
+                        <th
+                          id="CartDrawer-ColumnProduct"
+                          class="caption-with-letter-spacing"
+                          scope="col"
+                          role="columnheader"
+                        >
+                          {{ 'sections.cart.headings.product' | t }}
+                        </th>
+                        <th
+                          id="CartDrawer-ColumnTotal"
+                          class="right caption-with-letter-spacing"
+                          scope="col"
+                          role="columnheader"
+                        >
+                          {{ 'sections.cart.headings.total' | t }}
+                        </th>
+                        <th id="CartDrawer-ColumnQuantity" role="columnheader">
+                          <span class="visually-hidden">{{ 'sections.cart.headings.quantity' | t }}</span>
+                        </th>
+                      </tr>
+                    </thead> {% endcomment %}
+                    {% assign product_reference = cart.items | first %}
+                    <script>
+                      let productReferenceID = '{{ product_reference.product_id }}';
+                    </script>
+
+                    <tbody role="rowgroup">
+                      {%- for item in cart.items -%}
+                        {% for metafield in product.metafields.global %}
+                          {% if metafield.key == metafield_key %}
+                            {% if metafield.value == true %}
+                              {% assign product.attributes = true %}
+                            {% else %}
+                              {% assign product.attributes = false %}
+                            {% endif %}
+                          {% endif %}
+                        {% endfor %}
+                        {%- render 'rocket-cart-product-card', item: item, product: product, settings: settings -%}
+                      {%- endfor -%}
+                    </tbody>
+                  </table>
+                </div>
+              {%- endif -%}
+              <p id="CartDrawer-LiveRegionText" class="visually-hidden" role="status"></p>
+              <p id="CartDrawer-LineItemStatus" class="visually-hidden" aria-hidden="true" role="status">
+                {{ 'accessibility.loading' | t }}
+              </p>
+            </div>
+            <div id="CartDrawer-CartErrors" role="alert"></div>
+          </form>
+          <div id="rocket-card-drawer-slider-container"></div>
+        </cart-drawer-items>
+        <div class="drawer__footer">
+          {%- if settings.show_cart_note -%}
+            <details id="Details-CartDrawer">
+              <summary>
+                <span class="summary__title">
+                  {{ 'sections.cart.note' | t }}
+                  {% render 'icon-caret' %}
+                </span>
+              </summary>
+              <cart-note class="cart__note field">
+                <label class="visually-hidden" for="CartDrawer-Note">{{ 'sections.cart.note' | t }}</label>
+                <textarea
+                  id="CartDrawer-Note"
+                  class="text-area text-area--resize-vertical field__input"
+                  name="note"
+                  placeholder="{{ 'sections.cart.note' | t }}"
+                >{{ cart.note }}</textarea>
+              </cart-note>
+            </details>
+          {%- endif -%}
+
+          <!-- Start blocks -->
+          <!-- Subtotals -->
+
+          <div class="cart-drawer__footer" {{ block.shopify_attributes }}>
+            {% render 'free-shipping-notice', bar_position: 'top' %}
+            <div class="totals" role="status">
+              <h2 class="totals__subtotal">{{ 'sections.cart.subtotal' | t }}</h2>
+              <p class="totals__subtotal-value">{{ cart.total_price |money }}</p>
+            </div>
+
+            <div>
+              {%- if cart.cart_level_discount_applications.size > 0 -%}
+                <ul class="discounts list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
+                  {%- for discount in cart.cart_level_discount_applications -%}
+                    <li class="discounts__discount discounts__discount--end">
+                      {%- render 'icon-discount' -%}
+                      {{ discount.title }}
+                      (-{{ discount.total_allocated_amount | money }})
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </div>
+
+            <small class="tax-note caption-large rte hidden">
+              {%- if cart.taxes_included and shop.shipping_policy.body != blank -%}
+                {{ 'sections.cart.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url }}
+              {%- elsif cart.taxes_included -%}
+                {{ 'sections.cart.taxes_included_but_shipping_at_checkout' | t }}
+              {%- elsif shop.shipping_policy.body != blank -%}
+                {{ 'sections.cart.taxes_and_shipping_policy_at_checkout_html' | t: link: shop.shipping_policy.url }}
+              {%- else -%}
+                {{ 'sections.cart.taxes_and_shipping_at_checkout' | t }}
+              {%- endif -%}
+            </small>
+          </div>
+          <div class="error-team-store hidden" id="drawer-popup">
+            <h3>{{ 'sections.cart.teamstore' | t }}</h3>
+          </div>
+          <!-- CTAs -->
+
+          <div class="cart__ctas" {{ block.shopify_attributes }}>
+            <noscript>
+              <button type="submit" class="cart__update-button button button--secondary" form="CartDrawer-Form">
+                {{ 'sections.cart.update' | t }}
+              </button>
+            </noscript>
+
+            <button
+              type="submit"
+              id="CartDrawer-Checkout"
+              class="cart__checkout-button button"
+              name="checkout"
+              form="CartDrawer-Form"
+              {% if cart == empty %}
+                disabled
+              {% endif %}
+            >
+              {{ 'sections.cart.checkout' | t }}
+            </button>
+
+            <a href="{{ routes.all_products_collection_url }}" class="cart__continue-link">
+              {{ 'sections.cart.continue_shopping' | t }}
+            </a>
+          </div>
+        </div>
+        {%- if settings.show_recommendations -%}
+          <div class="cart-page-recommendations mt-8">
+            {%- render 'recommendations',
+              products_to_show: settings.recommendations_to_show,
+              heading: settings.recommendations_heading,
+              section_id: 'cart-drawer',
+              collection: settings.cart_drawer_collection
+            -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</cart-drawer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var trueFound = false;
+    var falseFound = false;
+
+    var cartItems = document.querySelectorAll('.cart-item');
+
+    cartItems.forEach(function (item) {
+      var teamStoreValue = item.getAttribute('data-team-store-drawer');
+
+      if (teamStoreValue === 'true') {
+        trueFound = true;
+      } else if (teamStoreValue === 'false' || teamStoreValue === '') {
+        falseFound = true;
+      }
+    });
+
+    if (trueFound && falseFound) {
+      var button = document.getElementById('CartDrawer-Checkout');
+      button.setAttribute('disabled', 'disabled');
+      var popup = document.getElementById('drawer-popup');
+      popup.style.display = 'block';
+    }
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    function isIE() {
+      const ua = window.navigator.userAgent;
+      const msie = ua.indexOf('MSIE ');
+      const trident = ua.indexOf('Trident/');
+
+      return msie > 0 || trident > 0;
+    }
+
+    if (!isIE()) return;
+    const cartSubmitInput = document.createElement('input');
+    cartSubmitInput.setAttribute('name', 'checkout');
+    cartSubmitInput.setAttribute('type', 'hidden');
+    document.querySelector('#cart').appendChild(cartSubmitInput);
+    document.querySelector('#checkout').addEventListener('click', function (event) {
+      document.querySelector('#cart').submit();
+    });
+  });
+</script>

@@ -1,0 +1,375 @@
+{% liquid
+    assign section_settings = section.settings
+%}
+
+{% style %}
+    #shopify-section-{{ section.id }} .section-{{ section.id }}--padding {
+        padding-top: {{ section_settings.padding_top_mb }}px;
+        padding-bottom: {{ section_settings.padding_bottom_mb }}px;
+    }
+
+    @media (min-width: 1024px) {
+        #shopify-section-{{ section.id }} .section-{{ section.id }}--padding {
+            padding-top: {{ section_settings.padding_top }}px;
+            padding-bottom: {{ section_settings.padding_bottom }}px;
+        }
+    }
+{% endstyle %}
+
+<div class="section-{{ section.id }}--padding shop_the_look">
+    <div class="shop_the_look--innner">
+        <div class="shop_the_look--header">
+            {% if section_settings.heading %}
+                <{{ section_settings.heading_size }} class="shop_the_look--header_heading {{ section_settings.header_position }}">{{ section_settings.heading }}</{{ section_settings.heading_size }}>
+            {% endif %}
+        </div>
+        <div class="mobile-feature-image">
+            {% for block in section.blocks %}
+                {% assign item = block.settings %}
+                {% if item.main_image != blank or item.main_image_mb != blank %}
+                    <modal-opener class="rocket-system-home-stl__wrapper__item__content__modal" data-modal="#{{ section.id }}-{{ block.id }}" id="custom-{{ section.id }}-{{ block.id }}">
+                        <div class="shop_the_look--item_main_image">
+                            {% if item.main_image != blank %}
+                                {{ item.main_image 
+                                    | image_url: width: item.main_image.width, height: item.main_image.height
+                                    | image_tag: 
+                                        width: item.main_image.width, 
+                                        height: item.main_image.height,
+                                        loading: 'lazy',
+                                        alt: item.main_image.alt,
+                                        class: 'shop_the_look--item_image shop_the_look--item_des'
+                                }}
+                            {% endif %}
+                            {% if item.main_image_mb != blank %}
+                                {{ item.main_image_mb 
+                                    | image_url: width: item.main_image_mb.width, height: item.main_image_mb.height
+                                    | image_tag: 
+                                        width: item.main_image_mb.width, 
+                                        height: item.main_image_mb.height,
+                                        loading: 'lazy',
+                                        alt: item.main_image_mb.alt,
+                                        class: 'shop_the_look--item_image shop_the_look--item_mb'
+                                }}
+                            {% endif %}
+                        </div>
+                    </modal-opener>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="shop_the_look--body">
+            <div class="shop_the_look--main swiper swiper-container" id="shop-the-look-{{ section.id }}">
+                <div class="shop_the_look--wrapper swiper-wrapper" id="section-{{ section.id }}-shop-the-look">
+                    {% for block in section.blocks %}
+                        {% assign item = block.settings %}
+                        {% if item.main_image != blank or item.main_image_mb != blank %}
+                            <div class="shop_the_look--item swiper-slide">
+                                {% if item.main_image != blank or item.main_image_mb != blank %}
+                                    <custom-slider class="custom-slider mobile">
+                                        <div class="shop_the_look--item_main_image" id="custom-{{ section.id }}-{{ block.id }}">
+                                            {% if item.main_image != blank %}
+                                                {{ item.main_image 
+                                                    | image_url: width: item.main_image.width, height: item.main_image.height
+                                                    | image_tag: 
+                                                        width: item.main_image.width, 
+                                                        height: item.main_image.height,
+                                                        loading: 'lazy',
+                                                        alt: item.main_image.alt,
+                                                        class: 'shop_the_look--item_image shop_the_look--item_des'
+                                                }}
+                                            {% endif %}
+                                            {% if item.main_image_mb != blank %}
+                                                {{ item.main_image_mb 
+                                                    | image_url: width: item.main_image_mb.width, height: item.main_image_mb.height
+                                                    | image_tag: 
+                                                        width: item.main_image_mb.width, 
+                                                        height: item.main_image_mb.height,
+                                                        loading: 'lazy',
+                                                        alt: item.main_image_mb.alt,
+                                                        class: 'shop_the_look--item_image shop_the_look--item_mb'
+                                                }}
+                                            {% endif %}
+                                        </div>
+                                    </custom-slider>
+                                    <modal-opener class="rocket-system-home-stl__wrapper__item__content__modal" data-modal="#{{ section.id }}-{{ block.id }}">
+                                        <div class="shop_the_look--item_main_image">
+                                            {% if item.main_image != blank %}
+                                                {{ item.main_image 
+                                                    | image_url: width: item.main_image.width, height: item.main_image.height
+                                                    | image_tag: 
+                                                        width: item.main_image.width, 
+                                                        height: item.main_image.height,
+                                                        loading: 'lazy',
+                                                        alt: item.main_image.alt,
+                                                        class: 'shop_the_look--item_image shop_the_look--item_des'
+                                                }}
+                                            {% endif %}
+                                            {% if item.main_image_mb != blank %}
+                                                {{ item.main_image_mb 
+                                                    | image_url: width: item.main_image_mb.width, height: item.main_image_mb.height
+                                                    | image_tag: 
+                                                        width: item.main_image_mb.width, 
+                                                        height: item.main_image_mb.height,
+                                                        loading: 'lazy',
+                                                        alt: item.main_image_mb.alt,
+                                                        class: 'shop_the_look--item_image shop_the_look--item_mb'
+                                                }}
+                                            {% endif %}
+                                        </div>
+                                    </modal-opener>
+                                {% endif %}
+                                <modal-dialog class="rocket-system-home-stl__wrapper__item__popup" id="{{ section.id }}-{{ block.id }}">
+                                    <div class="rocket-system-home-stl__wrapper__item__popup__wrapper"
+                                        role="dialog"
+                                        aria-label="{{ look.title }}"
+                                        aria-modal="true"
+                                        tabindex="-1">
+                                        <div class="action">
+                                            <button id="ModalClose-{{ section.id }}-{{ block.id }}" type="button" class="rocket-system-home-stl__wrapper__item__popup__wrapper__content__title__close">
+                                                {% render 'icon-close-popup' %}
+                                            </button>
+                                        </div>
+                                        <div class="shop_the_look--item_modals">
+                                            <div class="shop_the_look--item_modals--inner">
+                                                <div class="shop_the_look--item_modals--media">
+                                                    {% if item.main_image != blank or item.main_image_mb != blank %}
+                                                        {% if item.main_image != blank %}
+                                                            {{ item.main_image 
+                                                                | image_url: width: item.main_image.width, height: item.main_image.height
+                                                                | image_tag: 
+                                                                    width: item.main_image.width, 
+                                                                    height: item.main_image.height,
+                                                                    loading: 'lazy',
+                                                                    alt: item.main_image.alt,
+                                                                    class: 'shop_the_look--item_modals_image shop_the_look--item_modals_des'
+                                                            }}
+                                                        {% endif %}
+                                                        {% if item.main_image_mb != blank %}
+                                                            {{ item.main_image_mb 
+                                                                | image_url: width: item.main_image_mb.width, height: item.main_image_mb.height
+                                                                | image_tag: 
+                                                                    width: item.main_image_mb.width, 
+                                                                    height: item.main_image_mb.height,
+                                                                    loading: 'lazy',
+                                                                    alt: item.main_image_mb.alt,
+                                                                    class: 'shop_the_look--item_modals_image shop_the_look--item_modals_mb'
+                                                            }}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </div>
+                                                <div class="shop_the_look--item_modals--list">
+                                                    {% for product in item.product_list %}
+                                                        {% render 'rocket-system-card-product-stl',
+                                                        type_section: 'collection_grid',
+                                                        card_product: product,
+                                                        show_secondary_image: false,
+                                                        show_quick_add: true,
+                                                        section_id: sectionId,
+                                                        text_font_class: "font-class"
+                                                        %}
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </modal-dialog>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <!-- If we need pagination -->
+                <div class="section-{{section.id}}-swiper-pagination"></div>
+                
+                <!-- If we need navigation buttons -->
+                <div class="section-{{section.id}}-swiper-button-prev swiper-button button button-prev">
+                    {% render 'icon-chervon-left' %}
+                </div>
+                <div class="section-{{section.id}}-swiper-button-next swiper-button button button-next">
+                    {% render 'icon-chervon-right' %}
+                </div>
+            
+                <!-- If we need scrollbar -->
+                <div class="section-{{section.id}}-swiper-scrollbar"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var menu = ['', '', ''];
+    var shop_the_look_{{ section.index }} = new Swiper('#shop-the-look-{{ section.id }}', {
+        pagination: {
+        el: '.section-{{section.id}}-swiper-pagination',
+                clickable: true,
+            renderBullet: function (index, className) {
+            return '<span class="' + className + '">' + (menu[index]) + '</span>';
+            },
+        },
+        navigation: {
+        nextEl: '.section-{{section.id}}-swiper-button-next',
+        prevEl: '.section-{{section.id}}-swiper-button-prev',
+      },
+      mousewheel: {
+          forceToAxis: true
+      },
+      slidesPerView: 375/73.5,
+      direction: 'horizontal',
+      freeMode: true,
+      grabCursor: true,
+      breakpoints: {
+        990: {
+          slidesPerView: 1408/214.54,
+        }
+      }
+    });
+</script>
+{% schema %}
+    {
+        "name": "Shop The Look",
+        "tag": "section",
+        "class": "section section-shop-the-look",
+        "settings": [
+            {
+                "type": "header",
+                "content": "Heading"
+            },
+                {
+                    "type": "select",
+                    "id": "header_position",
+                    "label": "Header position",
+                    "options": [
+                        {
+                            "value": "left",
+                            "label": "Left"
+                        },
+                        {
+                            "value": "center",
+                            "label": "Center"
+                        },
+                        {
+                            "value": "right",
+                            "label": "Right"
+                        }
+                    ],
+                    "default": "center"
+                },
+                {
+                    "type": "select",
+                    "id": "heading_size",
+                    "label": "Heading size",
+                    "info": "For optimum SEO, a page should only have one h1 and it should be the first heading on the page.",
+                    "options": [
+                        {
+                            "value": "h1",
+                            "label": "h1"
+                        },
+                        {
+                            "value": "h2",
+                            "label": "h2"
+                        },
+                        {
+                            "value": "h3",
+                            "label": "h3"
+                        },
+                        {
+                            "value": "h4",
+                            "label": "h4"
+                        },
+                        {
+                            "value": "h5",
+                            "label": "h5"
+                        },
+                        {
+                            "value": "h6",
+                            "label": "h6"
+                        },
+                        {
+                            "value": "p",
+                            "label": "p"
+                        }
+                    ],
+                    "default": "h2"
+                },
+                {
+                    "type": "text",
+                    "id": "heading",
+                    "label": "Heading",
+                    "default": "VIDEOPINIONES"
+                },
+            {
+                "type": "header",
+                "content": "Carousel"
+            },
+            {
+                "type": "header",
+                "content": "Padding"
+            },
+                {
+                    "type": "range",
+                    "id": "padding_top",
+                    "label": "Padding Top",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 36,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_bottom",
+                    "label": "Padding Bottom",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 36,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_top_mb",
+                    "label": "Padding Top on Mobile",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 24,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_bottom_mb",
+                    "label": "Padding Bottom on Mobile",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 24,
+                    "unit": "px"
+                } 
+        ],
+        "blocks": [
+            {
+                "type": "block",
+                "name": "Block",
+                "settings": [
+                    {
+                        "type": "image_picker",
+                        "id": "main_image",
+                        "label": "Image"
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "main_image_mb",
+                        "label": "Image on mobile"
+                    },
+                    {
+                        "type": "product_list",
+                        "id": "product_list",
+                        "label": "Products"
+                    }
+                ]
+            }
+        ],
+        "presets": [
+            {
+                "name": "Shop The Look"
+            }
+        ]
+    }
+{% endschema %}

@@ -1,0 +1,63 @@
+{% comment %}
+  Renders a product card
+
+  Accepts:
+  - id: {String} Product GLOBAL ID object (string)
+
+  Usage:
+  {% render 'card-product', show_vendor: section.settings.show_vendor %}
+{% endcomment %}
+{%- if id and id != empty -%}
+  {{ 'component-rating.css' | asset_url | stylesheet_tag }}
+
+  <div
+    id="producto-{{id}}"
+    class="card-wrapper product-card-wrapper underline-links-hover swiper-slide rocket-cart-drawer-slide"
+  ></div>
+{%- else -%}
+  <div class="card-wrapper product-card-wrapper underline-links-hover">
+    <div
+      class="
+        card
+        card--{{ settings.card_style }}
+        card--text
+        {% if extend_height %} card--extend-height{% endif %}
+        {% if settings.card_style == 'card' %} color-{{ settings.card_color_scheme }} gradient{% endif %}
+        {% if card_product.featured_media == nil and settings.card_style == 'card' %} ratio{% endif %}
+        {{ horizontal_class }}
+      "
+      style="--ratio-percent: 100%;"
+    >
+      <div
+        class="card__inner {% if settings.card_style == 'standard' %}color-{{ settings.card_color_scheme }} gradient{% endif %}{% if settings.card_style == 'standard' %} ratio{% endif %}"
+        style="--ratio-percent: 100%;"
+      >
+        <div class="card__media">
+          {%- if placeholder_image -%}
+            {{ placeholder_image | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- else -%}
+            {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="card__content">
+        <div class="card__information">
+          <h3 class="card__heading card__heading--placeholder{% if settings.card_style == 'standard' %} h5{% endif %}">
+            <a role="link" aria-disabled="true" class="full-unstyled-link">
+              {{ 'onboarding.product_title' | t }}
+            </a>
+          </h3>
+          <div class="card-information">
+            {%- if show_vendor -%}
+              <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
+              <div class="caption-with-letter-spacing light">{{ 'products.product.vendor' | t }}</div>
+            {%- endif -%}
+            {%- unless card_product_price == 0 -%}
+              {% render 'price' %}
+            {%- endunless -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}

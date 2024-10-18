@@ -1,0 +1,150 @@
+{% comment %}
+  Renders Banner With Product Slide
+
+  Accepts:
+  - image_height {SELECT}
+  - bg_image: {Object} Image Object
+  - bg_mobile: {Object} Mobile Image Object
+  - banner_title: {String} Title
+  - heading_tag: {String} Tag.
+  - heading_size: {String}.
+  - banner_content: {String} Content.
+  - content_size: {String} Size Content.
+  - button_label_1: {String}.
+  - button_link_1: {URL}
+  - button_label_2: {String}
+  - button_link_2: {URL}
+  - dark_mode: {Boolean}
+  - product_1:  {Object} product object.
+  - product_2:  {Object} product object.
+  - product_3:  {Object} product object.
+  - product_4:  {Object} product object.
+  - section_id {SECTION ID}
+
+  Usage:
+    {%-
+          render 'rocket-banner-with-products',
+          bg_image: block.settings.bg_image,
+          bg_mobile: block.settings.bg_mobile,
+          banner_title: block.settings.banner_title,
+          heading_tag: block.settings.heading_tag,
+          heading_size: block.settings.heading_size,
+          banner_content: block.settings.banner_content,
+          content_size: block.settings.content_size,
+          button_label_1: block.settings.button_label_1,
+          button_link_1: block.settings.button_link_1,
+          button_label_2: block.settings.button_label_2,
+          button_link_2: block.settings.button_link_2,
+          dark_mode : block.settings.dark_mode,
+          product_1 : block.settings.product_1,
+          product_2 : block.settings.product_2,
+          product_3 : block.settings.product_3,
+          product_4 : block.settings.product_4,
+        -%}
+{% endcomment %}
+{% if bg_image != blank -%}
+  <style>
+    #banner-{{- section_id -}}{{- block.id -}}{
+      background-image: url('{{ bg_mobile | img_url: 'master' }}');
+    }
+    @media(min-width: 768px) {
+      #banner-{{- section_id -}}{{- block.id -}}{
+        background-image: url('{{ bg_image | img_url: 'master' }}');
+      }
+    }
+  </style>
+  <div class="swiper-slide rocket-banner-with-products__slide">
+    <div
+      class="rocket-hero-banner__container minh-{{ image_height }}"
+      id="banner-{{- section_id -}}{{- block.id -}}"
+      style=""
+    >
+      <div class="rocket-hero-banner__content container text-align-{{ desktop_content_position }}">
+        <div class="rocket-hero-banner__content__container ">
+          <{{ heading_tag }}
+            class="rocket-hero-banner__content__title title-{{ heading_size }} {% if dark_mode %} dark-mode{% endif %}"
+          >
+            {{ banner_title }}
+          </{{ heading_tag }}>
+
+          <p
+            class="rocket-hero-banner__content__content {% if dark_mode %} dark-mode{% endif %} body-{{ content_size }}"
+          >
+            {{ banner_content }}
+          </p>
+
+          <div class="rocket-hero-banner__content__links" {{ block.shopify_attributes }}>
+            <div class="rocket-hero-banner__content__link__container">
+              {% if button_label_1 != blank %}
+                {%
+                  render 'rocket-main-button',
+                  button_label: button_label_1,
+                  button_url: button_link_1,
+                  dark_mode: dark_mode,
+                %}
+              {% endif %}
+              {%- if button_label_2 != blank -%}
+                {%
+                  render 'rocket-main-button',
+                  button_label: button_label_2,
+                  button_url: button_link_2,
+                  dark_mode: dark_mode,
+                %}
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rocket-banner-with-products__slide__container">
+      {% if product_1 != blank %}
+        <div class="rocket-banner-with-products__slide__container__product">
+          {% render 'rocket-card-product',
+            card_product: product_1,
+            media_aspect_ratio: 'adapt',
+            show_secondary_image: true,
+            show_vendor: section.settings.show_vendor,
+            show_rating: section.settings.show_rating,
+            section_id: section_id
+          %}
+        </div>
+      {% endif %}
+      {%- if product_2 != blank -%}
+        <div class="rocket-banner-with-products__slide__container__product">
+          {% render 'rocket-card-product',
+            card_product: product_2,
+            media_aspect_ratio: 'adapt',
+            show_secondary_image: true,
+            show_vendor: section.settings.show_vendor,
+            show_rating: section.settings.show_rating,
+            section_id: section_id
+          %}
+        </div>
+      {%- endif -%}
+      {%- if product_3 != blank -%}
+        <div class="rocket-banner-with-products__slide__container__product">
+          {% render 'rocket-card-product',
+            card_product: product_3,
+            media_aspect_ratio: 'adapt',
+            show_secondary_image: true,
+            show_vendor: section.settings.show_vendor,
+            show_rating: section.settings.show_rating,
+            section_id: section_id
+          %}
+        </div>
+      {%- endif -%}
+      {%- if product_4 != blank -%}
+        <div class="rocket-banner-with-products__slide__container__product">
+          {% render 'rocket-card-product',
+            card_product: product_4,
+            media_aspect_ratio: 'adapt',
+            show_secondary_image: true,
+            show_vendor: section.settings.show_vendor,
+            show_rating: section.settings.show_rating,
+            section_id: section_id
+          %}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}

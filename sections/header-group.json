@@ -1,0 +1,112 @@
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement-bar-0": {
+          "type": "announcement",
+          "settings": {
+            "text": "<p>ENVÍO GRATIS · CUPÓN: FREE. Cambios y devoluciones a 30 días.<\/p>",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "announcement-bar-0"
+      ],
+      "settings": {
+        "color_scheme": "",
+        "content_position": "center",
+        "use_countdown": true,
+        "countdown_day": 0,
+        "countdown_hour": 3,
+        "countdown_minute": 7
+      }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "mega_menu_image_1_b7rXRH": {
+          "type": "mega_menu_image_1",
+          "settings": {
+            "featured_image_position_1": 2,
+            "featured_image_1": "shopify:\/\/shop_images\/SystemAction_DAY01_1187_1.jpg",
+            "featured_image_text_1": "Best Sellers",
+            "featured_image_link_1": ""
+          }
+        },
+        "mega_menu_image_2_iemBDP": {
+          "type": "mega_menu_image_2",
+          "settings": {
+            "featured_image_position_2": 1,
+            "featured_image_1": "shopify:\/\/shop_images\/SystemAction_DAY01_1187_1_5aeb4354-89dc-4af5-a0c5-6e0bd7b93fa8.jpg",
+            "featured_image_text_1": "Best Sellers",
+            "featured_image_link_1": "",
+            "featured_image_2": "shopify:\/\/shop_images\/PT306-V24_0842_1.jpg",
+            "featured_image_text_2": "Zapatos",
+            "featured_image_link_2": ""
+          }
+        },
+        "mega_menu_image_3_Tyr4NX": {
+          "type": "mega_menu_image_3",
+          "settings": {
+            "featured_image_position_3": 3,
+            "featured_image_1": "shopify:\/\/shop_images\/SystemAction_DAY01_1187_1_5aeb4354-89dc-4af5-a0c5-6e0bd7b93fa8.jpg",
+            "featured_image_text_1": "Lorem ipsum",
+            "featured_image_link_1": "",
+            "featured_image_2": "shopify:\/\/shop_images\/product_images.jpg",
+            "featured_image_text_2": "Lorem ipsum",
+            "featured_image_link_2": "",
+            "featured_image_3": "shopify:\/\/shop_images\/SystemAction_DAY01_1445_3.jpg",
+            "featured_image_text_3": "Accesorios",
+            "featured_image_link_3": ""
+          }
+        },
+        "mega_menu_image_4_thngKw": {
+          "type": "mega_menu_image_4",
+          "settings": {
+            "featured_image_position_4": 4,
+            "featured_image_1": "shopify:\/\/shop_images\/CT127-V24_0207_1.jpg",
+            "featured_image_text_1": "Camisetas",
+            "featured_image_link_1": "",
+            "featured_image_2": "shopify:\/\/shop_images\/image_14.jpg",
+            "featured_image_text_2": "Zapatos",
+            "featured_image_link_2": "",
+            "featured_image_3": "shopify:\/\/shop_images\/product_images.jpg",
+            "featured_image_text_3": "Pantalones",
+            "featured_image_link_3": "",
+            "featured_image_4": "shopify:\/\/shop_images\/SystemAction_DAY01_1445_3.jpg",
+            "featured_image_text_4": "Accesorios",
+            "featured_image_link_4": ""
+          }
+        }
+      },
+      "block_order": [
+        "mega_menu_image_1_b7rXRH",
+        "mega_menu_image_2_iemBDP",
+        "mega_menu_image_3_Tyr4NX",
+        "mega_menu_image_4_thngKw"
+      ],
+      "settings": {
+        "logo_position": "middle-left",
+        "menu": "main-menu",
+        "menu_type_desktop": "mega",
+        "sticky_header_type": "on-scroll-up",
+        "show_line_separator": true,
+        "color_scheme": "background-1",
+        "enable_country_selector": false,
+        "enable_language_selector": true,
+        "mobile_logo_position": "center",
+        "margin_bottom": 0,
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
+}

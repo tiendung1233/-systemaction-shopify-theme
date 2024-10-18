@@ -1,0 +1,169 @@
+{% liquid
+    assign section_settings = section.settings
+%}
+{% if product.metafields.custom.shop_the_look.value != blank %}
+    {% style %}
+        #shopify-section-{{ section.id }} .section-{{ section.id }}--padding {
+            padding-top: {{ section_settings.padding_top_mb }}px;
+            padding-bottom: {{ section_settings.padding_bottom_mb }}px;
+        }
+
+        @media (min-width: 1024px) {
+            #shopify-section-{{ section.id }} .section-{{ section.id }}--padding {
+                padding-top: {{ section_settings.padding_top }}px;
+                padding-bottom: {{ section_settings.padding_bottom }}px;
+            }
+        }
+    {% endstyle %}
+    <span class="asdasdasdasd"> {{ product.metafields.custom.shop_the_look.value | json }}</span>
+    {%  for shopTheLookItem in product.metafields.custom.shop_the_look.value %}
+            <div class="section-{{ section.id }}--padding product_shop_the_look">
+                <div class="product_shop_the_look--innner_content">
+                    <div class="product_shop_the_look--media">
+                        <div class="product_shop_the_look--media-desktop">
+                            {{ shopTheLookItem.image_picker }}
+                        </div>
+                        <div class="product_shop_the_look--media-mobile">
+                            {{ shopTheLookItem.image_picker_mobile }}
+                        </div>
+                    </div>
+                    
+                    {%  for productShopTheLook in shopTheLookItem.value %}
+
+                        
+
+                    {% endfor %}
+
+                </div>
+            </div>
+    {% endfor %}
+{% endif %}
+{% schema %}
+    {
+        "name": "PDP-Shop-The-Look",
+        "tag": "section",
+        "class": "section section-product-shop-the-look",
+        "settings": [
+            {
+                "type": "header",
+                "content": "Heading"
+            },
+                {
+                    "type": "select",
+                    "id": "header_position",
+                    "label": "Header position",
+                    "options": [
+                        {
+                            "value": "left",
+                            "label": "Left"
+                        },
+                        {
+                            "value": "center",
+                            "label": "Center"
+                        },
+                        {
+                            "value": "right",
+                            "label": "Right"
+                        }
+                    ],
+                    "default": "center"
+                },
+                {
+                    "type": "select",
+                    "id": "heading_size",
+                    "label": "Heading size",
+                    "info": "For optimum SEO, a page should only have one h1 and it should be the first heading on the page.",
+                    "options": [
+                        {
+                            "value": "h1",
+                            "label": "h1"
+                        },
+                        {
+                            "value": "h2",
+                            "label": "h2"
+                        },
+                        {
+                            "value": "h3",
+                            "label": "h3"
+                        },
+                        {
+                            "value": "h4",
+                            "label": "h4"
+                        },
+                        {
+                            "value": "h5",
+                            "label": "h5"
+                        },
+                        {
+                            "value": "h6",
+                            "label": "h6"
+                        },
+                        {
+                            "value": "p",
+                            "label": "p"
+                        }
+                    ],
+                    "default": "h2"
+                },
+                {
+                    "type": "text",
+                    "id": "heading",
+                    "label": "Heading",
+                    "default": "VIDEOPINIONES"
+                },
+            {
+                "type": "header",
+                "content": "Carousel"
+            },
+            {
+                "type": "header",
+                "content": "Padding"
+            },
+                {
+                    "type": "range",
+                    "id": "padding_top",
+                    "label": "Padding Top",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 36,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_bottom",
+                    "label": "Padding Bottom",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 36,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_top_mb",
+                    "label": "Padding Top on Mobile",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 24,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "padding_bottom_mb",
+                    "label": "Padding Bottom on Mobile",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "default": 24,
+                    "unit": "px"
+                } 
+        ],
+        "presets": [
+            {
+                "name": "SystemAction Product Shop The Look"
+            }
+        ]
+    }
+{% endschema %}
